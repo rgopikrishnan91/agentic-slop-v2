@@ -1,0 +1,16 @@
+[
+ {
+  "entry_id": "A-03",
+  "kind": "boundary register",
+  "condition": "the stance comment does not also state the fact behind its judgement: what is unverified and where the relied-on invariant is enforced, the constraint (platform bug, deadline) that forced the shape and when it can be removed, or the measured uncertainty and the fallback it justifies",
+  "reason": "Each rule matches a stance word in a comment (assuming/presumably, obviously/simply, sorry/hacky, should work/hopefully, or a debug/temp note beside a console.log) and names a possible fault (unverified assumption, false certainty, self-deprecation, hedging, a log the author knows should go), but such a comment states nothing the code cannot only if it withholds the underlying fact, which no rule checks; the entry's own legitimate case says the same words are informative once that fact is attached, so this is the animation case of the kind test, not a stated family failure (question 1) or a bare word count with no stated fault (question 2).",
+  "rule_kinds": {
+   "035": "boundary register",
+   "036": "boundary register",
+   "037": "boundary register",
+   "200": "boundary register",
+   "370": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
