@@ -1,0 +1,165 @@
+[
+ {
+  "entry_id": "H-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule in this entry identifies a specific declared artifact (import, declaration, file, export, type, dependency, class member, component, prop, event, server action, or duplicate-and-unused code) and states that it has no consumer or reference anywhere in the module graph. Each rule text says what is wrong: the artifact exists but nothing uses it.",
+  "rule_kinds": {
+   "001": "candidate pattern",
+   "006": "candidate pattern",
+   "007": "candidate pattern",
+   "008": "candidate pattern",
+   "009": "candidate pattern",
+   "010": "candidate pattern",
+   "444": "candidate pattern",
+   "453": "candidate pattern",
+   "454": "candidate pattern",
+   "455": "candidate pattern",
+   "456": "candidate pattern",
+   "465": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what is wrong: a production dependency is imported only from positions that never ship at runtime (type imports erased at compile time, or test files excluded from delivery), so the manifest declares a runtime requirement the running system does not have.",
+  "rule_kinds": {
+   "446": "candidate pattern",
+   "447": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the failure directly: code placed after a return/throw/raise/break/continue is unreachable, and a branch governed by a literal constant condition (if true, if false, if 0) can never execute the dead path. Each rule text identifies the failure, not just the pattern.",
+  "rule_kinds": {
+   "003": "candidate pattern",
+   "004": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The rule states what is wrong: blocks of real code have been disabled by commenting them out and left in the source file instead of being deleted, while version control already preserves the history.",
+  "rule_kinds": {
+   "329": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "nothing expects an effect from the operation, so it can be deleted rather than filled in",
+  "reason": "Both rules find an operation with an empty body and state a possible failure, but whether the empty body is hygiene debris (removable) or omitted behaviour (family I, needing implementation) depends on whether anything expects an effect from the operation. Neither rule checks that condition.",
+  "rule_kinds": {
+   "017": "boundary register",
+   "018": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All three rules state what is wrong: debug print statements, bare debugger keywords, and console.log calls with apologetic debug comments are development instrumentation left in production code. Each rule text names the artifact and says it is a leftover.",
+  "rule_kinds": {
+   "002": "candidate pattern",
+   "330": "candidate pattern",
+   "370": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what is wrong: ephemeral planning files (PLAN.md, SCRATCH.md, etc.) committed to the repository, and generation-process markers (oai_citation, sandbox paths, placeholder tokens) left in delivered output. Each rule text identifies the specific authoring-process trace and says it should not be in the deliverable.",
+  "rule_kinds": {
+   "019": "candidate pattern",
+   "495": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The rule states what is wrong: when an attempted fix fails, its edits must be reverted immediately, and accumulated dead code from failed fix attempts is forbidden. The rule text specifies both the failure (leftover edits) and the triggering condition (the fix failed).",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what is wrong: one finds events published with no subscriber anywhere in the codebase, the other finds event listeners registered with no corresponding publisher. Each rule names the half-wired end and says the counterpart is missing.",
+  "rule_kinds": {
+   "345": "candidate pattern",
+   "346": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-10",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the migration has completed and no caller, published API, or still-supported release needs the old path",
+  "reason": "The rule reports deprecated symbols, mixed old/new APIs, stale shims, and abandoned removal markers, but it does not distinguish finished migrations (where shims are debris) from ongoing ones (where the mixed state is live compatibility work). The failure belongs to family H only if the migration is complete.",
+  "rule_kinds": {
+   "092": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-11",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what is wrong: importing the same module twice or exporting the same symbol twice creates a surplus declaration that adds nothing, since the first declaration already established the binding.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what is wrong: a suppression annotation (inline comment or header entry) exists but the condition it was paired with has been removed from the code, leaving a stale annotation that misleads later readers. Each rule pairs annotations against the code body and reports those with no remaining partner.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-13",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The rule computes a ratio of dead plus duplicate functions to total functions and fires when it exceeds a threshold. It measures and scores a codebase-level fraction without naming any specific artifact or stating what obligation a particular function breaks; it selects a codebase for attention by a number.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]
