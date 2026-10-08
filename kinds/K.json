@@ -1,0 +1,51 @@
+[
+ {
+  "entry_id": "K-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names the scope failure in its own text: an unrequested feature or speculative abstraction (083), answering a fix request by changing unrelated files or adding tests instead of fixing (206), a behaviour change smuggled into a presented refactor (296), and refactoring, cleanup, comment edits or file moves unrelated to the task (298). The text states what is wrong, so these are candidate pattern even though their detectors are mostly natural-language prompts.",
+  "rule_kinds": {
+   "083": "candidate pattern",
+   "206": "candidate pattern",
+   "296": "candidate pattern",
+   "298": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules only measure size or growth and flag a number: net non-test LOC delta over a diff (204), a file grown more than 20% since its daily baseline (483), and complexity multiplied by churn/net growth over a time window (107). None reads the request or states what is wrong, so each selects code for a reviewer rather than stating a failure.",
+  "rule_kinds": {
+   "107": "proxy group",
+   "204": "proxy group",
+   "483": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Rule 421 matches the word 'and' on a word boundary in the commit subject and reads nothing else. It matches a keyword and does not say what is wrong, so it selects commits for a person to inspect rather than stating a mixed-concern failure.",
+  "rule_kinds": {
+   "421": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 540 states the failure directly: edits from a fix attempt that failed were left in the working tree instead of being reverted, so dead code from the abandoned attempt accumulates in the delivered change. The text says what is wrong, so it is candidate pattern even though the detector is a prompt obligation.",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]
