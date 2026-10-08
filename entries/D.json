@@ -1,0 +1,335 @@
+[
+ {
+  "id": "D-01",
+  "family": "D",
+  "name": "Repeated declaration of a binding already declared",
+  "rationale": "Both rules report a declaration that re-declares what the same scope already declares: a second import of a module the file already imports, or a second export of a symbol the module already exports. Nothing is reimplemented; the declaration list carries an entry that adds no binding beyond the one already present.",
+  "invariant": "Each module dependency and each exported symbol is declared once in its scope, so the declaration list is a full and non-overlapping record of what the file takes in and gives out.",
+  "roles": [
+   "module scope",
+   "bound symbol",
+   "existing declaration",
+   "added declaration"
+  ],
+  "relations": [
+   {
+    "from": "existing declaration",
+    "to": "bound symbol",
+    "label": "declares it in the scope",
+    "state": "normal"
+   },
+   {
+    "from": "added declaration",
+    "to": "bound symbol",
+    "label": "declares the same symbol a second time",
+    "state": "problem"
+   },
+   {
+    "from": "added declaration",
+    "to": "module scope",
+    "label": "contributes a binding not already there",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Some repeated declarations are required by the language or the tooling rather than redundant: a type-only import beside a value import of the same module, a side-effect import next to a named one, a default and a named export of one symbol kept for existing importers, or a re-export a public entry point or barrel needs. A deprecated alias kept beside the new name is also a deliberate second declaration.",
+  "rule_ids": [
+   "005",
+   "014"
+  ]
+ },
+ {
+  "id": "D-02",
+  "family": "D",
+  "name": "Shared definition restated at every use site",
+  "rationale": "What is duplicated here is a definition rather than a body: a type or interface shape, a constant, a parameter group, a prop set, a response structure, a closed set of string values, a DTO shape on both sides of a layer boundary. Each site writes the definition out for itself, so the concept has no single declaration that the sites reference and no single place where it can be changed.",
+  "invariant": "A shape or value that several sites share is declared once, and the sites reference that declaration instead of restating it.",
+  "roles": [
+   "shared concept",
+   "canonical definition",
+   "first use site",
+   "second use site"
+  ],
+  "relations": [
+   {
+    "from": "first use site",
+    "to": "shared concept",
+    "label": "needs the shape or value",
+    "state": "normal"
+   },
+   {
+    "from": "second use site",
+    "to": "shared concept",
+    "label": "writes out its own copy of the same shape or value",
+    "state": "problem"
+   },
+   {
+    "from": "canonical definition",
+    "to": "shared concept",
+    "label": "declares it once under a name",
+    "state": "missing"
+   },
+   {
+    "from": "second use site",
+    "to": "canonical definition",
+    "label": "references the declaration",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Shapes that agree today but answer to different owners stay separate: a wire or storage contract that must not move when the internal model moves, a type in another bounded context, a test's expected shape written out on purpose so a change in the production type fails the test. A constant name or a string literal that recurs by coincidence (two unrelated TIMEOUT constants, a one-off literal that is not a member of a closed set) carries no shared concept, and the name or literal match that rules 123 and 574 key on needs that confirmation.",
+  "rule_ids": [
+   "054",
+   "123",
+   "336",
+   "438",
+   "461",
+   "546",
+   "574"
+  ]
+ },
+ {
+  "id": "D-03",
+  "family": "D",
+  "name": "Repository-level redundancy ratio gate",
+  "rationale": "The rule reports one number for the whole codebase, the share of functions that are dead or duplicated, and fails when it passes a threshold. The duplicate-function count inside it is why the rule touches Duplication, but the gate names no pair of functions that encode one concept and no copy that should go.",
+  "invariant": "A duplication finding names the copies involved; a threshold on an aggregate redundancy score selects a codebase for review and is not itself a finding.",
+  "roles": [
+   "repository",
+   "redundancy score",
+   "threshold",
+   "duplicated function pair"
+  ],
+  "relations": [
+   {
+    "from": "redundancy score",
+    "to": "repository",
+    "label": "aggregates dead and duplicate functions over all functions",
+    "state": "normal"
+   },
+   {
+    "from": "redundancy score",
+    "to": "threshold",
+    "label": "is compared against it to pass or fail the change",
+    "state": "normal"
+   },
+   {
+    "from": "redundancy score",
+    "to": "duplicated function pair",
+    "label": "identifies the copies that have to be reconciled",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A score above the threshold is acceptable where the mass is explained: generated clients, vendored or migrated code, parallel language bindings, a deliberate phase in which old and new implementations run side by side, or a score driven by the dead-code component alone. The aggregate is a fair trend measure; it misleads only when read as a list of duplicates.",
+  "rule_ids": [
+   "303"
+  ]
+ },
+ {
+  "id": "D-04",
+  "family": "D",
+  "name": "Name, signature and callee-overlap similarity signals",
+  "rationale": "These rules select candidates for a duplication review from surface features only: a normalized helper signature shape found in several files, a function name found in several files with different signatures, or sibling functions whose callee sets overlap above a score. None of them compares the implementations, and a detector note says the overlap does not establish duplicate behavior.",
+  "invariant": "A report of duplication rests on duplicated content, not on a matching name, a signature shape or a count of shared callees.",
+  "roles": [
+   "surface signal",
+   "candidate function set",
+   "function body",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "surface signal",
+    "to": "candidate function set",
+    "label": "selects it by matching names, signature shapes or shared callees above a count",
+    "state": "normal"
+   },
+   {
+    "from": "surface signal",
+    "to": "function body",
+    "label": "compares what the implementations actually do",
+    "state": "missing"
+   },
+   {
+    "from": "reviewer",
+    "to": "candidate function set",
+    "label": "has to read the bodies to decide whether a copy exists",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "The signal carries no defect where a name is a convention met independently in many modules (handle, serialize, validate, a framework hook), where an interface or protocol requires the same signature in every implementation, where same-named functions with different signatures are distinct operations or overloads, and where sibling functions share callees because they use the same helpers for different work.",
+  "rule_ids": [
+   "119",
+   "122",
+   "124"
+  ]
+ },
+ {
+  "id": "D-05",
+  "family": "D",
+  "name": "Test cases and setup restated per case",
+  "rationale": "These rules concern copies inside the test suite: setup and mock wiring written out again in each test file, test bodies that differ only in their literals instead of being parameterized, and the same observable behavior asserted again through another internal path. The suite grows copies without growing its evidence, and one behavior change has to be edited in every copy.",
+  "invariant": "A behavior is set up and asserted in one place in the suite, and cases that differ only in their data share one body through parameters or a fixture.",
+  "roles": [
+   "behavior under test",
+   "test case",
+   "duplicate test case",
+   "shared fixture or parameter list"
+  ],
+  "relations": [
+   {
+    "from": "test case",
+    "to": "behavior under test",
+    "label": "exercises and asserts it",
+    "state": "normal"
+   },
+   {
+    "from": "duplicate test case",
+    "to": "behavior under test",
+    "label": "asserts the same behavior again from its own restated setup",
+    "state": "problem"
+   },
+   {
+    "from": "duplicate test case",
+    "to": "shared fixture or parameter list",
+    "label": "takes its setup and its data from it",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Repetition earns its place in tests when it is the point: a case written out in full because explicitness makes the expected value readable, a regression test kept independent of the shared fixture so a fixture change cannot hide the bug, or two tests that look alike but pin different contracts (a unit path and an end-to-end path over the same behavior). Setup repeated in two files is also fine before it is clear what the shared fixture should be.",
+  "rule_ids": [
+   "120",
+   "263",
+   "325"
+  ]
+ },
+ {
+  "id": "D-06",
+  "family": "D",
+  "name": "Hand-rolled version of a facility that is already provided",
+  "rationale": "In these rules the implementation that already exists is not a sibling in the diff but a facility the project can call: a standard-library function, a platform primitive, an established library, or infrastructure the codebase itself provides. The new code rebuilds that facility, so the project owns a second implementation of it along with the edge cases the facility already handles.",
+  "invariant": "A capability that the language, the platform, a library or the codebase already provides is used through that provider rather than written again.",
+  "roles": [
+   "capability",
+   "provided facility",
+   "hand-rolled implementation",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "provided facility",
+    "to": "capability",
+    "label": "already supplies it, maintained outside this change",
+    "state": "normal"
+   },
+   {
+    "from": "hand-rolled implementation",
+    "to": "capability",
+    "label": "rebuilds it from lower-level pieces",
+    "state": "problem"
+   },
+   {
+    "from": "caller",
+    "to": "provided facility",
+    "label": "calls the facility",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Writing it again is right when the facility does not fit: a requirement it does not meet (a performance budget, a platform or dependency constraint, a licence), semantics that must differ in a documented way, or a dependency too large for what is needed. A thin adapter over the facility is not a reimplementation.",
+  "rule_ids": [
+   "125",
+   "136",
+   "147",
+   "541"
+  ]
+ },
+ {
+  "id": "D-07",
+  "family": "D",
+  "name": "Copy-and-modify provenance of a new function",
+  "rationale": "The rule describes a real failure, a function written by copying a neighbour and editing it, which keeps the neighbour's bounds and null semantics and so misses what the new function was specified to do. That failure is a correctness defect; it is a Duplication failure only under a further condition that the rule does not check.",
+  "invariant": "A function is derived from what it is specified to do, and the part it shares with a neighbour is reused rather than copied.",
+  "roles": [
+   "specification",
+   "source function",
+   "copied function",
+   "shared logic"
+  ],
+  "relations": [
+   {
+    "from": "copied function",
+    "to": "source function",
+    "label": "is produced by copying its body and editing it",
+    "state": "problem"
+   },
+   {
+    "from": "copied function",
+    "to": "specification",
+    "label": "is derived from what it has to do",
+    "state": "missing"
+   },
+   {
+    "from": "copied function",
+    "to": "shared logic",
+    "label": "reuses the part the two functions genuinely have in common",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Condition for Duplication: the copy and its source still encode one concept that must change together, so the shared part should have been extracted and called. Copy-and-modify is not duplication where the edits make the new function a different operation that only started from the same text; the copy is then a correctness risk only. It is also acceptable as an intermediate step when the copy is reconciled with its source before the change is delivered.",
+  "rule_ids": [
+   "287"
+  ]
+ },
+ {
+  "id": "D-08",
+  "family": "D",
+  "name": "Second implementation of logic the repository already has",
+  "rationale": "These rules report that a behavior which already has an implementation in the repository is carried out again elsewhere, whether the second site is a textual or structural clone, a re-created helper of the same shape, a repeated call chain, a re-encoding of the same business rule, query, mapping, validation or dispatch structure under other names, or a duplicate that is also unused. The tools differ in how they recognize sameness (normalized line windows, body hashes, AST structure, semantic comparison); what they report is two bodies that must change together.",
+  "invariant": "One behavior has one implementation in the repository, and every site that needs it calls that implementation.",
+  "roles": [
+   "behavior",
+   "existing implementation",
+   "second implementation",
+   "call site"
+  ],
+  "relations": [
+   {
+    "from": "existing implementation",
+    "to": "behavior",
+    "label": "implements it",
+    "state": "normal"
+   },
+   {
+    "from": "second implementation",
+    "to": "behavior",
+    "label": "implements the same behavior again",
+    "state": "problem"
+   },
+   {
+    "from": "call site",
+    "to": "existing implementation",
+    "label": "calls it instead of holding its own copy",
+    "state": "missing"
+   },
+   {
+    "from": "second implementation",
+    "to": "existing implementation",
+    "label": "changes together with it, under one edit",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Two bodies may look alike and still be right to keep apart: when they serve different bounded contexts or published versions whose rules are free to diverge, when the resemblance is incidental (short accessors, framework boilerplate, generated or vendored code), when a regulatory or deployment boundary requires independent implementations, or when a deliberate copy buys independence worth more than the shared edit. Repetition is also acceptable while a third occurrence has not yet shown which part is really common.",
+  "rule_ids": [
+   "071",
+   "117",
+   "118",
+   "121",
+   "333",
+   "334",
+   "335",
+   "465",
+   "485",
+   "549",
+   "550",
+   "551"
+  ]
+ }
+]
