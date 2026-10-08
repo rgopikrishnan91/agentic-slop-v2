@@ -1,0 +1,311 @@
+[
+ {
+  "id": "Y-01",
+  "family": "Y",
+  "name": "Unverified narrowing assertion in place of a check",
+  "rationale": "Each rule catches an expression in which the author asserts a narrower type, a non-null value or a representable range that the compiler cannot prove and no runtime check establishes: `as unknown as X`, `!`, `!!`, `u64 as u32`, `x.(T)` without comma-ok. The compile-time objection is removed by a claim instead of being answered.",
+  "invariant": "Code may treat a value as a narrower, non-null or range-limited type only when the checker can prove that type or a runtime check establishes it before the use.",
+  "roles": [
+   "value of a wider, nullable or dynamic type",
+   "type assertion in the source",
+   "type checker",
+   "use site that depends on the narrower type",
+   "validating check"
+  ],
+  "relations": [
+   {
+    "from": "use site that depends on the narrower type",
+    "to": "value of a wider, nullable or dynamic type",
+    "label": "operates on it as if narrowed",
+    "state": "normal"
+   },
+   {
+    "from": "type assertion in the source",
+    "to": "type checker",
+    "label": "overrides its objection by fiat",
+    "state": "problem"
+   },
+   {
+    "from": "validating check",
+    "to": "value of a wider, nullable or dynamic type",
+    "label": "establishes the narrower type before use",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The assertion is sound and the check is elsewhere: a value just validated by a schema parser or a comma-ok branch, a non-null assertion right after a guard the checker cannot follow across a closure or an array index, a cast to the type a test double deliberately violates, or a narrowing conversion whose source range is already bounded by construction.",
+  "rule_ids": [
+   "051",
+   "057",
+   "063",
+   "358",
+   "478"
+  ]
+ },
+ {
+  "id": "Y-02",
+  "family": "Y",
+  "name": "Opaque or top type where the code depends on a structure",
+  "rationale": "Each rule reports an annotation or cast that gives a value a type with no usable members: `any` or `cast(Any, ...)`, `object`, a bare `dict` return, `Array<any>` or an `any` index signature, `as Record<string, unknown>` on a payload. The value has a structure the surrounding code relies on, but it is written nowhere the checker can use, so the checker stops restricting operations on it.",
+  "invariant": "A value whose fields or elements the code reads or returns must have that structure named in its declared type, not an opaque top type that admits any shape.",
+  "roles": [
+   "value with a definite structure",
+   "declared or cast-to type of the value",
+   "consumer reading its members",
+   "type checker"
+  ],
+  "relations": [
+   {
+    "from": "consumer reading its members",
+    "to": "value with a definite structure",
+    "label": "depends on specific fields or element types",
+    "state": "normal"
+   },
+   {
+    "from": "declared or cast-to type of the value",
+    "to": "value with a definite structure",
+    "label": "names its fields or element type",
+    "state": "missing"
+   },
+   {
+    "from": "type checker",
+    "to": "consumer reading its members",
+    "label": "accepts any member access on it",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The value genuinely has no structure the code relies on, or the shape is unknown at that point and is narrowed right after: a pass-through logger or cache holding an opaque payload, external JSON received as `unknown` and validated into a typed shape on the next line, a generic serializer or plugin registry, or an interface typed loosely on purpose to mirror a third-party contract that varies.",
+  "rule_ids": [
+   "050",
+   "055",
+   "061",
+   "062",
+   "373"
+  ]
+ },
+ {
+  "id": "Y-03",
+  "family": "Y",
+  "name": "Domain concept left in a primitive type",
+  "rationale": "Each rule concerns a concept whose legal values are constrained by the domain but which is carried as a plain string or integer, or more generally by a type model that does not express the domain rule: a `str` status parameter, a raw primitive for a mode or kind, the same handful of string literals compared across files, a type that leaves business invariants unencoded. The type the checker sees admits values the domain forbids.",
+  "invariant": "A domain concept with a constrained set of legal values or states must be given a type that excludes the values and states outside that set.",
+  "roles": [
+   "domain concept with a constrained value set",
+   "parameter, field or type model carrying it",
+   "caller supplying a value",
+   "type checker"
+  ],
+  "relations": [
+   {
+    "from": "caller supplying a value",
+    "to": "parameter, field or type model carrying it",
+    "label": "passes one member of the set",
+    "state": "normal"
+   },
+   {
+    "from": "parameter, field or type model carrying it",
+    "to": "domain concept with a constrained value set",
+    "label": "encodes which values are legal",
+    "state": "missing"
+   },
+   {
+    "from": "type checker",
+    "to": "caller supplying a value",
+    "label": "accepts a value the domain rejects",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The value set is not closed or not owned here: free text, an identifier or key whose values come from outside; a string passed straight through to a protocol or external API that defines the vocabulary; a boundary layer that accepts the wire string and converts it once to the typed value; a repeated literal that is a message or a path rather than a member of a domain set; an early prototype whose domain model is still being found.",
+  "rule_ids": [
+   "064",
+   "331",
+   "439",
+   "574"
+  ]
+ },
+ {
+  "id": "Y-04",
+  "family": "Y",
+  "name": "Dispatch over a closed variant set with exhaustiveness unenforced",
+  "rationale": "Both rules concern a branch over the members of a closed set written so that the compiler cannot see the set as covered: a `match`/`switch` whose default arm does not assert the impossible case, and an `isinstance`/enum `if`/`elif` chain that simply runs out. What is absent is the compile-time objection when a variant is added.",
+  "invariant": "Where code branches over a closed set of variants, adding a variant must make the dispatch a type error until it is handled.",
+  "roles": [
+   "closed set of variants",
+   "dispatch site",
+   "exhaustiveness assertion",
+   "compiler",
+   "variant added later"
+  ],
+  "relations": [
+   {
+    "from": "dispatch site",
+    "to": "closed set of variants",
+    "label": "handles every variant that exists today",
+    "state": "normal"
+   },
+   {
+    "from": "exhaustiveness assertion",
+    "to": "dispatch site",
+    "label": "turns an uncovered variant into a type error",
+    "state": "missing"
+   },
+   {
+    "from": "compiler",
+    "to": "variant added later",
+    "label": "accepts the dispatch that ignores it",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The set is open by design, so there is nothing to be exhaustive over: dispatch on a type hierarchy third parties extend, on a value parsed from input where the default arm is the real error path, or a chain whose final branch is a documented general case that stays correct for any new member. The rules do not check that the set is closed.",
+  "rule_ids": [
+   "060",
+   "160"
+  ]
+ },
+ {
+  "id": "Y-05",
+  "family": "Y",
+  "name": "Check suppressed instead of satisfied",
+  "rationale": "Each rule finds a place where a type, lint or build check the project runs was switched off rather than satisfied: an inline directive (`@ts-ignore`, `# type: ignore`, `# noqa`, `eslint-disable`), a suppression attribute or unmatched pragma, a build-file element that clears warnings or nullability, or an edit to the checker's own configuration file. The flagged code is left as it was and the waiver carries no visible, bounded reason.",
+  "invariant": "A diagnostic that an adopted check reports must be fixed in the code, or waived only with the reason recorded and the waiver confined to the code it excuses; the check itself must not be loosened to make the code pass.",
+  "roles": [
+   "adopted check",
+   "code that fails the check",
+   "suppression directive, build setting or config edit",
+   "recorded justification"
+  ],
+  "relations": [
+   {
+    "from": "adopted check",
+    "to": "code that fails the check",
+    "label": "reports a defect in it",
+    "state": "normal"
+   },
+   {
+    "from": "suppression directive, build setting or config edit",
+    "to": "adopted check",
+    "label": "cancels or loosens its verdict while the code stands",
+    "state": "problem"
+   },
+   {
+    "from": "recorded justification",
+    "to": "suppression directive, build setting or config edit",
+    "label": "states the reason and bounds the scope",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A waiver that is both explained and narrow: a `@ts-expect-error` naming the upstream issue, a `# type: ignore[attr-defined]` with a comment pointing at a wrong stub, `#[expect(dead_code, reason = \"...\")]`, a `NoWarn` for one analyser ID in generated code with the reason in the file. For a configuration edit (rule 332), it is this failure only when the edit removes or weakens a rule the current change was failing; adopting a configuration, tightening a rule, or fixing a path or glob is legitimate.",
+  "rule_ids": [
+   "052",
+   "056",
+   "210",
+   "332",
+   "566"
+  ]
+ },
+ {
+  "id": "Y-06",
+  "family": "Y",
+  "name": "Declared cross-boundary type contradicted by the payload",
+  "rationale": "The rule finds a type that one component declares for data another component sends, where the two disagree: the producer wraps the payload in an envelope and the consumer type describes the unwrapped body. The declaration is not merely imprecise but false, and nothing validates the payload against it, so the error shows only when the data arrives.",
+  "invariant": "A type declared for data crossing a component boundary must describe the shape the producing side actually sends, and something must check that it does.",
+  "roles": [
+   "producing endpoint",
+   "payload actually sent",
+   "consumer's declared type",
+   "runtime validation at the boundary"
+  ],
+  "relations": [
+   {
+    "from": "producing endpoint",
+    "to": "payload actually sent",
+    "label": "returns it in its own envelope",
+    "state": "normal"
+   },
+   {
+    "from": "consumer's declared type",
+    "to": "payload actually sent",
+    "label": "contradicts its real shape",
+    "state": "problem"
+   },
+   {
+    "from": "runtime validation at the boundary",
+    "to": "payload actually sent",
+    "label": "checks it against the declared type",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The declared type is kept in sync with the producer by a shared schema or generated client, or a runtime validator parses the payload at the boundary; or the declared type covers only part of the payload on purpose, or a typed adapter between the two sides does the unwrapping.",
+  "rule_ids": [
+   "314"
+  ]
+ },
+ {
+  "id": "Y-07",
+  "family": "Y",
+  "name": "Published signature resting on a type that is not part of the contract",
+  "rationale": "Both rules look at a signature a consumer must use from outside and find in it a type never published for that boundary: an ORM entity returned where a response DTO belongs, or a type referenced by an export but not exported itself. The consumer receives a contract it cannot properly name or rely on, because the type belongs to the provider's interior.",
+  "invariant": "Every type that appears in a signature across a public boundary must be a type defined, exported and published as part of that boundary's contract.",
+  "roles": [
+   "exported or published signature",
+   "type appearing in the signature",
+   "boundary contract",
+   "external consumer"
+  ],
+  "relations": [
+   {
+    "from": "external consumer",
+    "to": "exported or published signature",
+    "label": "calls it from outside the boundary",
+    "state": "normal"
+   },
+   {
+    "from": "type appearing in the signature",
+    "to": "boundary contract",
+    "label": "is declared and published as part of it",
+    "state": "missing"
+   },
+   {
+    "from": "type appearing in the signature",
+    "to": "external consumer",
+    "label": "hands it an interior type it cannot name or rely on",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The boundary is internal, so the interior type is the contract: a package's own modules calling each other, a layered application that deliberately shares its domain model between service and transport, a type exported through another entry point or re-export the check does not follow, or a read model whose entity shape the API documents as its response.",
+  "rule_ids": [
+   "344",
+   "448"
+  ]
+ },
+ {
+  "id": "Y-08",
+  "family": "Y",
+  "name": "Escape-hatch annotation ratio per file",
+  "rationale": "The rule names no defective construct: it counts a file's annotations, counts how many are escape hatches (`Any`, `any`, `interface{}`, `dynamic`, `object`, `dyn Any`), and reports the file when the share passes thirty per cent with at least five annotations. It selects code for review by a ratio.",
+  "invariant": "Escape-hatch annotations should be the exception in a typed file, not its ordinary vocabulary.",
+  "roles": [
+   "source file",
+   "type annotations in the file",
+   "escape-hatch annotations",
+   "ratio threshold"
+  ],
+  "relations": [
+   {
+    "from": "escape-hatch annotations",
+    "to": "type annotations in the file",
+    "label": "make up more than thirty per cent of them",
+    "state": "problem"
+   },
+   {
+    "from": "ratio threshold",
+    "to": "source file",
+    "label": "selects it for review without naming a defect",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "Files where loose types are the subject matter: serialisation and dynamic dispatch layers, a foreign-function or plugin boundary, generic container and reflection utilities, adapters over untyped third-party libraries, where every annotation can be justified while the ratio is far above the threshold.",
+  "rule_ids": [
+   "065"
+  ]
+ }
+]
