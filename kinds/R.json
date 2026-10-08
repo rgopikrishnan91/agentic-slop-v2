@@ -1,0 +1,50 @@
+[
+ {
+  "entry_id": "R-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All three rules name the duplicated guarantee in their own text: a primitive parameter coerced again to the type it already has, a null/undefined or runtime type check on a value the type system already proves non-null or of that type, and validation of a parameter that a trusted caller or upstream boundary has already validated. Each text states the failure rather than merely selecting a construct for review.",
+  "rule_kinds": {
+   "053": "candidate pattern",
+   "068": "candidate pattern",
+   "070": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules describe an error-handling construct whose own description contains the defect: a catch block that does nothing but rethrow the same error, and a try/catch wrapping code that cannot throw or handling a logically impossible state. The qualifiers 'only rethrow' and 'cannot throw' are what makes the construct a no-op, so the text says what is wrong without needing an outside condition.",
+  "rule_kinds": {
+   "040": "candidate pattern",
+   "069": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-03",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the producing boundary or input contract already fixes the shape of the data at that point, so the intermediate key is always present (rule 066) or only one of the two key forms can ever arrive (rule 067), making the default or the alternative access path unreachable",
+  "reason": "Rule 066 matches the syntactic shape `.get({}).get()` and rule 067 matches an OR of an atom-key and a string-key lookup on the same map; each states a defensive second access path but neither establishes that the shape it defends against cannot occur, which is exactly what makes the path a duplicated guarantee rather than working adapter code. The ex_slop inspection for 067 confirms the detector has no dataflow or call-context proof that both key forms are unnecessary and that boundary adapters can be intentional.",
+  "rule_kinds": {
+   "066": "boundary register",
+   "067": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-04",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the tested state (key present, attribute present, path exists, non-empty, not None, numeric string, non-zero divisor, runtime type) is already settled at that point by a declared type, a validating caller or a prior normalization, so the guard's false branch cannot be reached",
+  "reason": "The single rule of this entry matches eight Python look-before-you-leap shapes and justifies them with an EAFP style preference, which is not a duplicated guarantee: an absent key, a zero divisor or a narrowing isinstance guard is ordinary intended control flow. The rule states a possible failure but checks nothing about whether a reliable guarantee already settles the condition, so it only reaches this family under the added condition.",
+  "rule_kinds": {
+   "571": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
