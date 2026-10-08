@@ -1,0 +1,374 @@
+[
+ {
+  "unit_id": "U-A-08",
+  "name": "Added-comment volume in a change",
+  "invariant": "A comment earns its place by what it adds to the code; the number of comments in a change is a signal to look, not a fault in itself.",
+  "legitimate": "A large rise in comment lines is right when a change documents a public interface for the first time, adds module headers a project convention requires, or lands a dense algorithm whose derivation must be written down. The count also misses the opposite case: a change under the threshold can consist entirely of restatement.",
+  "kind": "proxy group",
+  "member_entries": [
+   "A-08"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "029"
+  ]
+ },
+ {
+  "unit_id": "U-A-09",
+  "name": "Informal deprecation note without the formal tag",
+  "invariant": "A deprecation must be declared once in the form the toolchain reads, so that callers are warned where they call and not only where someone happens to read the definition.",
+  "legitimate": "This counts as annotation noise only under an added condition the rule does not test: that the note repeats a status the code already declares, that the compatibility obligation it describes has ended, or that it names the wrong successor. Where the alias is still kept for callers and no tag exists, the prose is the only record of that obligation and carries information the code does not.",
+  "kind": "boundary register",
+  "member_entries": [
+   "A-09"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "032"
+  ]
+ },
+ {
+  "unit_id": "M-05",
+  "name": "Repository redundancy ratio gate",
+  "invariant": "Measure: the share of functions that are dead or duplicated, compared with a configured threshold for the repository. The score selects a codebase for review; it names no copy and no dead function and is not itself a finding.",
+  "legitimate": "A high score is explained by generated or vendored code, parallel language bindings, platform shims, a wide public API that looks uncalled from inside the repository, a migration in which old and new code run side by side, or a small codebase where few functions swing the fraction; a low score does not show that debris is absent.",
+  "kind": "proxy group",
+  "member_entries": [
+   "D-03",
+   "H-13"
+  ],
+  "families": [
+   "D",
+   "H"
+  ],
+  "rule_ids": [
+   "303"
+  ]
+ },
+ {
+  "unit_id": "U-D-07",
+  "name": "Copy-and-modify provenance of a new function",
+  "invariant": "A function is derived from what it is specified to do, and the part it shares with a neighbour is reused rather than copied.",
+  "legitimate": "Condition for Duplication: the copy and its source still encode one concept that must change together, so the shared part should have been extracted and called. Copy-and-modify is not duplication where the edits make the new function a different operation that only started from the same text; the copy is then a correctness risk only. It is also acceptable as an intermediate step when the copy is reconciled with its source before the change is delivered.",
+  "kind": "boundary register",
+  "member_entries": [
+   "D-07"
+  ],
+  "families": [
+   "D"
+  ],
+  "rule_ids": [
+   "287"
+  ]
+ },
+ {
+  "unit_id": "U-E-04",
+  "name": "Drop in the count of error-handling constructs in a diff",
+  "invariant": "A change must not remove the handling that kept a still-fallible operation's failure observable.",
+  "legitimate": "The count falls legitimately when handling is consolidated upward, a swallowing handler is removed so the error propagates, the guarded operation can no longer fail, a None check is replaced by a type that cannot be None, or dead code is deleted.",
+  "kind": "proxy group",
+  "member_entries": [
+   "E-04"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "385"
+  ]
+ },
+ {
+  "unit_id": "U-E-05",
+  "name": "Mixed error mechanisms in one module",
+  "invariant": "Where two failure mechanisms meet, the crossing must translate the signal, so that a caller handling one mechanism cannot miss a failure raised through the other.",
+  "legitimate": "The added condition the rule does not check: the mixture belongs in this family only when some call path crosses from one mechanism to the other without carrying the failure over, so a caller watching one mechanism sees success. Mixing is legitimate when each crossing translates explicitly (a Result-returning wrapper around a throwing library, a promisified callback API) or follows the platform convention (throw for programmer errors, return Result for expected ones).",
+  "kind": "boundary register",
+  "member_entries": [
+   "E-05"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "348"
+  ]
+ },
+ {
+  "unit_id": "U-E-06",
+  "name": "Error reported on the non-error log channel",
+  "invariant": "A handler that reports a failure by logging must log the error itself on the channel the system treats as its error channel.",
+  "legitimate": "The added condition the rule does not check: this belongs in this family only when the log line is the handler's whole disposition of the error, so nothing is rethrown or returned. Where the handler rethrows or returns an error value, where the log is only supplementary context, or where the program deliberately routes all output to stdout (a CLI, a container whose stdout is the collected stream, a test harness), the channel choice swallows nothing.",
+  "kind": "boundary register",
+  "member_entries": [
+   "E-06"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "560"
+  ]
+ },
+ {
+  "unit_id": "U-H-04",
+  "name": "Commented-out code retained in source",
+  "invariant": "Code that has been disabled must be deleted from the source, not kept as commented-out text.",
+  "legitimate": "A short commented example that documents usage (an example call in a docstring), a disabled line in a configuration template that users are meant to switch on, or a brief snippet kept on purpose with a note on why an alternative was rejected.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-04"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "329"
+  ]
+ },
+ {
+  "unit_id": "M-07",
+  "name": "Edits of an abandoned fix attempt left in the change",
+  "invariant": "When a fix attempt fails or is abandoned, its edits must be reverted before the change is delivered, so the change holds only the accepted solution.",
+  "legitimate": "Parts of the abandoned attempt that the task wants on their own merits and that are kept deliberately (a test that reproduces the bug, code the final fix turned out to need, a refactoring, a comment recording why the obvious route fails); the rule does not apply while the attempt is still in progress and nothing has been delivered.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-08",
+   "K-04"
+  ],
+  "families": [
+   "H",
+   "K"
+  ],
+  "rule_ids": [
+   "540"
+  ]
+ },
+ {
+  "unit_id": "U-I-02",
+  "name": "Implementation taken from a neighbour instead of from the specification",
+  "invariant": "An implementation must be derived from the specification it is presented as satisfying.",
+  "legitimate": "The added condition is that the copied code's behavior really does differ from what was specified. Copying a neighbouring function and adapting it correctly is ordinary practice and misrepresents nothing; the copy is also legitimate where the two cases share one specification, in which case the duplication, not the integrity, is the issue.",
+  "kind": "boundary register",
+  "member_entries": [
+   "I-02"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "287"
+  ]
+ },
+ {
+  "unit_id": "U-I-11",
+  "name": "Public surface hidden from the generated documentation",
+  "invariant": "The documentation generated for a module must cover the surface the project presents as that module's API.",
+  "legitimate": "The added condition is that the hidden functions belong to the surface the project presents as documented and supported. @doc false on functions that are public only for macro expansion or for use inside the application, which the project does not offer to callers, is the intended use of the attribute and claims nothing false.",
+  "kind": "boundary register",
+  "member_entries": [
+   "I-11"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "024"
+  ]
+ },
+ {
+  "unit_id": "U-K-03",
+  "name": "Conjunction in the commit subject as a stand-in for mixed concerns",
+  "invariant": "A commit should contain one concern that traces to the request, and its subject should say which one.",
+  "legitimate": "Plenty of single-purpose subjects carry the word: 'handle null and empty input', 'rename find-and-replace helper', 'document the retry and backoff settings'. The converse is just as common, a commit that really does two things and whose subject mentions only the first, so the keyword is neither necessary nor sufficient for the real failure.",
+  "kind": "proxy group",
+  "member_entries": [
+   "K-03"
+  ],
+  "families": [
+   "K"
+  ],
+  "rule_ids": [
+   "421"
+  ]
+ },
+ {
+  "unit_id": "U-L-04",
+  "name": "One field under diverging names across layers",
+  "invariant": "A field must keep one term, or one consistently applied mapping between terms, at every architectural boundary it crosses.",
+  "legitimate": "Per-layer conventions are expected (snake_case columns, camelCase JSON, PascalCase types); the divergence is acceptable whenever the translation is declared once and applied everywhere, by a serialiser configuration, generated client types or a schema the layers share, so that no consumer spells a key by hand.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "L-04"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "316"
+  ]
+ },
+ {
+  "unit_id": "U-L-05",
+  "name": "Domain term misspelled at its declaration",
+  "invariant": "An identifier must spell its domain term as the term is spelled by comparable identifiers in the repository.",
+  "legitimate": "The apparent misspelling is right when it is the project's or the domain's own spelling: an established abbreviation or acronym, a British or American variant the repository has settled on, correct jargon that looks like a typo, a field name fixed by an external schema or API, or a historical typo kept for compatibility in a public API or stored data.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "L-05"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "351"
+  ]
+ },
+ {
+  "unit_id": "U-R-04",
+  "name": "Look-before-you-leap test before an operation that reports the condition",
+  "invariant": "A precondition test before an operation must guard a condition that can actually fail at that point; where a reliable guarantee already settles the condition, the test duplicates it.",
+  "legitimate": "Added condition for this family: the tested state must already be fixed at that point by a type, a validating caller or a prior normalization. Without it the test is ordinary control flow (the key may be absent, the divisor may be zero) and the branch is intended behaviour. An EAFP style preference is not a duplicated guarantee, the exists-before-open form is a time-of-check to time-of-use race rather than excess, and an isinstance guard is required where a union type must be narrowed.",
+  "kind": "boundary register",
+  "member_entries": [
+   "R-04"
+  ],
+  "families": [
+   "R"
+  ],
+  "rule_ids": [
+   "571"
+  ]
+ },
+ {
+  "unit_id": "U-S-04",
+  "name": "Effect cycle for derived state",
+  "invariant": "Derived state must be computed from its source during rendering, not synchronized into a second state through an effect.",
+  "legitimate": "The update must run after render because it depends on something only an effect can observe, such as a DOM measurement or focus, or the effect also performs a real external synchronization.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-04"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "091"
+  ]
+ },
+ {
+  "unit_id": "U-S-05",
+  "name": "Fallback wording in the agent's own text",
+  "invariant": "A change should repair the path it is tempted to work around rather than add a layer beside it.",
+  "legitimate": "Fallbacks are often the right answer: a documented default when optional configuration is absent, a compatibility path during a dated migration, a degraded mode when an optional dependency is missing. The phrases also appear when the agent describes existing code or explains why it will not add a workaround.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-05"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "245"
+  ]
+ },
+ {
+  "unit_id": "U-S-14",
+  "name": "Orchestration chain without an aggregating unit",
+  "invariant": "A multi-service flow must be composed by one orchestrating unit rather than relayed along a chain of services.",
+  "legitimate": "A deep chain is correct when each hop is a separate bounded context that owns its step, or when the flow is a deliberate pipeline or saga with its own coordinator elsewhere.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-14"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "343"
+  ]
+ },
+ {
+  "unit_id": "U-S-16",
+  "name": "Pattern not used elsewhere in the repository",
+  "invariant": "A new component must be integrated through the structure the repository already uses for components of its kind.",
+  "legitimate": "The added condition for this family is that the mismatch is structural, such as a hand-written client beside generated ones, rather than vocabulary or style. A departure is also right when the new pattern is the stated replacement in a migration, or when the established pattern cannot serve the case.",
+  "kind": "boundary register",
+  "member_entries": [
+   "S-16"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "115"
+  ]
+ },
+ {
+  "unit_id": "U-S-25",
+  "name": "Shared abstraction grown a branch per caller",
+  "invariant": "A shared abstraction must fit its callers without caller-specific branches; when the branching exceeds the duplication it removed, the abstraction must be re-inlined.",
+  "legitimate": "A bounded, principled set of configuration options is not special-casing; the fault is an unbounded growth of caller-specific branches.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-25"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "286"
+  ]
+ },
+ {
+  "unit_id": "U-S-26",
+  "name": "Test count against a budget",
+  "invariant": "A test suite should hold the tests its behaviors need and no more.",
+  "legitimate": "Many distinct edge cases of one behavior, or legitimately broad behavior coverage, can exceed a raw count.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-26"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "429"
+  ]
+ },
+ {
+  "unit_id": "U-T-09",
+  "name": "Multi-behavior test selected by name",
+  "invariant": "A unit test should pin one behavior, so that a red result names what broke.",
+  "legitimate": "\"and\" is often part of one behavior's description (rejects_empty_and_whitespace_input, find_and_replace), and an integration or acceptance test is meant to walk a composite scenario.",
+  "kind": "proxy group",
+  "member_entries": [
+   "T-09"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "127"
+  ]
+ },
+ {
+  "unit_id": "U-Y-08",
+  "name": "Escape-hatch annotation ratio per file",
+  "invariant": "Escape-hatch annotations should be the exception in a typed file, not its ordinary vocabulary.",
+  "legitimate": "Files where loose types are the subject matter: serialisation and dynamic dispatch layers, a foreign-function or plugin boundary, generic container and reflection utilities, adapters over untyped third-party libraries, where every annotation can be justified while the ratio is far above the threshold.",
+  "kind": "proxy group",
+  "member_entries": [
+   "Y-08"
+  ],
+  "families": [
+   "Y"
+  ],
+  "rule_ids": [
+   "065"
+  ]
+ }
+]

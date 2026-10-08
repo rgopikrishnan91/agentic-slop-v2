@@ -36,4 +36,4 @@ kind_review	judge	A	session_01LWGp6AfFtQiXEEBSmFQuGu	orch/kr-judge-A	claude-opus
 step_b	coder1	all	session_01321WfKit4Eb48hJZpY7pRW	orch/sb-c1	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
 step_b	coder2	all	session_01LwF15HXJuoEXmTa9uwFPMh	orch/sb-c2	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: not exposed to the session by the system; the harness reported no reasoning-effort value (permission_mode: auto)
 step_b	coder3	all	session_01EXmQ7BJkxesjJewaL6AE9d	orch/sb-c3	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default (no explicit effort override set for this session; permission mode auto)
-step_b	judge	all	session_01WGPANnTVQo7WSEiYnUy5D2	orch/sb-judge	claude-opus-5-5	claude-opus-5-5			running	
+step_b	judge	all	session_01WGPANnTVQo7WSEiYnUy5D2	orch/sb-judge	claude-opus-5-5	claude-opus-5-5	claude-opus-5-5	claude-opus-5-5	done	effort reported: not exposed; instructions say high
