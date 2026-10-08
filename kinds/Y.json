@@ -1,0 +1,119 @@
+[
+ {
+  "entry_id": "Y-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here names a construct that is itself the escape: a double assertion through `unknown`, a `!` or `!!` non-null assertion, a narrowing `as` cast used where `TryFrom` is required, and a single-value Go type assertion that panics on mismatch. Each text identifies the assertion that overrides the checker rather than counting or sampling code for review.",
+  "rule_kinds": {
+   "051": "candidate pattern",
+   "057": "candidate pattern",
+   "063": "candidate pattern",
+   "358": "candidate pattern",
+   "478": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All five rules state the defect as an imprecise declaration: `as any` or `cast(Any, ...)`, `object` where a Protocol or union belongs, a bare `dict` return with no TypedDict or model, `Array<any>` and `[key: string]: any`, and a cast of a payload to `Record<string, unknown>`. Each says the type written admits any shape instead of the structure the code reads, which is the failure itself and not a measurement of it.",
+  "rule_kinds": {
+   "050": "candidate pattern",
+   "055": "candidate pattern",
+   "061": "candidate pattern",
+   "062": "candidate pattern",
+   "373": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three of the four rules assert the failure outright: a `str` parameter for a status or mode that should be `Literal[...]` or an `Enum`, raw strings and ints standing in for domain concepts instead of typed wrappers, and a type model whose definitions omit the business rules and leave loopholes around the invariant. The fourth rule only tallies repeated literals, so the entry's kind comes from the three that name the unencoded constraint.",
+  "rule_kinds": {
+   "064": "candidate pattern",
+   "331": "candidate pattern",
+   "439": "candidate pattern",
+   "574": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "574",
+    "kind": "proxy group",
+    "reason": "It counts string-literal occurrences across files and their unique-value cardinality (two or more occurrences, two to six values) and reports that this signals a missing enum, without claiming any particular literal set is a domain concept wrongly typed."
+   }
+  ]
+ },
+ {
+  "entry_id": "Y-04",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the dispatch runs over a closed variant set, a discriminated union or enum the checker owns, so that adding a member could be made a compile error; if the set is open or the value comes from untyped input, a default or final arm is the correct general case",
+  "reason": "Both rules key on a missing exhaustiveness device: a `match` or `switch` whose default arm omits `assert_never`/`assertNever`, and an `isinstance` or enum `if`/`elif` chain written in place of `match`/`case` with `assert_never`. Neither establishes that the branched-over set is closed, which is what makes the absent assertion a type-laxity failure rather than ordinary dispatch on open input.",
+  "rule_kinds": {
+   "060": "boundary register",
+   "160": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Four rules point at the waiver itself and at what makes it unaccountable: bare `# noqa`, `#[allow(clippy::` without justification, `//nolint` without a reason and an unrestored `#pragma warning disable`; suppressions with no Suppressions-section entry or ten-character inline justification; `@ts-ignore`/`@ts-nocheck`; and `<NoWarn>`, `<Nullable>disable</Nullable>` or `TreatWarningsAsErrors` cleared in the build files. The fifth rule, on config edits, is the exception.",
+  "rule_kinds": {
+   "052": "candidate pattern",
+   "056": "candidate pattern",
+   "210": "candidate pattern",
+   "332": "boundary register",
+   "566": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "332",
+    "kind": "boundary register",
+    "reason": "The hook blocks any write to an existing .eslintrc, ruff.toml or similar file, so it cannot tell the loosening it describes from adopting a config, tightening a rule or fixing a glob; the failure holds only on the added condition that the edit removes or weakens a rule the current change was failing."
+   }
+  ]
+ },
+ {
+  "entry_id": "Y-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states the defect directly: the consumer's declared type contradicts the runtime shape the API sends, with the producer wrapping the payload in an outer object while the consumer type expects the unwrapped body. It names a false declaration and the fact that per-component tests cannot see it, rather than selecting code by a count or a token.",
+  "rule_kinds": {
+   "314": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules describe a signature plus the consequence for whoever calls it: an ORM entity returned from a service method with no response DTO, which puts the persistence schema in front of API consumers, and an exported function whose signature references a type the package does not export, which stops consumers annotating against it. The failing shape and the harm are both in the rule text.",
+  "rule_kinds": {
+   "344": "candidate pattern",
+   "448": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-08",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The one rule computes a share: it reports a file when escape hatches (`Any`, `any`, `interface{}`, `dynamic`, `object`, `dyn Any`) exceed thirty per cent of at least five annotations. No annotation is called wrong, and the file as a whole is what gets handed to a reviewer.",
+  "rule_kinds": {
+   "065": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]
