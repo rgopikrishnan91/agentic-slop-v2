@@ -1,0 +1,88 @@
+[
+ {
+  "entry_id": "E-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule names a concrete way a received or spawned failure signal is dropped: empty or log-only catches, rescue without re-raise, a bare/broad except with a silent body, a Go error assigned to `_`, a bound catch that neither narrows nor rethrows, a caught Next.js redirect, C# async void, a dropped Rust JoinHandle, and any change made to suppress an error. Each states the failure (the signal is caught, ignored or detached and never reaches its owner), so all read as candidate patterns.",
+  "rule_kinds": {
+   "038": "candidate pattern",
+   "039": "candidate pattern",
+   "041": "candidate pattern",
+   "046": "candidate pattern",
+   "049": "candidate pattern",
+   "214": "candidate pattern",
+   "261": "candidate pattern",
+   "367": "candidate pattern",
+   "542": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a success-shaped substitute put in place of a failure or missing value: a `.catch()` returning null/false/0/''/[]/{}, `?? 0`/`?? ''` on required data, `.get({}).get()` default chains, and a hardcoded fallback for a secret env var. The stated failure is that the substitute masks the failure so the consumer cannot tell it from a real result, so each says what is wrong.",
+  "rule_kinds": {
+   "044": "candidate pattern",
+   "047": "candidate pattern",
+   "066": "candidate pattern",
+   "233": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three rules state the failure outright (Python `raise` without `from` losing the cause chain, Rust early `.to_string()`/`format!` discarding structured error types, Go `fmt.Errorf` with `%v` breaking `errors.Is`/`errors.As`), so they are candidate patterns; the entry takes that majority kind. Rule 045 only matches the `instanceof Error ? err.message : String(err)` normalization shape and, per its detector note, cannot separate a legitimate display-boundary stringification from premature loss.",
+  "rule_kinds": {
+   "045": "boundary register",
+   "254": "candidate pattern",
+   "366": "candidate pattern",
+   "470": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "045",
+    "kind": "boundary register",
+    "reason": "It matches the unknown-error stringification shape without checking whether the structured error is still preserved downstream, so the loss of identity holds only under the condition that the conversion is not at a legitimate display or serialization boundary."
+   }
+  ]
+ },
+ {
+  "entry_id": "E-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule compares how many try/except, try/catch, `.catch`, ErrorBoundary and None-check occurrences a non-test file holds before and after a change and warns on a decrease. The count is the whole predicate: it names no failure path and cannot tell a removed swallowing handler from a removed necessary one, so it only measures and selects a diff for a person to look at.",
+  "rule_kinds": {
+   "385": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "some call path crosses from one failure mechanism to the other without translating or carrying the failure over, so a caller handling one mechanism misses a failure raised through the other",
+  "reason": "The single rule reports a module that signals failure through more than one mechanism at once (exceptions with error codes, Result with thrown errors, callbacks with promises). It inventories the co-existence of the mechanisms but never shows that any failure is actually lost at a crossing, so it is error-swallowing only under an added condition the rule does not check.",
+  "rule_kinds": {
+   "348": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-06",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the log call is the handler's entire disposition of the error (nothing is rethrown or returned) and the program's stdout is not itself the collected error channel",
+  "reason": "The single rule flags a `console.log` call positionally inside a catch block. The wrong-channel failure is real only when that log is the handler's whole disposition of the error, but the rule checks neither whether the error is rethrown or returned, nor whether the error object is passed, nor whether stdout is the collected stream, so membership holds only under an added condition it does not verify.",
+  "rule_kinds": {
+   "560": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
