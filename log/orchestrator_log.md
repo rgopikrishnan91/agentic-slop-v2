@@ -21,3 +21,7 @@ Orchestrator: this cloud session (session_01L8wgkFM8o7E2WxNGMTbYnL). It moves fi
 - 2026-10-08T00:21:55Z Ran tools/apply_kinds.py -> work/step_b/patterns_kind_reviewed.json: 114 entries (candidate pattern 79, proxy group 20, boundary register 15); full 106, majority 7, judge 1; kind misfit rule memberships 21 (20 distinct rules). check_output.py on it: OK.
 - 2026-10-08T00:21:55Z Created step B coder branches orch/sb-c{1,2,3} (step_b/coder files + patterns_kind_reviewed.json).
 - 2026-10-08T00:22:29Z Dispatched step B coders 1-3 (session_01321WfKit4Eb48hJZpY7pRW, session_01LwF15HXJuoEXmTa9uwFPMh, session_01EXmQ7BJkxesjJewaL6AE9d). Prompt text for judge and step B sessions is in log/prompts/.
+- 2026-10-08T01:04:41Z Step B coder outputs collected (each session changed only its two files). Pairs listed: coder1 19 (SAME 6, HS 13), coder2 17 (SAME 5, HS 12), coder3 17 (SAME 6, HS 11). All run_info report the roster model.
+- 2026-10-08T01:04:41Z Ran tools/pair_votes.py: no errors; 20 distinct pairs, 17 with two or three votes (16 with three), 3 with one vote. Output work/step_b/pair_votes_across.json.
+- 2026-10-08T01:04:41Z Built judge folder orch/sb-judge. Deviation from a literal copy: tools/check_output.py reads rules from tools/../step_b/coder/rules.json, which does not exist in the flat judge folder layout. An identical copy of rules.json was placed at step_b/coder/rules.json so the script runs unedited; the judge prompt says so. No tool was edited.
+- 2026-10-08T01:04:41Z Dispatched step B judge (session_01WGPANnTVQo7WSEiYnUy5D2, claude-opus-5-5).

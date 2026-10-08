@@ -1,0 +1,653 @@
+{
+ "summary": {
+  "pairs": 20,
+  "two_or_three_votes": 17,
+  "three_votes": 16,
+  "one_vote": 3
+ },
+ "listed_by": [
+  19,
+  17,
+  17
+ ],
+ "pairs": [
+  {
+   "a": "A-04",
+   "b": "I-05",
+   "families": [
+    "A",
+    "I"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-05",
+     "merged_invariant": "Required behavior or content in a delivered artifact must be implemented, not represented only by a placeholder, sample value, or deferral marker.",
+     "reason": "A-04 states that no required behavior may exist only as a sentence in a comment (annotation noise: the prose describes an imagined program). I-05 states that a delivered artifact must contain finished content, not a placeholder standing in for work still owed (integrity: the placeholder misrepresents completion). A-04 is the special case restricted to placeholder comments standing in for absent behavior; I-05 is broader, also covering TODO markers, sample values, demo data, and hardcoded fallbacks. They share rules 028 and 559, differ only in the family's point of view, and their legitimate cases are compatible (tracked TODOs, optional extension points, scaffolds meant to be filled)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-05",
+     "merged_invariant": "An artifact presented as delivered must contain the finished content and real values it owes, not a placeholder or a comment that stands in for work still to be done.",
+     "reason": "A-04 forbids a comment being the only place a required behaviour appears; I-05 forbids any placeholder, sample value or deferral marker standing in for work owed in a delivered artifact. Sharing rules 028 and 559, A-04 is the comment-only special case of I-05's broader placeholder obligation, and both accept a tracked TODO, a documented optional hook or a scaffold declared as such."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-05",
+     "merged_invariant": "An artifact presented as delivered must contain the finished work itself, with no comment, placeholder or marker standing in for behaviour or content still owed.",
+     "reason": "A-04 forbids required behaviour existing only as a sentence in a comment (add validation here, replace with your real implementation); I-05 forbids any stand-in for unfinished work inside something presented as delivered, of which the filler comment is one form, alongside TODO markers, coming-soon headings and demo values. A-04 is the comment-shaped special case of I-05, and the shared escape is the same in both: a transparently optional extension point, a template or scaffold meant to be filled in, or a TODO tied to a tracked ticket where the unit still meets its contract."
+    }
+   }
+  },
+  {
+   "a": "A-05",
+   "b": "H-12",
+   "families": [
+    "A",
+    "H"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A suppression annotation must have its referent present in the code and must be removed when that referent is removed.",
+     "reason": "A-05 states that an annotation naming a finding or directive must have that referent present and be removed with it (the dangling annotation adds no information the code cannot state). H-12 states that an annotation covering a condition must be removed when that condition is removed (the dangling annotation is debris with no consumer). Both share rules 445 and 567, observe the same fault (unconsumed suppression whose referent is gone), and accept the same legitimate cases (suppression for a check off in this configuration, for a different tool, or forward-looking)."
+    },
+    "coder2": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A suppression annotation that names a specific finding or directive must have that referent present in the code and be removed when the referent is removed.",
+     "reason": "A-05 says an annotation naming a specific finding, directive or workaround must have that referent present and be removed with it; H-12 says an annotation existing only to cover a condition must go when the condition goes. Both are rules 445 and 567, both detect the dangling suppression by consumption at analysis time, and both accept an unconsumed entry kept for a check off in this configuration or written for another tool."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "An annotation that exists only to cover a specific finding, directive or condition in the code must be removed when that referent is removed.",
+     "reason": "A-05 obliges an ignore directive or Suppressions entry to keep its referent present and to go when the referent goes; H-12 obliges the same annotation to be deleted when the condition it covered disappears. Both rest on rules 445 and 567, both are decided by pairing annotations against the body and reporting the unpartnered ones, and both accept the same exception, a referent that is real but outside this run's configuration or profile."
+    }
+   }
+  },
+  {
+   "a": "D-01",
+   "b": "H-11",
+   "families": [
+    "D",
+    "H"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "Each module dependency and each exported symbol must be declared exactly once in its scope, so the declaration list is a non-overlapping record of what the file takes in and gives out.",
+     "reason": "D-01 states that a repeated import or export adds no binding beyond the one already present (duplication of a declaration). H-11 states that a module brought into a file, or a symbol sent out of it, is declared once (surplus declaration as debris). Both share rules 005 and 014, target the same artifact (import/export declarations), state the same obligation (declare once), and accept the same legitimate cases (type-only beside value, side-effect import, deliberate alias, barrel re-export)."
+    },
+    "coder2": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "Each module import and each exported symbol must be declared only once in its scope.",
+     "reason": "D-01 states that every module dependency and exported symbol is declared once so the declaration list is non-overlapping; H-11 states that a module brought into a file or a symbol sent out of it is declared once. They rest on the same rules (005, 014) and accept the same legitimate second declarations (type-only beside value import, side-effect import, default plus named export, re-export from a barrel), so they are one obligation seen from Duplication and from Hygiene."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A module brought into a file and a symbol sent out of it must be declared exactly once in that scope.",
+     "reason": "D-01 reads the double import and double export as a declaration list that carries an entry adding no binding; H-11 reads the same two rules as bookkeeping where the first declaration already established the binding. The obligation is one declaration per binding in both, and both admit the identical legitimate set: a type-only import beside a value import, a side-effect import beside a named one, and a deliberate second export alias or barrel re-export."
+    }
+   }
+  },
+  {
+   "a": "D-02",
+   "b": "S-20",
+   "families": [
+    "D",
+    "S"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "D-02",
+     "merged_invariant": "A shape that recurs across multiple sites must be declared once, and the sites must reference that declaration instead of restating it.",
+     "reason": "D-02 states that a shape or value several sites share is declared once and the sites reference that declaration (duplication: the concept has no single place to change). S-20 states that a parameter group recurring across signatures must be modeled as one cohesive type (structural: the domain concept travels as loose values). S-20 is the special case restricted to recurring parameter groups; D-02 is broader, also covering type and interface shapes, constants, prop sets, response structures, closed string sets, and DTO shapes. They share rule 438, and their legitimate cases are compatible (shapes that agree by coincidence and answer to different owners, parameters that co-occur coincidentally)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "D-02",
+     "merged_invariant": "A shape shared by several sites, including a parameter group that recurs across signatures, must be declared once as a named type and referenced rather than restated.",
+     "reason": "S-20 requires a parameter group recurring across signatures to be modelled as one cohesive type; D-02 requires a shape or value shared by several sites to be declared once and referenced. Both rest on rule 438, so a recurring parameter clump is one case of D-02's broader restated-definition obligation, and both excuse parameters that co-occur only by coincidence and mean different concepts."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "D-02",
+     "merged_invariant": "A shape that several sites share must be declared once as a named type, and each site must reference that declaration instead of restating the shape.",
+     "reason": "D-02 requires a shared definition, among them a parameter group, to have one declaration the use sites point at; S-20 requires a parameter group recurring across three or more signatures to be modelled as one cohesive type. S-20 is the loose-parameter-list case of D-02 seen from the structural side, and both dismiss the same false positive, a set of values that co-occur by coincidence and carry no single concept."
+    }
+   }
+  },
+  {
+   "a": "D-03",
+   "b": "H-13",
+   "families": [
+    "D",
+    "H"
+   ],
+   "kinds": [
+    "proxy group",
+    "proxy group"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "The share of functions that are dead or duplicated is a review signal; a threshold on the aggregate redundancy ratio selects a codebase for attention and is not itself a finding.",
+     "reason": "D-03 reports the redundancy ratio from the duplication perspective (it does not name a pair of functions that encode one concept). H-13 reports the same ratio from the debris perspective (it does not name an artifact that should be removed). Both are proxy groups using the same single rule 303 and the same measure (dead plus duplicate functions as a fraction of all functions against a threshold), so they select the same codebases for the same reason."
+    },
+    "coder2": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "The share of functions that are dead or duplicated, scored over all functions and gated against a threshold, selects a codebase for review and is not itself a finding.",
+     "reason": "Both entries are the single rule 303 and compute the identical measure: the fraction of dead plus duplicate functions over all functions, failing when it passes a configured threshold. As proxy groups they share the same measure and the same caveat that the aggregate names no copy or artifact, so they are one proxy group living in Duplication and in Hygiene."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "The share of a codebase's functions that are dead or duplicated, measured against a configured threshold, selects a codebase for review and names no artifact.",
+     "reason": "Both groups are built on rule 303 and on exactly the same measure, dead functions plus duplicate functions as a fraction of all functions gated at a threshold; D-03 reads the duplicate term and H-13 reads both terms, but the number computed is identical. Their legitimate cases coincide too, since generated, vendored, migrated and parallel-binding code inflates the fraction without any copy or any debris that should go."
+    }
+   }
+  },
+  {
+   "a": "D-06",
+   "b": "S-03",
+   "families": [
+    "D",
+    "S"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A capability already provided by the language, platform, library, or codebase must be used through that provider, not reimplemented.",
+     "reason": "S-03 states that new code must reuse an existing codebase or platform facility rather than build a parallel mechanism (the parallel mechanism is unnecessary structure). D-06 states that a capability already provided is used through its provider rather than written again (the reimplementation is a second copy). Both share rules 125, 136, and 541, name the same obligation from different families, and accept the same legitimate cases (the facility does not meet a specific requirement, the dependency costs more than it saves)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "D-06",
+     "merged_invariant": "A capability already provided by the language, platform, a library or the codebase must be used through that provider rather than written again.",
+     "reason": "S-03 requires new code to reuse an existing codebase or platform facility rather than build a parallel mechanism; D-06 requires that a capability the language, platform, a library or the codebase provides be used through that provider. They share rules 125, 136 and 541, but D-06 is broader because it also covers standard-library and third-party-library facilities (e.g. rule 147), with S-03 confined to codebase and platform infrastructure; both excuse a facility that does not fit the requirement or a dependency too large for the need."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A capability that the language, the platform, a library or the codebase already provides must be used through that provider rather than built again alongside it.",
+     "reason": "D-06 forbids owning a second implementation of a facility the project can already call; S-03 forbids building a parallel mechanism beside an existing codebase or platform facility. The rules are the same reinvention rules (125, 136, 541, with D-06 adding 147), and both excuse the rebuild on the same grounds: the facility does not meet a stated requirement, or the dependency on it costs more than the few lines it saves."
+    }
+   }
+  },
+  {
+   "a": "H-08",
+   "b": "K-01",
+   "families": [
+    "H",
+    "K"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 1,
+   "status": "one vote",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "K-01",
+     "merged_invariant": "Every edit in the delivered change must trace to the accepted solution.",
+     "reason": "K-01 states that every region the change modifies must trace to the task the user requested (kinetic: the change reaches beyond its scope). H-08 states that edits from a failed or abandoned fix attempt must be reverted (hygiene: the leftover edits are debris). H-08 is the special case about edits left from the author's own failed attempt; K-01 is broader, also covering unrequested features, unrelated file edits, cosmetic cleanup, and behavioral changes in refactors. They share rule 540, and their legitimate cases are compatible (authorized edits, mechanical consequences, edits that are improvements on their own merits)."
+    }
+   }
+  },
+  {
+   "a": "H-08",
+   "b": "K-04",
+   "families": [
+    "H",
+    "K"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "Edits from a failed or abandoned fix attempt must be reverted before the change is delivered, so the delivered change holds only the accepted solution.",
+     "reason": "H-08 states that a failed attempt's leftover edits are debris that contribute nothing to the delivered solution. K-04 states that the same leftover edits widen the delivered change beyond the accepted solution. Both share rule 540, describe the same obligation (revert failed-attempt edits), and accept the same legitimate cases (edits that are improvements on their own merits, a test that reproduces the bug, code the final fix turned out to need)."
+    },
+    "coder2": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "Edits made by a failed or abandoned fix attempt must be reverted before the change is delivered, so the change holds only the accepted solution.",
+     "reason": "Both entries are rule 540. H-08 treats the leftover edits of a failed attempt as debris to revert; K-04 treats them as lines that widen the delivered change beyond the accepted solution. The obligation and its exceptions (keep edits that are improvements on their own merits, and nothing applies while the attempt is still in progress) are identical, only the family viewpoint differs."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "When a fix attempt fails, all of its edits must be reverted before the change is delivered, so the delivered change holds only the accepted solution.",
+     "reason": "H-08 treats the leftover lines of a failed attempt as residue that contributes nothing to what ships; K-04 treats the same lines as the agent's own discarded work widening the change past the accepted solution. Both are rule 540 alone, and both carve out the same cases: parts of the abandoned attempt that are wanted on their own merits (a reproducing test, a comment recording the dead end), and an attempt still in progress."
+    }
+   }
+  },
+  {
+   "a": "H-09",
+   "b": "I-14",
+   "families": [
+    "H",
+    "I"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 1,
+   "status": "one vote",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-14",
+     "merged_invariant": "A declared wiring point must have both ends present in the delivered system, so that what one side offers is consumed and what another side needs is supplied.",
+     "reason": "H-09 states that each end registered on an event channel must have its counterpart (hygiene: the half-wired channel is debris that carries nothing). I-14 states that a declared integration point must have both ends present so the feature can run (integrity: one side is built but the feature can never execute). H-09 is the special case about event publish/subscribe channels; I-14 is broader, covering any integration or dependency point including parameters no caller passes and injected keys no ancestor provides. They do not share rules but state the same structural obligation from different families, and their legitimate cases are compatible (counterpart outside the analyzed code, runtime-assembled names, extension points published for external consumers)."
+    }
+   }
+  },
+  {
+   "a": "H-10",
+   "b": "S-06",
+   "families": [
+    "H",
+    "S"
+   ],
+   "kinds": [
+    "boundary register",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-06",
+     "merged_invariant": "A compatibility or variation structure must be exercised by the system as delivered; when its migration is complete and no caller needs the old path, the structure must be removed.",
+     "reason": "H-10 states that when a migration is finished, the shim, deprecated symbol, and removal marker must be removed (hygiene: the scaffolding outlived its migration). S-06 states that a boundary or variation point must be exercised by the system as delivered (structural: the variation point admits variation nothing uses). H-10 is the special case restricted to completed migration scaffolding; under its boundary-register condition (migration completed, no caller needs the old path), the compatibility shim is a variation point with no variation, which is S-06's obligation. S-06 is broader, also covering interfaces with one implementation, factories with one output, classes with no state, and generics wider than any instantiation. They share rule 092, and their legitimate cases are compatible (published plugin contracts, deprecation windows, shims for external consumers)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-06",
+     "merged_invariant": "A compatibility or variation structure that the delivered system does not exercise, including a migration shim whose migration is complete with no remaining caller, must be removed.",
+     "reason": "H-10 is the boundary register for rule 092 whose condition is that a migration has finished and no caller needs the old path, leaving a shim that only forwards; under exactly that condition the shim is a structure the delivered system does not exercise, which is S-06's candidate-pattern obligation that a variation or compatibility point be exercised. S-06 is broader (any unused boundary or variation), and both keep a shim an announced deprecation window still requires."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-06",
+     "merged_invariant": "A boundary or variation point, including compatibility structure kept to carry an old path, must be exercised by the system as it is delivered.",
+     "reason": "Under H-10's stated condition, that the migration has completed and no caller, published API or supported release needs the old path, the surviving shim and deprecated symbol are precisely S-06's structure built to let something differ where nothing differs, which is why rule 092 sits in S-06 only for the finished-migration case. Their legitimate cases are the same external dependants: a promised deprecation window, and a shim an outside consumer on an older version still needs."
+    }
+   }
+  },
+  {
+   "a": "I-06",
+   "b": "T-01",
+   "families": [
+    "I",
+    "T"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A test's pass must be produced by executing the production code it claims to verify, not manufactured by the test's own doubles or fixtures.",
+     "reason": "I-06 states that a test must pass because the production behavior it names is correct and must be able to fail when that behavior is wrong (integrity: the green signal is false assurance). T-01 states that the result a test asserts on must be produced by executing the production code, with doubles only at genuine external boundaries (test slop: the test subject is replaced). T-01 is the special case about mock and fixture abuse; I-06 is broader, also covering tests with no assertion at all and expected values recomputed with the same formula as the implementation. They share rule 427, and their legitimate cases are compatible (doubling genuine edges, smoke tests named for what they do)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A passing test must pass because the production behavior it names is correct, and be able to fail when that behavior is wrong.",
+     "reason": "T-01 requires the asserted result to be produced by executing the production code, with doubles only at genuine external boundaries; I-06 requires a passing test to pass because the production behaviour is correct and be able to fail when it is wrong. Both rest on rule 427 (the subject mocked away or supplied by a fixture), so T-01's double-driven green is a case of I-06's broader obligation, which also covers recomputed expected values; both accept doubling a real external edge."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A test's pass must be produced by executing the production code the test names, so that the test turns red when that code's behaviour is wrong.",
+     "reason": "T-01 forbids the result under assertion being manufactured by substitutes for the unit, its own stubbed methods, patched internal collaborators or a fixture that creates the end state; I-06 forbids the green result being manufactured inside the test at all, of which replacing the subject is one route and a recomputed expectation or a missing assertion are others. Both allow doubling a genuine external edge while the asserted outcome still comes from production code, and both allow a smoke or import test named for what it does."
+    }
+   }
+  },
+  {
+   "a": "I-06",
+   "b": "T-02",
+   "families": [
+    "I",
+    "T"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A test must assert the observable outcome of production code against an expected value derived from the requirement, so that a defect in the behavior turns the test red.",
+     "reason": "I-06 states that a test must pass because the production behavior it names is correct and must be able to fail when that behavior is wrong (integrity: the success signal is produced without evidence). T-02 states that a test must assert the observable outcome against a requirement-derived expected value so that a broken behavior turns the test red (test slop: the assertion cannot separate correct from incorrect). T-02 is the special case about assertions that are tautological, zero, swallowed, or recomputed from the implementation; I-06 is broader, also covering tests where no production function is called at all. They share rule 428, and their legitimate cases are compatible (smoke tests, characterization tests, self-evident literals)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A passing test must pass because the production behavior it names is correct, and be able to fail when that behavior is wrong.",
+     "reason": "T-02 requires a test to assert an observable outcome against an expected value derived from the requirement so a defect turns it red; I-06 requires a passing test to pass only because the named behaviour is correct. Both rest on rule 428 (zero or tautological assertions, or an expected value recomputed the way the code computes it), so T-02's cannot-fail assertion is a case of I-06's broader obligation, which also covers a mocked-away subject; both accept a deliberate smoke or characterization test not counted as behavioural evidence."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-06",
+     "merged_invariant": "A passing test must be able to fail when the production behaviour it names is wrong.",
+     "reason": "T-02 asks of a green test whether it would go red were the code wrong and catches the cases where it would not, zero or tautological assertions, an expectation recomputed the way the implementation computes it, or a subject that is really a framework guarantee; I-06 states that same falsifiability requirement and adds the mocked-away-subject route to it, so T-02 is the assertion-side special case. Both accept a test that is weak by design, a smoke test or a characterization test, provided it is named as such and the behaviour is pinned elsewhere."
+    }
+   }
+  },
+  {
+   "a": "I-12",
+   "b": "T-03",
+   "families": [
+    "I",
+    "T"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A gate may only be passed by making the code satisfy the check; the check itself must not be weakened, disabled, or reconfigured to produce the pass.",
+     "reason": "I-12 states that a check must not be weakened, disabled, or reconfigured to produce a pass (integrity: the green signal misrepresents what was tested). T-03 states that a test the suite counts must run and keep its strength unless the specified behavior changed (test slop: the suite's evidence is diluted). T-03 is the special case restricted to test verification (assertions lowered, tests skipped, expectations rewritten); I-12 is broader, also covering compiler warnings, lint configuration, and dependency constraints. They share rules 207 and 208, and their legitimate cases are compatible (retiring a check the project decided no longer applies, a skip with a live reason, a changed expectation for changed specification)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A gate may be passed only by making the code satisfy the check; the check itself must not be weakened, disabled or reconfigured to produce the pass.",
+     "reason": "I-12 forbids passing any gate by weakening, disabling or reconfiguring it; T-03 forbids lowering, skipping or rewriting tests the suite counts so it stays green. Sharing rules 207 and 208, T-03 is the test-suite special case of I-12's general check-neutralizing obligation, and both accept a check or test removed because the specified behaviour genuinely changed."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A green signal must be earned by making the code satisfy the check; the check must not be weakened, skipped or deleted in order to produce the pass.",
+     "reason": "T-03 polices edits to the test suite, assertions lowered, expectations rewritten to whatever the implementation now returns, tests skipped or ignored; I-12 states the same obligation over every gate, with those test edits (rules 207 and 208) among its own rules beside compiler warnings, lint configuration and dependency constraints. T-03 is the test-suite instance of I-12, and the exceptions match: a skip whose reason is live, and an expectation or check retired because the specified behaviour itself changed and the decision is recorded."
+    }
+   }
+  },
+  {
+   "a": "I-12",
+   "b": "Y-05",
+   "families": [
+    "I",
+    "Y"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A diagnostic that an adopted check reports must be fixed in the code, not suppressed or reconfigured to produce the pass; any waiver must record its reason and confine its scope.",
+     "reason": "I-12 states that a gate must not be weakened, disabled, or reconfigured to produce a pass (integrity: the green signal is manufactured). Y-05 states that a diagnostic from an adopted check must be fixed in the code, or waived only with a recorded reason and confined scope (type laxity: the type system's guarantee is weakened). Y-05 is the special case restricted to type and lint suppression directives (ts-ignore, type: ignore, noqa, eslint-disable, build-file elements, checker configuration edits); I-12 is broader, also covering assertion weakening, test skipping, and dependency constraint overrides. They share rules 210, 332, and 566, and their legitimate cases are compatible (justified narrow suppression, retiring a check that no longer applies)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A diagnostic from an adopted check must be fixed in the code, or waived only with a recorded, scoped reason, never by loosening or disabling the check to produce the pass.",
+     "reason": "I-12 forbids neutralizing any gate to obtain a green signal; Y-05 forbids suppressing a type, lint or build check by directive or config instead of satisfying it. They share rules 210, 332 and 566, so Y-05 is the static-analysis-gate special case of I-12, and both accept a suppression that is explained and scoped to the one line it excuses."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-12",
+     "merged_invariant": "A check the project runs must be satisfied by changing the code, and may be waived only with its reason recorded and its scope confined to the code it excuses; the check itself must not be loosened to produce the pass.",
+     "reason": "Y-05 covers the escape hatches that switch off a type, lint or build diagnostic rather than answering it, an inline ignore directive, a warnings-clearing build element, or an edit to the checker's configuration; I-12 states the same obligation across every gate and holds rules 210, 332 and 566 itself. Both permit the identical waiver, one that carries a visible justification and is bounded to the single line or analyser ID it covers, and both permit retiring a rule the project has decided no longer applies."
+    }
+   }
+  },
+  {
+   "a": "I-14",
+   "b": "S-18",
+   "families": [
+    "I",
+    "S"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A declared integration or dependency point must have both its requesting and supplying sides present in the delivered system.",
+     "reason": "S-18 states that a dependency point a unit declares must be supplied on every path that reaches it (structural: the wiring is incomplete). I-14 states that a declared integration point must have both ends present so the feature can actually run (integrity: it reads as done but cannot work). Both share rules 114 and 452, observe the same fault (a parameter no caller passes, an injected key no ancestor provides), and accept the same legitimate cases (extension points published for external consumers, parameters for backwards compatibility, providers registered dynamically)."
+    },
+    "coder2": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "A dependency or integration point a unit declares must be supplied by some provider on every path that reaches it.",
+     "reason": "I-14 requires that a declared integration point have both ends present so whatever one side requests another side supplies; S-18 requires that a dependency a unit declares be supplied on every path that reaches it. Both are rules 114 and 452, both describe a requested parameter or injected key that no provider ever furnishes, and both excuse a provider arriving in the same change or installed dynamically, so the integrity and structural statements are identical."
+    },
+    "coder3": {
+     "label": "SAME",
+     "broader": "",
+     "merged_invariant": "Whatever a unit declares that it needs, a parameter, an option field or an injected key, must be supplied by something on every path that reaches that unit in the delivered system.",
+     "reason": "I-14 states that a declared integration point must have both ends present, so that what one side requests another side supplies; S-18 states that a declared dependency point must be satisfied along its callers or ancestor tree. Both rest on rules 114 and 452 and accept the same providers as invisible rather than absent: an extension point published outside the repository, a parameter kept for compatibility, and a provider installed dynamically by a plugin registry, a DI container or a test harness."
+    }
+   }
+  },
+  {
+   "a": "I-17",
+   "b": "S-09",
+   "families": [
+    "I",
+    "S"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "An implementation must honor the contract declared by its interface or supertype so that consumers relying on the contract are not broken at runtime.",
+     "reason": "I-17 states that the interface a consumer is given must be honored by the implementation on the other side (integrity: consumers are written against a promise that is broken). S-09 states that a subtype must honor its supertype's contract and remain substitutable (structural: the subtype breaks Liskov substitution). S-09 is the special case restricted to subtype-supertype relationships; I-17 is broader, also covering response types that disagree with payloads and field names that diverge across layers. They share rule 284, and their legitimate cases are compatible (base types declaring operations optional, deliberately wider types with runtime testing)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "The interface a consumer is given must be honored by the implementation behind it.",
+     "reason": "S-09 requires a subtype to honor its supertype's contract and stay substitutable; I-17 requires any declared interface to be honored by the implementation behind it. Both rest on rule 284 (an override that narrows or refuses the base contract), so a subtype and its supertype are one case of I-17's broader interface-fidelity obligation, and both excuse a base that explicitly declares the operation optional."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "An implementation must honour the contract declared on the consumer's side of it, so that code written against the declared type is not broken at run time.",
+     "reason": "S-09 requires a subtype to stay substitutable for its supertype rather than override a member into a not-implemented signal or tighten its preconditions; I-17 requires any machine-readable contract given to a consumer to be honoured behind the boundary, and already carries rule 284 for exactly the override case beside response types and field names. The supertype contract is one artifact type of I-17's boundary, and both excuse the same case, a subtype documented as supporting only part of the interface where callers test for support first."
+    }
+   }
+  },
+  {
+   "a": "I-17",
+   "b": "Y-06",
+   "families": [
+    "I",
+    "Y"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "The interface a consumer is given must be honored by the implementation on the other side of it.",
+     "reason": "I-17 states that the interface a consumer compiles against must be honored by the implementation behind it (integrity: consumers compile cleanly against a promise broken at runtime). Y-06 states that a type declared for data crossing a boundary must describe the shape the producing side actually sends (type laxity: the declaration is not merely imprecise but false). Y-06 is the special case about cross-boundary response types that contradict the actual payload; I-17 is broader, also covering field-name mismatches across layers and overridden members that break the base type's contract. They share rule 314, and their legitimate cases are compatible (deliberately wider types with runtime validation, shared schemas or generated clients, typed adapters at the boundary)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "The type or interface declared for data crossing a boundary must be honored by the shape the producing side actually sends.",
+     "reason": "Y-06 requires a type declared for cross-boundary data to describe the shape the producer sends, with something checking it; I-17 requires any declared interface to be honored by the implementation behind it. Both are rule 314 (a consumer type contradicting the producer's payload), so Y-06 is the cross-boundary-payload case of I-17, and both accept a shared schema, a generated client or a runtime validator at the boundary."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "I-17",
+     "merged_invariant": "A type declared at a boundary must describe the payload the producing side actually sends across it.",
+     "reason": "Y-06 finds a consumer type that contradicts what the producer sends, the producer wrapping the body in an envelope the declared type does not mention, with nothing validating the payload; I-17 states the same obligation over declared contracts generally and holds rule 314 itself alongside field-name and override mismatches. Y-06 is the cross-component payload case of I-17, and both treat the same arrangements as sound: a declared type kept in step by a shared schema or generated client, and a deliberately wide declaration whose payload the consumer validates at the boundary."
+    }
+   }
+  },
+  {
+   "a": "S-13",
+   "b": "T-05",
+   "families": [
+    "S",
+    "T"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 2,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "T-05",
+     "merged_invariant": "A test's assertions and organization must follow observable behavior, not production's internal structure, so that a behavior-preserving refactor cannot change the test's verdict.",
+     "reason": "T-05 states that a test must express its expectation as the result a caller can observe (test slop: the test breaks on refactor and can stay green when the outcome is wrong). S-13 states that test organization must follow observable behavior, not production's class and method layout (structural: the mirror coupling makes refactoring expensive). S-13 is the special case about organizational mirroring; T-05 is broader, also covering direct assertions on calls into internal helpers. They share rule 325, and their legitimate cases are compatible (asserting a call when it IS the specified behavior, per-class test files that assert through the public interface)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "T-05",
+     "merged_invariant": "A test must express its expectation as a caller-observable result, so that a behavior-preserving refactor cannot change its verdict.",
+     "reason": "S-13 requires test organization to follow observable behaviour rather than production's internal structure; T-05 requires a test to assert a caller-observable result so a behaviour-preserving refactor cannot change its verdict. Both rest on rule 325, and T-05 is broader because it also covers assertions on internal call paths (rule 288); both accept per-class test files that still assert through the public interface."
+    }
+   }
+  },
+  {
+   "a": "S-24",
+   "b": "Y-07",
+   "families": [
+    "S",
+    "Y"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 3,
+   "status": "two or three votes",
+   "votes": {
+    "coder1": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-24",
+     "merged_invariant": "What a boundary publishes must be an enumerated set of names and types that the boundary defines, owns, and makes available to consumers.",
+     "reason": "S-24 states that a published surface must be an enumerated set of names the boundary owns and consumers can reach (structural: the boundary does not own its own contract). Y-07 states that every type appearing in a signature across a public boundary must be defined, exported, and published as part of that contract (type laxity: consumers receive an interior type they cannot name). Y-07 is the special case about types in published signatures that are not part of the boundary contract; S-24 is broader, also covering re-export-only files, wildcard re-exports, and persistence entities exposed through service boundaries. They share rules 344 and 448, and their legitimate cases are compatible (facade packages, internal barrels, types exported through another entry point)."
+    },
+    "coder2": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-24",
+     "merged_invariant": "What a boundary publishes must be an owned contract, so every type a public signature exposes must itself be a published, owned part of that contract.",
+     "reason": "Y-07 requires every type in a signature across a public boundary to be defined, exported and published as part of the contract; S-24 requires what a boundary publishes to be an enumerated set of names the boundary owns. They share rules 344 and 448 (a persistence entity returned, or a signature naming a type kept private), so Y-07 is the type-in-signature case of the broader S-24, which also covers re-export barrels and wildcard exports; both accept an internal boundary whose own model is the contract."
+    },
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "S-24",
+     "merged_invariant": "What a boundary publishes must be an enumerated set of names the boundary owns and consumers can reach, every type named in its signatures included.",
+     "reason": "Y-07 catches a published signature resting on a type the provider keeps in its interior, an ORM entity returned where a response DTO belongs or an unexported type referenced by an export; S-24 states the wider obligation that a published surface be owned and reachable, holds the same rules 344 and 448, and adds the re-export-only file and the wildcard republication. Both release the same cases: an internal boundary where the interior type genuinely is the contract, and a read model whose entity shape the API documents as its response."
+    }
+   }
+  },
+  {
+   "a": "T-03",
+   "b": "Y-05",
+   "families": [
+    "T",
+    "Y"
+   ],
+   "kinds": [
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "n_votes": 1,
+   "status": "one vote",
+   "votes": {
+    "coder3": {
+     "label": "HIGHLY SIMILAR",
+     "broader": "",
+     "merged_invariant": "A check the project runs must be made to pass by fixing the code, not by switching that check off or lowering what it demands.",
+     "reason": "T-03 watches a failing test being skipped, its assertions lowered or its expectation rewritten to the current output; Y-05 watches a reported type, lint or build diagnostic being suppressed inline or configured away. The two differ only in which check is turned off, and both allow the same disciplined waiver, one whose reason is live and recorded and whose scope is the single case it excuses, which is why rules 207, 208, 210, 332 and 566 sit together in one entry in family I."
+    }
+   }
+  }
+ ]
+}
