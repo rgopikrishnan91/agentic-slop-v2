@@ -1,0 +1,459 @@
+[
+ {
+  "entry_id": "S-01",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules pick a directory out by counting its files or child directories against a fixed limit, a sibling median or a tiny-file proportion. None of them says which grouping is wrong, so a person still has to judge whether the files in the directory share a concern.",
+  "rule_kinds": {
+   "080": "proxy group",
+   "081": "proxy group",
+   "088": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Each rule turns a file or function into a score from complexity joined with churn, net growth or ownership data and reports what sits above a quadrant or a percentage. The score ranks where to look and never names a structure that is unnecessary.",
+  "rule_kinds": {
+   "107": "proxy group",
+   "463": "proxy group",
+   "483": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names the fault outright: new code that builds a parallel mechanism for a facility the codebase, the platform or an established library already provides, including a GenServer standing in for Agent or ETS. The ten- and thirty-line triggers in 125 and 541 only say when to go looking; the stated failure is the reimplementation.",
+  "rule_kinds": {
+   "125": "candidate pattern",
+   "136": "candidate pattern",
+   "541": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule names the construct and its fault together: a useEffect whose body does nothing but call setState, which interposes an effect and a second render where the value could be derived during render. The parenthetical \"no side effects\" is part of that statement, not a separate measurement.",
+  "rule_kinds": {
+   "091": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-05",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The rule matches phrases in the agent's own prose that announce a fallback, a shim or an environment-specific patch, with a set of benign phrases excluded. It reports wording before any code exists and states no defect in a delivered structure.",
+  "rule_kinds": {
+   "245": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Five of the eight rules state the failure directly: a generic bound more complex than it needs to be, abstraction built past the requirement, an interface with exactly one implementation, a factory whose output never varies, and a class that holds no state at all. The remaining three either only count consumers and methods, or flag compatibility structure that is unused only after the migration ends.",
+  "rule_kinds": {
+   "059": "candidate pattern",
+   "083": "candidate pattern",
+   "085": "proxy group",
+   "092": "boundary register",
+   "093": "candidate pattern",
+   "094": "candidate pattern",
+   "113": "proxy group",
+   "563": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "085",
+    "kind": "proxy group",
+    "reason": "It selects a file by a single import and a 20-300 line window and only suggests inlining; one consumer does not by itself show that the module boundary goes unused."
+   },
+   {
+    "rule_id": "092",
+    "kind": "boundary register",
+    "reason": "Deprecated-but-called symbols and migration wrappers are unused structure only once the migration is finished, and the rule does not check that no caller still needs the old API."
+   },
+   {
+    "rule_id": "113",
+    "kind": "proxy group",
+    "reason": "It counts public methods per class and calls the count a premature-abstraction signal, without showing that the class wrapper carries nothing of its own."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule states the fault as a mismatch with a declared or inferred placement: an import running backwards from shared to tools or upward across levels, a crossing an explicit deny rule forbids, UI reaching a database driver, a contract defined beside its implementation instead of with its consumer, a function whose purpose differs from its file's, and a file in a directory whose patterns disallow it.",
+  "rule_kinds": {
+   "087": "candidate pattern",
+   "098": "candidate pattern",
+   "285": "candidate pattern",
+   "305": "candidate pattern",
+   "306": "candidate pattern",
+   "484": "candidate pattern",
+   "564": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Six rules name a responsibility sitting away from the data or the change it belongs with: a method working mostly on another object's data, classes reaching into each other's internals, fields with no behavior, one class altered for unrelated reasons, one logical change spread over five files, and feature logic cut along technical layers. Rule 555 instead matches a module name against a list of generic words.",
+  "rule_kinds": {
+   "432": "candidate pattern",
+   "433": "candidate pattern",
+   "434": "candidate pattern",
+   "436": "candidate pattern",
+   "437": "candidate pattern",
+   "547": "candidate pattern",
+   "555": "boundary register"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "555",
+    "kind": "boundary register",
+    "reason": "A name like utils or helpers is a structural failure only if the module really collects unrelated functions, and the rule inspects the name rather than the cohesion of what the module holds."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The one rule states the failure as such: an override that reports the operation unimplemented or unsupported, or that strengthens a precondition or weakens a postcondition, so the subtype can no longer stand where its parent is expected.",
+  "rule_kinds": {
+   "284": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-10",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Seventeen of these rules obtain a number for a function, class or file (lines, parameters, nesting, paths, cyclomatic, cognitive, NPath, WMC, Halstead, exports, divider comments, complexity against coverage, Gini) and report it once it passes a threshold, without saying which structure should go. Only 356 names a construct and its harm instead of scoring one.",
+  "rule_kinds": {
+   "073": "proxy group",
+   "074": "proxy group",
+   "075": "proxy group",
+   "076": "proxy group",
+   "082": "proxy group",
+   "084": "proxy group",
+   "090": "proxy group",
+   "100": "proxy group",
+   "101": "proxy group",
+   "102": "proxy group",
+   "103": "proxy group",
+   "110": "proxy group",
+   "111": "proxy group",
+   "112": "proxy group",
+   "302": "proxy group",
+   "356": "candidate pattern",
+   "459": "proxy group",
+   "482": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "356",
+    "kind": "candidate pattern",
+    "reason": "It identifies one construct, a ternary nested inside a ternary, and states what it costs (the expression stops being readable), rather than scoring a measure against a tunable limit."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-11",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule states a mismatch between a boundary directive and the module it covers: \"use client\" on a file that touches no client API, a directive placed where it has no effect or not at the top of the file, and a barrel whose single import drags a client module and a server-only module across the boundary together.",
+  "rule_kinds": {
+   "220": "candidate pattern",
+   "450": "candidate pattern",
+   "451": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name the conflict itself: two route files that resolve to one URL once route groups are stripped, and sibling dynamic segments at one tree position that use different parameter names.",
+  "rule_kinds": {
+   "457": "candidate pattern",
+   "458": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-13",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The one rule says what is wrong with the test structure: test classes shaped per production method, and several tests reaching one observable behavior through different internal paths, so that a refactor which preserves behavior still breaks the suite.",
+  "rule_kinds": {
+   "325": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-14",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The one rule counts hops in a service-to-service chain and reports anything deeper than three as an indication that an aggregation layer is missing. The hop count does not say which hop is superfluous or which unit should have composed the flow.",
+  "rule_kinds": {
+   "343": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-15",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Five rules name a specific reach past the unit's own scope and say where the decision belongs: a get/set pair over module-global state in place of injection, initialization and sys.path edits at import scope, sys.exit outside a CLI entry point, os.Exit, os.Setenv or panic inside pkg/*, and the bare log package where the project's structured logger is required. Rule 154 instead matches the global keyword and package-level declarations.",
+  "rule_kinds": {
+   "096": "candidate pattern",
+   "154": "boundary register",
+   "158": "candidate pattern",
+   "159": "candidate pattern",
+   "473": "candidate pattern",
+   "480": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "154",
+    "kind": "boundary register",
+    "reason": "A global statement or a package-level var is a misplaced decision only when the unit is an imported library rather than the entry point that may legitimately own process-wide state, and the rule does not check which of the two it has found."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-16",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the departure from the repository's existing practice is structural, such as a hand-written client beside generated ones, and not a difference of naming, error handling, logging or test style",
+  "reason": "The one rule reports code whose patterns, naming, error handling, logging or test style are not found elsewhere in the repository, bundling vocabulary and style together with integration structure. It states the mismatch but never says which of the two it found.",
+  "rule_kinds": {
+   "115": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-17",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Each rule computes one figure about the shape of a dependency, inheritance or render graph (coupling between objects, inheritance depth and width, distance from the main sequence, modularity, chain length, unstable cross-module density, propagation cost, render fan-in) and gates on the number. A score past a limit selects an architecture for review and names no edge that should not be there.",
+  "rule_kinds": {
+   "104": "proxy group",
+   "105": "proxy group",
+   "106": "proxy group",
+   "108": "proxy group",
+   "300": "proxy group",
+   "301": "proxy group",
+   "304": "proxy group",
+   "307": "proxy group",
+   "462": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-18",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the failure: a parameter or option field that no caller ever passes, so the fallback is always the value used, and an inject or getContext key with no matching provider anywhere above it in the render tree.",
+  "rule_kinds": {
+   "114": "candidate pattern",
+   "452": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-19",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name the tangle itself: option interpretation mixed into execution inside a loop with no resolved-options stage between them, and business calculation interleaved with database, HTTP, logging or file I/O instead of sitting in a pure function.",
+  "rule_kinds": {
+   "116": "candidate pattern",
+   "554": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-20",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The one rule reports that the same parameter group recurs in three or more signatures. It states the recurrence only and leaves a person to decide whether those values are one domain concept that deserves a type.",
+  "rule_kinds": {
+   "438": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-21",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Both rules measure how many links a call or attribute chain walks and report what passes the depth (more than two levels, or a configurable three after a nine-filter pipeline). The depth is a threshold, and neither rule says that the caller has come to depend on structure behind its collaborator.",
+  "rule_kinds": {
+   "435": "proxy group",
+   "565": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-22",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a step that cannot change the value it produces: a pattern matched only to be returned unchanged, an if that rebuilds the boolean it tested, a variable read once on the next line, two-call pipelines that one library call replaces, an await on a promise that is returned anyway, and an immediately invoked wrapper around code that could run directly.",
+  "rule_kinds": {
+   "015": "candidate pattern",
+   "016": "candidate pattern",
+   "020": "candidate pattern",
+   "140": "candidate pattern",
+   "143": "candidate pattern",
+   "146": "candidate pattern",
+   "152": "candidate pattern",
+   "371": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-23",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rules 086 and 449 name the cycle itself, through value imports and through chains of re-exports including a module that re-exports from itself. Rule 089 reports a function-level import, which is this family's failure only in one of the several reasons such an import is written.",
+  "rule_kinds": {
+   "086": "candidate pattern",
+   "089": "boundary register",
+   "449": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "089",
+    "kind": "boundary register",
+    "reason": "A function-level import belongs to this family only if it is there to hide a cycle, and the rule does not separate that from deferring an optional extra, a heavy SDK or an import under a type-checking guard."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-24",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rules 095, 344 and 448 each state what the published surface gets wrong: a wildcard re-export that leaves the surface unpinned, a persistence entity handed back to API consumers with no DTO, and an exported signature naming a type the package keeps private. Rule 079 only identifies files made entirely of re-exports.",
+  "rule_kinds": {
+   "079": "proxy group",
+   "095": "candidate pattern",
+   "344": "candidate pattern",
+   "448": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "079",
+    "kind": "proxy group",
+    "reason": "It picks out files that consist only of re-exports and says nothing about what is wrong with them, leaving a reviewer to decide whether that barrel owns a contract of its own."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-25",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The one rule states the failure and the test it applies to it: an abstraction that has taken on a branch for each caller's special case, where the branching has grown past the duplication the abstraction was built to remove.",
+  "rule_kinds": {
+   "286": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-26",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The one rule compares the number of unit tests with twice the number of distinct behaviors and treats the excess as bloat. A count over a budget does not identify which tests carry no evidence about behavior.",
+  "rule_kinds": {
+   "429": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-27",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule states a mismatch between what the call site can see and what the function does: side effects behind a get, find or fetch name, output communicated by mutating a caller's collection, a function that both mutates and returns, a throw or feature-flag decision hidden inside a passive-looking check, and all the effects of a flow buried in one opaque delegate.",
+  "rule_kinds": {
+   "099": "candidate pattern",
+   "109": "candidate pattern",
+   "281": "candidate pattern",
+   "552": "candidate pattern",
+   "553": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "S-28",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Six rules state that the interposed unit changes nothing that passes through it: parameters forwarded unchanged, an async function with nothing to await, an adapter that only copies fields across, a class that only delegates, a prop threaded through components that never read it, and DTO hops between identical shapes. Rule 077 only matches the shape of a status envelope.",
+  "rule_kinds": {
+   "072": "candidate pattern",
+   "077": "proxy group",
+   "078": "candidate pattern",
+   "097": "candidate pattern",
+   "440": "candidate pattern",
+   "460": "candidate pattern",
+   "546": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "077",
+    "kind": "proxy group",
+    "reason": "It matches object literals carrying a boolean success or ok key beside a generic payload key and, as its source note records, never checks whether the envelope is unnecessary or required by the consumer's contract."
+   }
+  ]
+ },
+ {
+  "entry_id": "S-29",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names the branching as the fault: repeated isinstance or equality ladders, if/elif variant chains written where match and assert_never would state the variant set, a boolean parameter choosing between two behaviors in one body, and a type-tag branch that every new variant must add to an existing function.",
+  "rule_kinds": {
+   "071": "candidate pattern",
+   "160": "candidate pattern",
+   "282": "candidate pattern",
+   "283": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]
