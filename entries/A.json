@@ -1,0 +1,370 @@
+[
+ {
+  "id": "A-01",
+  "family": "A",
+  "name": "Annotation that restates its own code",
+  "rationale": "These rules fire where the text of an annotation can be rebuilt from what it annotates: a trivial comment or a docstring whose first sentence is the function name in prose, an Elixir @doc Parameters block that repeats the head, a narrator sentence announcing what the next line does, a long docstring over a few lines of body, and an explicit type that inference already gives.",
+  "invariant": "An annotation must carry something the annotated code cannot state for itself, above all the reason the code is as it is.",
+  "roles": [
+   "annotation",
+   "annotated code",
+   "reason the code is as it is",
+   "later reader"
+  ],
+  "relations": [
+   {
+    "from": "annotation",
+    "to": "annotated code",
+    "label": "is attached to",
+    "state": "normal"
+   },
+   {
+    "from": "annotated code",
+    "to": "later reader",
+    "label": "already shows its names, signature and effect",
+    "state": "normal"
+   },
+   {
+    "from": "annotation",
+    "to": "annotated code",
+    "label": "paraphrases it in prose or repeats its type",
+    "state": "problem"
+   },
+   {
+    "from": "reason the code is as it is",
+    "to": "annotation",
+    "label": "is recorded in it",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Restatement earns its place where the reader is not expected to read the code: a published API docstring that a documentation generator turns into reference for callers, a project or language convention that requires a doc entry on every public member, a line over an opaque idiom whose meaning is not readable, and an explicit type written to pin a widening or to stop an inferred type from drifting with a dependency.",
+  "rule_ids": [
+   "021",
+   "025",
+   "027",
+   "030",
+   "058"
+  ]
+ },
+ {
+  "id": "A-02",
+  "family": "A",
+  "name": "Prose banner where a named unit belongs",
+  "rationale": "Divider bars, section headers, changelog-style section markers and numbered Step 1, Step 2 comments all give a stretch of code a heading in prose instead of extracting it. The rules read the banner as a sign that the body holds several stages and that the author chose a comment over a name.",
+  "invariant": "A stretch of code distinct enough to deserve a heading must take its name from a code unit that can be called, tested and moved, not from a line of prose above it.",
+  "roles": [
+   "banner comment",
+   "labelled stretch of code",
+   "enclosing body",
+   "named unit"
+  ],
+  "relations": [
+   {
+    "from": "labelled stretch of code",
+    "to": "enclosing body",
+    "label": "is one of several stages inside it",
+    "state": "normal"
+   },
+   {
+    "from": "banner comment",
+    "to": "labelled stretch of code",
+    "label": "gives it a heading in prose",
+    "state": "problem"
+   },
+   {
+    "from": "named unit",
+    "to": "labelled stretch of code",
+    "label": "would carry that name in code",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A heading is the right tool where extraction is not available: a long declarative literal such as a constants table, a configuration map or a generated data block; file-scope grouping in a language with no unit narrower than the file; and the one conventional line that separates imports from definitions, which marks layout rather than standing in for a function.",
+  "rule_ids": [
+   "022",
+   "026",
+   "112"
+  ]
+ },
+ {
+  "id": "A-03",
+  "family": "A",
+  "name": "Author's stance where a fact is owed",
+  "rationale": "Assuming, presumably, obviously, simply, sorry, hacky, hopefully, might work, and a temp or debug note beside a console.log: each rule matches a comment that grades the code rather than explaining it. The comment shows that the author knew something was uncertain, ugly or temporary, and withholds what a maintainer would need, namely what is unverified or what forced the shape.",
+  "invariant": "A comment that flags the code as uncertain, obvious, unpleasant or provisional must state the fact behind that judgement: what is not known, what constraint forced the shape, or what would have to change.",
+  "roles": [
+   "stance comment",
+   "annotated code",
+   "underlying fact",
+   "maintainer deciding whether to touch the code"
+  ],
+  "relations": [
+   {
+    "from": "stance comment",
+    "to": "annotated code",
+    "label": "grades it as doubtful, obvious, shameful or temporary",
+    "state": "problem"
+   },
+   {
+    "from": "underlying fact",
+    "to": "stance comment",
+    "label": "is given in it",
+    "state": "missing"
+   },
+   {
+    "from": "maintainer deciding whether to touch the code",
+    "to": "stance comment",
+    "label": "can act on what it says",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The same words are informative once the fact is attached: an assumption comment that names the invariant it rests on and where that invariant is enforced, a hack comment that names the platform bug or deadline forcing it and the condition for removing it, and a hedge that reports a measured uncertainty, such as an undocumented third-party response shape, with the fallback it justifies.",
+  "rule_ids": [
+   "035",
+   "036",
+   "037",
+   "200",
+   "370"
+  ]
+ },
+ {
+  "id": "A-04",
+  "family": "A",
+  "name": "Comment standing in for code never written",
+  "rationale": "Both rules match prose about work that is absent: add more validation, handle additional cases, can be extended in the future, add your logic here, replace this with your actual implementation, in a real application you would. The comment is the only place the behaviour appears, so it describes an imagined program rather than the delivered one.",
+  "invariant": "Prose in the source must describe the code that ships; no required behaviour may exist only as a sentence in a comment.",
+  "roles": [
+   "placeholder comment",
+   "absent behaviour",
+   "enclosing unit",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "caller",
+    "to": "enclosing unit",
+    "label": "may use it as written",
+    "state": "normal"
+   },
+   {
+    "from": "placeholder comment",
+    "to": "absent behaviour",
+    "label": "names it as something to be added later",
+    "state": "problem"
+   },
+   {
+    "from": "absent behaviour",
+    "to": "enclosing unit",
+    "label": "is implemented in it",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The same wording is honest over an extension point that is truly optional in code whose present behaviour is complete: a documented hook that a host may override, a template or scaffold distributed to be filled in, or a TODO tied to a tracked ticket with a concrete scope where the unit still meets the contract it advertises.",
+  "rule_ids": [
+   "028",
+   "559"
+  ]
+ },
+ {
+  "id": "A-05",
+  "family": "A",
+  "name": "Annotation outliving the thing it points at",
+  "rationale": "Both rules track an annotation against a referent in the code: an ignore directive or expected-unused tag whose finding is no longer raised, and a header Suppressions entry with no matching directive in the body. The tools decide this by consumption at analysis time, so the fault is the dangling reference and not the wording.",
+  "invariant": "An annotation that names a specific finding, directive or workaround must have that referent present in the code, and must be removed together with it.",
+  "roles": [
+   "suppression annotation",
+   "referent in the code",
+   "analysis run",
+   "reader trusting the annotation"
+  ],
+  "relations": [
+   {
+    "from": "suppression annotation",
+    "to": "referent in the code",
+    "label": "asserts that it exists and is accepted",
+    "state": "problem"
+   },
+   {
+    "from": "referent in the code",
+    "to": "analysis run",
+    "label": "is raised or declared during it",
+    "state": "missing"
+   },
+   {
+    "from": "analysis run",
+    "to": "suppression annotation",
+    "label": "consumes it",
+    "state": "missing"
+   },
+   {
+    "from": "reader trusting the annotation",
+    "to": "referent in the code",
+    "label": "believes a problem is still there and accepted",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "An unconsumed annotation is correct when the referent is real but out of this run's reach: a suppression for a check that is off in this configuration or runs only in a nightly profile, a directive that fires only on another platform, language version or build flag, or a forward-looking suppression added with the rule it anticipates where the project accepts unconsumed entries.",
+  "rule_ids": [
+   "445",
+   "567"
+  ]
+ },
+ {
+  "id": "A-06",
+  "family": "A",
+  "name": "Change history kept inside the file",
+  "rationale": "Version lines, dated or time-relative file headers, and memo phrases such as changed from, moved to, refactored, replaces or formerly put the story of an edit into the source. Each rule reads the file as a record of revisions rather than of the code that now stands there, and detects the tense or the version token rather than a claim about behaviour.",
+  "invariant": "A comment must describe the code as it now stands; how the code came to be that way belongs to the commit record, which is the only copy that stays true.",
+  "roles": [
+   "history comment",
+   "current code",
+   "commit record",
+   "later reader"
+  ],
+  "relations": [
+   {
+    "from": "commit record",
+    "to": "history comment",
+    "label": "already holds everything it reports",
+    "state": "normal"
+   },
+   {
+    "from": "history comment",
+    "to": "current code",
+    "label": "describes a state the code has left",
+    "state": "problem"
+   },
+   {
+    "from": "history comment",
+    "to": "later reader",
+    "label": "tells them something about the code in front of them",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "History in the file is right when the past still constrains the present and cannot be recovered from the log: a workaround naming the upstream bug and the version that fixes it, a compatibility shim naming the client release it must outlive, a deprecation carrying a removal date, or a header date required for licence or provenance.",
+  "rule_ids": [
+   "033",
+   "034",
+   "562"
+  ]
+ },
+ {
+  "id": "A-07",
+  "family": "A",
+  "name": "Source text written to the authoring session instead of the code reader",
+  "rationale": "These rules flag text that is a byproduct of the authoring session: meta comments about implementation phases or agent behaviour, comments used to tell the user about changes or to ask them questions, and the chat register of praise, preambles, closing summaries and disclaimers. The text serves one person at one moment and does not document the code. Rules 199 and 202 read the agent's reply rather than the files, so the entry rests on the condition that this register is committed to the source.",
+  "invariant": "A source comment must document the delivered code for whoever opens the file next, not narrate the authoring session or converse with the user; exchanges with the user belong in the review or chat channel, where they can be answered and closed.",
+  "roles": [
+   "session-directed text",
+   "authoring session",
+   "delivered code",
+   "later reader"
+  ],
+  "relations": [
+   {
+    "from": "session-directed text",
+    "to": "authoring session",
+    "label": "narrates it, addresses its user or carries its chat register",
+    "state": "problem"
+   },
+   {
+    "from": "session-directed text",
+    "to": "delivered code",
+    "label": "is shown by the rule to be committed into the source of",
+    "state": "missing"
+   },
+   {
+    "from": "session-directed text",
+    "to": "delivered code",
+    "label": "states a durable fact about it",
+    "state": "missing"
+   },
+   {
+    "from": "delivered code",
+    "to": "later reader",
+    "label": "is what annotations explain to them",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "Rules 199 and 202 belong to Annotation Noise only under the added condition, which they do not test, that the praise, preamble or disclaimer is committed to a comment or docstring; in a reply to a person a short preamble or a stated limit is ordinary and can be information. For the in-source rules 023 and 299, an addressed note is fine when its reader is any future maintainer: a header saying the file is generated and which command regenerates it, a pointer to the design document or ticket that fixed the shape, a scaffold instruction meant to be removed on customization, or a warning about an invariant the next editor must keep.",
+  "rule_ids": [
+   "023",
+   "199",
+   "202",
+   "299"
+  ]
+ },
+ {
+  "id": "A-08",
+  "family": "A",
+  "name": "Added-comment volume in a change",
+  "rationale": "This rule counts comment lines added across the changed files, with per-extension comment syntax for about seventy file types, and flags the change once the count passes a limit. It selects a diff for attention by quantity and says nothing about what any single comment says.",
+  "invariant": "A comment earns its place by what it adds to the code; the number of comments in a change is a signal to look, not a fault in itself.",
+  "roles": [
+   "changed file set",
+   "count of added comment lines",
+   "threshold",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "changed file set",
+    "to": "count of added comment lines",
+    "label": "yields it",
+    "state": "normal"
+   },
+   {
+    "from": "count of added comment lines",
+    "to": "threshold",
+    "label": "passes it",
+    "state": "problem"
+   },
+   {
+    "from": "threshold",
+    "to": "reviewer",
+    "label": "sends the diff to them for judgement",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "A large rise in comment lines is right when a change documents a public interface for the first time, adds module headers a project convention requires, or lands a dense algorithm whose derivation must be written down. The count also misses the opposite case: a change under the threshold can consist entirely of restatement.",
+  "rule_ids": [
+   "029"
+  ]
+ },
+ {
+  "id": "A-09",
+  "family": "A",
+  "name": "Informal deprecation note without the formal tag",
+  "rationale": "The rule fires on prose such as legacy alias, back-compat, deprecated alias or kept for compatibility when no formal deprecation tag accompanies it. What it observes is the absence of a machine-readable tag, not that the prose repeats or misstates anything.",
+  "invariant": "A deprecation must be declared once in the form the toolchain reads, so that callers are warned where they call and not only where someone happens to read the definition.",
+  "roles": [
+   "informal note",
+   "formal deprecation tag",
+   "caller of the deprecated name",
+   "toolchain"
+  ],
+  "relations": [
+   {
+    "from": "informal note",
+    "to": "caller of the deprecated name",
+    "label": "reaches only a reader who opens the definition",
+    "state": "problem"
+   },
+   {
+    "from": "formal deprecation tag",
+    "to": "toolchain",
+    "label": "is readable by it",
+    "state": "missing"
+   },
+   {
+    "from": "toolchain",
+    "to": "caller of the deprecated name",
+    "label": "warns them at the call site",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "This counts as annotation noise only under an added condition the rule does not test: that the note repeats a status the code already declares, that the compatibility obligation it describes has ended, or that it names the wrong successor. Where the alias is still kept for callers and no tag exists, the prose is the only record of that obligation and carries information the code does not.",
+  "rule_ids": [
+   "032"
+  ]
+ }
+]
