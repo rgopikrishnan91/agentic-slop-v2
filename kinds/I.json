@@ -1,0 +1,257 @@
+[
+ {
+  "entry_id": "I-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a reference that does not exist in the target runtime: an unresolved import, a foreign-language API or attribute used in Python, a library method the model invented, or a Next.js symbol imported from React. The rule text states the failure, not merely a match target.",
+  "rule_kinds": {
+   "012": "candidate pattern",
+   "176": "candidate pattern",
+   "181": "candidate pattern",
+   "182": "candidate pattern",
+   "183": "candidate pattern",
+   "184": "candidate pattern",
+   "185": "candidate pattern",
+   "186": "candidate pattern",
+   "187": "candidate pattern",
+   "188": "candidate pattern",
+   "369": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-02",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the copied code's behavior actually departs from the specification it is presented as satisfying",
+  "reason": "The one rule flags code identified as copied and modified from a neighbouring function together with the off-by-one and null-semantic bugs that ride along; it detects provenance but never checks whether the result actually deviates from the specification, so the integrity failure holds only under that unchecked condition.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a claim or value asserted without fresh evidence: a completion or passing-tests claim with no command output, a verification figure with no measured baseline, an invented path, key, URL or version, and the general no-fabrication and phantom-fix constraints. The uncited-claim rule also checks for the absence of a citation, so it states the failure rather than only matching words.",
+  "rule_kinds": {
+   "031": "candidate pattern",
+   "201": "candidate pattern",
+   "318": "candidate pattern",
+   "323": "candidate pattern",
+   "530": "candidate pattern",
+   "531": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the substitution directly: 206 flags answering a defect finding with tests, docs or an absence check instead of the requested code change, and 543 flags meeting a stated metric in a way that defeats the intent it was measuring.",
+  "rule_kinds": {
+   "206": "candidate pattern",
+   "543": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a stand-in left inside delivered work: TODO/FIXME and placeholder comments, vague specs, AI handoff phrases, coming-soon doc headings, Lorem ipsum and demo values, generation artifacts, and a hardcoded fallback behind a secret environment variable. The text identifies the item as a placeholder, which is the failure.",
+  "rule_kinds": {
+   "028": "candidate pattern",
+   "174": "candidate pattern",
+   "180": "candidate pattern",
+   "223": "candidate pattern",
+   "233": "candidate pattern",
+   "294": "candidate pattern",
+   "495": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name tests whose pass is manufactured inside the test: fixtures that implement the expected end state or RED-to-GREEN with no production change (427), and the catalogue of zero-assertion, tautological, circular, mock-dominated and fully-mocked patterns (428). Each says why the green signal is not evidence about production behavior.",
+  "rule_kinds": {
+   "427": "candidate pattern",
+   "428": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule compares a description with the system and names the contradiction: a comment against adjacent code, JSDoc tags against a signature, a sample against the real API, docs against changed code, and documented paths, versions and counts against the repository. The mismatch is the stated failure.",
+  "rule_kinds": {
+   "279": "candidate pattern",
+   "280": "candidate pattern",
+   "291": "candidate pattern",
+   "328": "candidate pattern",
+   "337": "candidate pattern",
+   "338": "candidate pattern",
+   "339": "candidate pattern",
+   "340": "candidate pattern",
+   "442": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names an operation whose body does nothing or returns a fixed answer: empty or no-op bodies, dead useEffects, not-implemented macros, bodies that only raise or return None or canned data, and classes most of whose methods are such stubs. The empty or canned body is the stated failure.",
+  "rule_kinds": {
+   "017": "candidate pattern",
+   "018": "candidate pattern",
+   "175": "candidate pattern",
+   "177": "candidate pattern",
+   "178": "candidate pattern",
+   "179": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Most rules name a required part left unbuilt: incomplete migrations with mixed old and new APIs, specified state transitions with no implementation, and plan tasks or risk mitigations not realized. Rule 060 is the exception; it only matches the absence of an exhaustiveness guard without confirming a missing case.",
+  "rule_kinds": {
+   "060": "proxy group",
+   "092": "candidate pattern",
+   "315": "candidate pattern",
+   "324": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "060",
+    "kind": "proxy group",
+    "reason": "It matches match/switch statements that lack an assert_never/assertNever default rather than establishing that any required variant is actually left unhandled."
+   }
+  ]
+ },
+ {
+  "entry_id": "I-10",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules select prose by matching confidence word lists: hedges such as assuming, presumably and should work, and certainty words such as obviously, clearly and trivially. None establishes that the described behavior is actually unverified or that completion is misstated; they only point a reviewer at text.",
+  "rule_kinds": {
+   "035": "proxy group",
+   "036": "proxy group",
+   "200": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-11",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the hidden functions belong to the API surface the project presents as documented and supported, rather than being public only for macro expansion or for internal application use",
+  "reason": "The one rule counts @doc false attributes on public functions and reports a module that hides much of its surface; the hiding is a documentation-integrity failure only when those functions are part of the supported API, which the rule does not determine.",
+  "rule_kinds": {
+   "024": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a change that produces a green signal by acting on the checker instead of the code: weakening or deleting/skipping tests, suppressing build warnings or nullability, modifying linter config to pass, overriding a package version constraint, suppressing an error signal, and lint suppressions left without justification.",
+  "rule_kinds": {
+   "207": "candidate pattern",
+   "208": "candidate pattern",
+   "210": "candidate pattern",
+   "211": "candidate pattern",
+   "332": "candidate pattern",
+   "542": "candidate pattern",
+   "566": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-13",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names an omission from the report: areas not enumerated as unverified, non-trivial assumptions proceeded on without being surfaced, and withheld material facts such as a known failing edge case. The missing disclosure is the stated failure.",
+  "rule_kinds": {
+   "312": "candidate pattern",
+   "320": "candidate pattern",
+   "533": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-14",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name an integration point with only one end present: a new parameter or field that no caller ever passes so a fallback always wins (114), and a Vue inject or Svelte getContext whose key has no matching provider in the ancestor tree (452).",
+  "rule_kinds": {
+   "114": "candidate pattern",
+   "452": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-15",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Two rules name a safeguard that is inert as shipped: a security-theater hash or always-true validator that gives no protection (248), and an RSC directive placed where it has no effect (451). Rule 155 instead flags every assert, which is why it is a misfit.",
+  "rule_kinds": {
+   "155": "boundary register",
+   "248": "candidate pattern",
+   "451": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "155",
+    "kind": "boundary register",
+    "reason": "An assert stripped under the -O flag is an inert-safeguard failure only if it is relied on as the production enforcement of a property rather than a development-time sanity check, and the rule does not check that."
+   }
+  ]
+ },
+ {
+  "entry_id": "I-16",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules compare what the change consumes against the project manifest and name the undeclared use: a package imported but missing from package.json (011) and an invoked binary not declared there (013). The undeclared dependency is the stated failure.",
+  "rule_kinds": {
+   "011": "candidate pattern",
+   "013": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-17",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule compares a declared contract with the implementation behind it and names the breach: an override that refuses or narrows the parent contract (284), a response whose runtime shape contradicts the declared type (314), and field names that diverge across database, API and frontend layers (316).",
+  "rule_kinds": {
+   "284": "candidate pattern",
+   "314": "candidate pattern",
+   "316": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]
