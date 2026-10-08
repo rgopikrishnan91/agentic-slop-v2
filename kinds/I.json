@@ -1,0 +1,268 @@
+[
+ {
+  "entry_id": "I-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All eleven rules name a definite defect: an import that cannot be resolved, a call to a method the installed library version does not have, or a member borrowed from another language (JS .push/.length, Java .equals, PHP strlen, Next.js hooks imported from 'react'). The keyword and pattern lists are only how each rule finds the case; the text in each says the failure is that the named symbol is not there.",
+  "rule_kinds": {
+   "012": "candidate pattern",
+   "176": "candidate pattern",
+   "181": "candidate pattern",
+   "182": "candidate pattern",
+   "183": "candidate pattern",
+   "184": "candidate pattern",
+   "185": "candidate pattern",
+   "186": "candidate pattern",
+   "187": "candidate pattern",
+   "188": "candidate pattern",
+   "369": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-02",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the copied implementation's behavior really does depart from the specification it is presented as satisfying",
+  "reason": "Rule 287 identifies provenance, code produced by copying and editing a similar function rather than deriving it from the specification, and asserts that off-by-one and wrong null-semantic bugs travel in by that route. It never establishes that this particular copy misses its specification, and copying a neighbour and adapting it correctly misrepresents nothing, so the fake-done failure depends on a fact the rule does not check.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Five of the six rules state the defect outright: a 'Done!'/'Tests pass!' claim with no fresh command output, a coverage or performance figure not attributed to a baseline measured in this run, a fabricated path, key, port or version number, a claim resting on memory rather than file contents or exit codes, and a success claim where the original failure was never re-run. Rule 031 pairs its weasel-phrase list with the absence of a citation, so it too names an unsupported claim rather than merely pointing at wording.",
+  "rule_kinds": {
+   "031": "candidate pattern",
+   "201": "candidate pattern",
+   "318": "candidate pattern",
+   "323": "candidate pattern",
+   "530": "candidate pattern",
+   "531": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 206 names the substitution itself, answering a review finding by adding tests or docs or an absence check in place of the code fix, and rule 543 names the gamed outcome, a stated metric achieved while its intent is violated. Neither counts or matches anything; each says what the failure is.",
+  "rule_kinds": {
+   "206": "candidate pattern",
+   "543": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Six of the eight rules name the stand-in together with the work it owes: untracked TODO/FIXME/HACK markers and TODOs carrying implementation keywords, TBD and 'implement later' in a spec, Lorem ipsum and example@email.com and password123 in shipped code, coming-soon headings in published documentation, leftover LLM generation markers such as [INSERT TEXT], and 'replace this with your actual implementation' handoff comments. The two exceptions either only match filler phrases or flag a code shape whose misrepresented-configuration failure is left unchecked.",
+  "rule_kinds": {
+   "028": "proxy group",
+   "174": "candidate pattern",
+   "180": "candidate pattern",
+   "223": "candidate pattern",
+   "233": "boundary register",
+   "294": "candidate pattern",
+   "495": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "028",
+    "kind": "proxy group",
+    "reason": "It matches filler phrases such as 'handle additional cases' or 'can be extended in the future' and never establishes that any required implementation is in fact owed."
+   },
+   {
+    "rule_id": "233",
+    "kind": "boundary register",
+    "reason": "A hardcoded fallback for a secret env var makes the system only look configured where real configuration is required, and the rule does not check that the fallback is reachable outside a local default guarded against production."
+   }
+  ]
+ },
+ {
+  "entry_id": "I-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules enumerate concrete ways the green result is manufactured inside the test: Given steps that create the end state, a fixture holding the domain logic, RED-to-GREEN with no production file in the diff, a mocked-away system under test, an expectation recomputed with the same formula, a tautological assertion, or no assertion at all. Each pattern is stated as the failure rather than as a measurement.",
+  "rule_kinds": {
+   "427": "candidate pattern",
+   "428": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here puts prose next to the artifact it describes and reports the contradiction: a comment that has drifted from the adjacent code, @param and @returns tags that do not match the signature, a sample whose imports or argument order are wrong, docs claiming OAuth where the code has it commented out, and paths, versions, counts and cross-document facts that do not match the repository. Rules 339 and 442 work through a count and a diff against generated output, but each still names the mismatch itself as the failure.",
+  "rule_kinds": {
+   "279": "candidate pattern",
+   "280": "candidate pattern",
+   "291": "candidate pattern",
+   "328": "candidate pattern",
+   "337": "candidate pattern",
+   "338": "candidate pattern",
+   "339": "candidate pattern",
+   "340": "candidate pattern",
+   "442": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All six rules describe a callable standing where a finished operation belongs: a non-trivial body that does nothing, a useEffect with no executable body, an empty or pass-only function, todo!()/unimplemented!() in production, a body that only raises NotImplementedError or returns a fixed constant, and a class most of whose methods are such stubs. The 50% threshold in rule 179 is only how it finds the class; the failure it states is that the methods are placeholders.",
+  "rule_kinds": {
+   "017": "candidate pattern",
+   "018": "candidate pattern",
+   "175": "candidate pattern",
+   "177": "candidate pattern",
+   "178": "candidate pattern",
+   "179": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three of the four rules compare a stated obligation against the code and report the part that is absent: deprecated symbols still called beside the new API with abandoned 'remove later' shims, a specified transition with no handler and no exit path, and a plan task or risk mitigation that was never built. The fourth checks only for a missing exhaustiveness call, which does not show that any case is unhandled.",
+  "rule_kinds": {
+   "060": "boundary register",
+   "092": "candidate pattern",
+   "315": "candidate pattern",
+   "324": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "060",
+    "kind": "boundary register",
+    "reason": "A match or switch without assert_never leaves specified work undone only if a variant of the closed domain is in fact unhandled, and the rule looks only for the absence of the exhaustiveness call in the default case."
+   }
+  ]
+ },
+ {
+  "entry_id": "I-10",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules are vocabulary lists: hedges (assuming, presumably, apparently, should be, seems to, hopefully) and certainty markers (obviously, clearly, simply, trivial, of course) occurring in comments, documentation or completion claims. None of them establishes that the described behavior is actually unverified or that completion is overstated, so the match only selects prose for a reader to judge.",
+  "rule_kinds": {
+   "035": "proxy group",
+   "036": "proxy group",
+   "200": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-11",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the functions marked @doc false belong to the surface the project presents as its documented, supported API",
+  "reason": "Rule 024 counts @doc false attributes on public functions and calls the result a hidden API surface, which is a genuine failure only where those functions are part of the API the project offers to callers. The same attribute is the intended way to hide functions that are public only for macro expansion or internal application use, and the rule cannot tell the two apart.",
+  "rule_kinds": {
+   "024": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each of the seven rules describes an act performed on the checker instead of on the code: an assertion weakened or an expectation reduced, a test deleted or marked Skip/Ignore, NoWarn and Nullable disable and TreatWarningsAsErrors false in the build files, a VersionOverride past central package management, a lint config edited so the run passes, an error signal suppressed instead of root-caused, and a noqa or ts-ignore carrying no justification. Every text names the neutralized check as the failure, and rule 566 even checks the justification the legitimate case needs.",
+  "rule_kinds": {
+   "207": "candidate pattern",
+   "208": "candidate pattern",
+   "210": "candidate pattern",
+   "211": "candidate pattern",
+   "332": "candidate pattern",
+   "542": "candidate pattern",
+   "566": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-13",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names an omission itself as the defect: a verification report that does not enumerate what went unverified alongside what passed, an implementation built on a non-trivial assumption that was never surfaced, and material information such as a known failing edge case or a silent constraint withheld from the person deciding. Nothing here is a count or a word match.",
+  "rule_kinds": {
+   "312": "candidate pattern",
+   "320": "candidate pattern",
+   "533": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-14",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the missing counterpart directly: a new parameter or field that no entry point ever passes, so options.xxx always falls through to its fallback, and an inject() or getContext() key with no matching provide()/setContext() anywhere in the ancestor render tree. The failure named is the absent other end of the connection.",
+  "rule_kinds": {
+   "114": "candidate pattern",
+   "452": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-15",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 248 says the mechanism gives no actual protection (hash() over a password, a validation function that always returns True, MD5 on security-sensitive data) and rule 451 says the use client/use server directive sits where it has no effect, so both name the inert safeguard. The third rule flags every assert without establishing the configuration that would disable it.",
+  "rule_kinds": {
+   "155": "boundary register",
+   "248": "candidate pattern",
+   "451": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "155",
+    "kind": "boundary register",
+    "reason": "An assert is an unenforced safeguard only if the code actually runs with assertions stripped under -O and the assert is what enforces the property rather than a development-time sanity check, and the rule checks neither."
+   }
+  ]
+ },
+ {
+  "entry_id": "I-16",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules compare what the change consumes, an imported package or an invoked binary, against what package.json declares, and report the use that has no declaration (including phantom dependencies resolved only from node_modules). The undeclared use is stated as the failure, which is precisely what this entry's invariant forbids, even though neither rule shows the package is nonexistent.",
+  "rule_kinds": {
+   "011": "candidate pattern",
+   "013": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-17",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All three rules set a declared contract against what actually crosses the boundary: an override that signals 'unsupported operation' or tightens preconditions on the contract its base type advertises, a payload whose runtime shape contradicts the declared response type because the producer wraps it, and layer-to-layer field names whose transformation is applied inconsistently so the consumer reads a field the response does not carry. Each text names the broken promise, not a measurement of it.",
+  "rule_kinds": {
+   "284": "candidate pattern",
+   "314": "candidate pattern",
+   "316": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]
