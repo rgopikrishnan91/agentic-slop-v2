@@ -1,0 +1,18 @@
+{
+ "role": "coder 2",
+ "family": "D",
+ "model": {
+  "roster_model": "Claude Opus 4.8 (claude-opus-4-8)",
+  "session_context.model": "claude-opus-4-8",
+  "external_metadata.last_served_model": "claude-opus-4-8",
+  "matches_roster": true
+ },
+ "effort_setting": "not surfaced in session metadata; ran at the session default reasoning effort",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Read (INSTRUCTIONS.md, families.json, entries/D.json, rules.json, detector_source_inspections.json)",
+  "Bash (python3 -I to extract the 33 referenced rule texts and their detector notes; mkdir for output dirs; git commit and push)",
+  "Write (kinds/D.json, run_info/D.json)",
+  "mcp__claude-code-remote__get_session (model identifier)"
+ ]
+}
