@@ -1,0 +1,352 @@
+[
+ {
+  "id": "T-01",
+  "family": "T",
+  "name": "Test subject replaced by doubles or fixtures",
+  "rationale": "Each rule flags a test whose pass is produced by substitutes for the production code: the unit's own methods are stubbed, its internal collaborators or value objects are patched, no production function is called, or a fixture produces the state the assertion reads. The green signal comes from the test's scaffolding, not from the real unit.",
+  "invariant": "The result a test asserts on must be produced by executing the production code the test claims to verify, with doubles used only at genuine external boundaries.",
+  "roles": [
+   "test",
+   "unit under test",
+   "test double or fixture",
+   "external boundary",
+   "success signal"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "external boundary",
+    "label": "substitutes a double at",
+    "state": "normal"
+   },
+   {
+    "from": "test",
+    "to": "unit under test",
+    "label": "executes the real implementation of",
+    "state": "missing"
+   },
+   {
+    "from": "test double or fixture",
+    "to": "success signal",
+    "label": "supplies the value that produces",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Doubling a genuine edge (network, clock, filesystem, database, a paid third-party SDK) is the intended use; an interaction test may assert on a double when the outgoing call is itself the specified behavior, and a fixture may build input state as long as the asserted outcome still comes from production code.",
+  "rule_ids": [
+   "203",
+   "262",
+   "290",
+   "427",
+   "556"
+  ]
+ },
+ {
+  "id": "T-02",
+  "family": "T",
+  "name": "Assertion that cannot fail on wrong behavior",
+  "rationale": "These rules ask of a green test whether it would turn red if the code were wrong, and answer no: zero, tautological or swallowed assertions, expected values recomputed the way the implementation computes them or simply incorrect, tests whose subject is a framework or language guarantee, and expected literals whose origin cannot be checked. The assertion does not separate a correct outcome from a relevant incorrect one.",
+  "invariant": "A test must assert the observable outcome of the project's own code against an expected value derived from the requirement, so that a broken behavior turns the test red.",
+  "roles": [
+   "test",
+   "assertion",
+   "behavior under test",
+   "expected value",
+   "defect in the implementation"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "behavior under test",
+    "label": "runs",
+    "state": "normal"
+   },
+   {
+    "from": "assertion",
+    "to": "behavior under test",
+    "label": "takes its verdict from the produced result of",
+    "state": "missing"
+   },
+   {
+    "from": "assertion",
+    "to": "expected value",
+    "label": "binds to a correct value derived from the requirement",
+    "state": "missing"
+   },
+   {
+    "from": "defect in the implementation",
+    "to": "test",
+    "label": "turns red",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A smoke test that deliberately asserts only that a call does not raise, or a characterization test that pins current output before a refactor, is weak by design and fine when the suite does not count it as behavioral evidence; a test of framework behavior is justified when the project configured the framework in a way that can regress; a self-evident literal (HTTP 404, the length of a visible fixture list) needs no derivation comment.",
+  "rule_ids": [
+   "265",
+   "289",
+   "327",
+   "428"
+  ]
+ },
+ {
+  "id": "T-03",
+  "family": "T",
+  "name": "Verification disabled or weakened to keep the suite green",
+  "rationale": "These rules watch edits to the test suite rather than to the product: assertions lowered or removed, expectations rewritten to match what the implementation now returns, tests skipped or ignored, and skip markers left after their reason expired. The suite result survives with less evidence behind it.",
+  "invariant": "A test the suite counts must run and keep the strength it had, unless the specified behavior itself changed; a failing test is fixed, not disabled or weakened.",
+  "roles": [
+   "specified behavior",
+   "test",
+   "suite result",
+   "weakening or skipping edit"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "specified behavior",
+    "label": "asserts the required result of",
+    "state": "normal"
+   },
+   {
+    "from": "weakening or skipping edit",
+    "to": "test",
+    "label": "lowers the assertion or stops it running",
+    "state": "problem"
+   },
+   {
+    "from": "suite result",
+    "to": "specified behavior",
+    "label": "carries evidence about",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A skip with a live reason is proper practice: a feature not yet implemented, a platform the runner lacks, a known upstream bug with a ticket. An expectation changed because the specification changed is also proper.",
+  "rule_ids": [
+   "207",
+   "208",
+   "342"
+  ]
+ },
+ {
+  "id": "T-04",
+  "family": "T",
+  "name": "Verdict decided by elapsed time or leftover state",
+  "rationale": "These rules flag tests whose outcome is settled by something other than the behavior they exercise: a fixed sleep or spin in place of waiting on a condition, and global or nonlocal state carried from one test to the next. A green run records that scheduling or test order was favorable, and the race or missing reset stays hidden.",
+  "invariant": "A test's verdict must depend only on the behavior it exercises, starting from the state its own setup establishes and synchronizing on observable conditions rather than assumed delays.",
+  "roles": [
+   "test",
+   "behavior under test",
+   "fixed delay",
+   "state shared between tests"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "behavior under test",
+    "label": "waits on an observable condition of",
+    "state": "missing"
+   },
+   {
+    "from": "fixed delay",
+    "to": "test",
+    "label": "decides the verdict by how long it waited",
+    "state": "problem"
+   },
+   {
+    "from": "state shared between tests",
+    "to": "test",
+    "label": "decides the verdict by which test ran first",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Sleeping is correct when elapsed time is the behavior under test (a cache TTL, a debounce window, a rate limiter) with an explicit tolerance; shared fixtures are correct when they are read-only or reset between tests.",
+  "rule_ids": [
+   "209",
+   "266",
+   "326"
+  ]
+ },
+ {
+  "id": "T-05",
+  "family": "T",
+  "name": "Test bound to internal structure, not observable behavior",
+  "rationale": "These rules describe tests written to the shape of the implementation: assertions on calls into internal helpers, per-method test classes mirroring production code, and several tests reaching one observable outcome through different private paths. Such tests go red when nothing observable changed and can stay green when the observable result is wrong.",
+  "invariant": "A test must express its expectation as the result a caller can observe, so that a behavior-preserving refactor cannot change its verdict.",
+  "roles": [
+   "test",
+   "observable outcome",
+   "internal mechanism",
+   "behavior-preserving refactor"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "observable outcome",
+    "label": "asserts the caller-visible result",
+    "state": "missing"
+   },
+   {
+    "from": "test",
+    "to": "internal mechanism",
+    "label": "asserts the private call path or mirrors its layout",
+    "state": "problem"
+   },
+   {
+    "from": "behavior-preserving refactor",
+    "to": "test",
+    "label": "breaks although the outcome is unchanged",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Asserting a call is correct when the call is the specified behavior (a message published, an audit record written, a request sent to a payment API); per-method tests are correct when each method is itself a public behavior.",
+  "rule_ids": [
+   "288",
+   "325"
+  ]
+ },
+ {
+  "id": "T-06",
+  "family": "T",
+  "name": "Redundant tests that add no new verification",
+  "rationale": "These rules reason about tests that do not add evidence: test functions with identical bodies that differ only in values and should be one parameterized case, and a test count above a per-behavior budget. The count of tests overstates the breadth of behavior verified.",
+  "invariant": "Each test in a suite must add verification of a behavior that no other test already pins.",
+  "roles": [
+   "test suite",
+   "test",
+   "duplicate test",
+   "distinct behavior"
+  ],
+  "relations": [
+   {
+    "from": "test",
+    "to": "distinct behavior",
+    "label": "pins",
+    "state": "normal"
+   },
+   {
+    "from": "duplicate test",
+    "to": "distinct behavior",
+    "label": "re-verifies without new evidence",
+    "state": "problem"
+   },
+   {
+    "from": "test suite",
+    "to": "distinct behavior",
+    "label": "pins each one once",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Repetition is warranted when near-identical tests record separately specified cases (a regression test per reported defect, a table of mandated vectors, a case per locale), or when one behavior has many branches; independent re-verification may be required by a certification standard.",
+  "rule_ids": [
+   "263",
+   "429"
+  ]
+ },
+ {
+  "id": "T-07",
+  "family": "T",
+  "name": "Suite omits the contract's boundary and error cases",
+  "rationale": "Both rules compare the cases a test set exercises with the cases the behavior has to handle: empty and minimum inputs, boundary values, cardinality, illegal events, malformed input, idempotency and the declared error contract. The suite passes while whole input classes never reach the code.",
+  "invariant": "A suite presented as verifying a behavior must exercise the boundary, empty and error cases that the behavior's contract names, not only the nominal path.",
+  "roles": [
+   "behavior contract",
+   "test set",
+   "boundary and error cases",
+   "suite result"
+  ],
+  "relations": [
+   {
+    "from": "test set",
+    "to": "behavior contract",
+    "label": "exercises the nominal path of",
+    "state": "normal"
+   },
+   {
+    "from": "test set",
+    "to": "boundary and error cases",
+    "label": "exercises",
+    "state": "missing"
+   },
+   {
+    "from": "suite result",
+    "to": "behavior contract",
+    "label": "is read as covering the whole",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Cases the type system or a validating framework makes unreachable need no test, and a behavior with no boundary or error branch is fully covered without them; edge cases may also live in a separate file or a parameterized table.",
+  "rule_ids": [
+   "264",
+   "430"
+  ]
+ },
+ {
+  "id": "T-08",
+  "family": "T",
+  "name": "Shipped code that no test reaches",
+  "rationale": "These rules find production artifacts no test touches: a source file unreachable by import from any test, a changed implementation file with no test file, an exported symbol unreachable in the module graph. They establish that verification is absent, not that an existing test gives a false signal.",
+  "invariant": "Code that a passing suite is taken to vouch for must be reached by at least one test that can fail.",
+  "roles": [
+   "changed implementation",
+   "test suite",
+   "suite result",
+   "reader of the result"
+  ],
+  "relations": [
+   {
+    "from": "test suite",
+    "to": "suite result",
+    "label": "reports success",
+    "state": "normal"
+   },
+   {
+    "from": "test suite",
+    "to": "changed implementation",
+    "label": "reaches from a test entry point",
+    "state": "missing"
+   },
+   {
+    "from": "suite result",
+    "to": "reader of the result",
+    "label": "is offered as evidence that the change works",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Added condition the rules do not check: untested code belongs to Test Slop only when the passing suite is presented as evidence for that code, for instance a change reported as tested or done. Without that claim it is a coverage gap, not a false success signal. Generated code, thin glue, experimental modules and code exercised by an integration suite the import graph cannot see are also acceptable.",
+  "rule_ids": [
+   "308",
+   "322",
+   "466"
+  ]
+ },
+ {
+  "id": "T-09",
+  "family": "T",
+  "name": "Multi-behavior test selected by name",
+  "rationale": "The single rule selects a test for review because its name contains \"and\", read as a sign the test covers more than one behavior. It inspects the name, not the body or assertions, so it nominates candidates rather than naming a failure.",
+  "invariant": "A unit test should pin one behavior, so that a red result names what broke.",
+  "roles": [
+   "test",
+   "test name",
+   "behavior under test"
+  ],
+  "relations": [
+   {
+    "from": "test name",
+    "to": "behavior under test",
+    "label": "names more than one",
+    "state": "problem"
+   },
+   {
+    "from": "test",
+    "to": "behavior under test",
+    "label": "pins exactly one",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "\"and\" is often part of one behavior's description (rejects_empty_and_whitespace_input, find_and_replace), and an integration or acceptance test is meant to walk a composite scenario.",
+  "rule_ids": [
+   "127"
+  ]
+ }
+]
