@@ -1,0 +1,123 @@
+[
+ {
+  "entry_id": "A-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule in this entry detects an annotation whose content can be reconstructed from the code it annotates: a comment restating the code, a doc section repeating the signature, a narrator sentence paraphrasing the function name, a long docstring over a trivial body, or an explicit type that inference already supplies. Each rule text says what is wrong -- the annotation adds nothing the code does not already carry.",
+  "rule_kinds": {
+   "021": "candidate pattern",
+   "025": "candidate pattern",
+   "027": "candidate pattern",
+   "030": "candidate pattern",
+   "058": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Two of the three rules state what is wrong: rule 022 says the comment is a decorative separator or section header signalling the file needs splitting, and rule 112 says in-function dividers signal missing decomposition. Rule 026 matches numbered step comments by keyword pattern without stating a failure, making it the minority proxy group rule.",
+  "rule_kinds": {
+   "022": "candidate pattern",
+   "026": "proxy group",
+   "112": "candidate pattern"
+  },
+  "misfit_rules": [
+   {"rule_id": "026", "kind": "proxy group", "reason": "The rule matches the keyword pattern 'Step N:' in comments without stating what is wrong with them."}
+  ]
+ },
+ {
+  "entry_id": "A-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule identifies comments that grade the code with the author's stance and names the failure: unverified assumptions (035), false certainty (036), apologetic self-deprecation (037), hedging language expressing uncertainty rather than verified facts (200), and a debug log accompanied by a comment acknowledging it should be removed (370). All five use keywords to find the case, but their text labels the matched content with a stated failure.",
+  "rule_kinds": {
+   "035": "candidate pattern",
+   "036": "candidate pattern",
+   "037": "candidate pattern",
+   "200": "candidate pattern",
+   "370": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: rule 028 labels matched phrases as filler comments describing work that has not been done, and rule 559 identifies AI handoff phrases where the agent defers implementation to the user, leaving a placeholder comment in place of absent code.",
+  "rule_kinds": {
+   "028": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: rule 445 reports suppression annotations whose target finding no longer exists (the tool tracks consumption at analysis time), and rule 567 reports header documentation entries with no corresponding directive in the code body. Each states that the annotation has outlived its referent.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All three rules say what is wrong: rule 033 identifies agent self-narration recording change history in comments, rule 034 detects version history embedded in source comments, and rule 562 flags temporal language in file headers and explicitly states that headers should be atemporal. Each describes an annotation that records how the code changed rather than describing the code as it stands.",
+  "rule_kinds": {
+   "033": "candidate pattern",
+   "034": "candidate pattern",
+   "562": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Two rules are candidate pattern and two are boundary register, so the tie is broken by the entry's invariant, which describes source comments that narrate the authoring session or converse with the user. Rules 023 and 299 directly check source comments for that problem, while rules 199 and 202 read the agent's conversational reply and belong to this family only if that text is committed to source, a condition they do not check.",
+  "rule_kinds": {
+   "023": "candidate pattern",
+   "199": "boundary register",
+   "202": "boundary register",
+   "299": "candidate pattern"
+  },
+  "misfit_rules": [
+   {"rule_id": "199", "kind": "boundary register", "reason": "The rule reads sycophantic phrases in agent output; it belongs to annotation noise only if the phrases are committed to a source comment, which the rule does not check."},
+   {"rule_id": "202", "kind": "boundary register", "reason": "The rule reads process narration in agent output; it belongs to annotation noise only if the narration is committed to a source comment, which the rule does not check."}
+  ]
+ },
+ {
+  "entry_id": "A-08",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule counts new comment lines added across changed files and flags the change once the count passes a threshold. It measures volume and selects diffs for review; it does not say what is wrong with any individual comment.",
+  "rule_kinds": {
+   "029": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-09",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the compatibility obligation the informal note describes has ended, the note names the wrong successor, or the note repeats a deprecation status already declared elsewhere in the code",
+  "reason": "The rule fires when an informal deprecation comment appears without a formal tag. Without the formal tag, the informal note is the only record of the deprecation and carries information the code does not already have. The note is annotation noise only if the obligation has ended, the note names the wrong successor, or the status is declared elsewhere, and the rule does not check any of these conditions.",
+  "rule_kinds": {
+   "032": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
