@@ -1,0 +1,130 @@
+[
+ {
+  "entry_id": "Y-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule names a concrete assertion construct that overrides the checker by fiat: a double cast `as unknown as X`, a `!` or Kotlin `!!` non-null assertion, a narrowing `u64 as u32`, or a Go `x.(T)` without comma-ok. Each construct is itself the stated defect, an unproven narrowing that can misbehave or panic, so the text says what is wrong.",
+  "rule_kinds": {
+   "051": "candidate pattern",
+   "057": "candidate pattern",
+   "063": "candidate pattern",
+   "358": "candidate pattern",
+   "478": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule points at a specific opaque or top-type construct, `any`/`cast(Any, ...)`, `object`, a bare `dict` return, `Array<any>` or an `any` index signature, and `as Record<string, unknown>` on a payload, and states the defect directly: the type admits any shape so the checker stops restricting member access on a value whose structure the code uses.",
+  "rule_kinds": {
+   "050": "candidate pattern",
+   "055": "candidate pattern",
+   "061": "candidate pattern",
+   "062": "candidate pattern",
+   "373": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-03",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the primitive genuinely carries a closed set of legal values owned by this code (a domain enum or state set), not free text, an externally-defined or wire vocabulary, an identifier or key, or a repeated message or path",
+  "reason": "The two carrying rules (064, 439) flag a `str` or raw primitive used for a concept like status/mode/kind, but a plain string or int is a legitimate type and becomes type laxity only when the concept has a closed, code-owned value set; the rules infer that from sentinel names and literal cardinality and never establish it.",
+  "rule_kinds": {
+   "064": "boundary register",
+   "331": "candidate pattern",
+   "439": "boundary register",
+   "574": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "331",
+    "kind": "candidate pattern",
+    "reason": "It evaluates whether the type encodes and enforces the domain invariant across encapsulation and enforcement dimensions, so it states the failure and checks the condition rather than leaving it unverified."
+   },
+   {
+    "rule_id": "574",
+    "kind": "proxy group",
+    "reason": "It only counts cross-file occurrences of string literals with 2-6 unique values and flags the repetition, naming no defect, so it merely selects code to look at."
+   }
+  ]
+ },
+ {
+  "entry_id": "Y-04",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the set of variants being dispatched is closed and owned here, not an open type hierarchy that third parties extend or a value parsed from input where the default arm is the real error path",
+  "reason": "Both rules flag a `match`/`switch` lacking `assert_never` or an `isinstance`/enum `if`/`elif` chain, but a dispatch that lacks an exhaustiveness assertion is a type-laxity failure only when the variant set is closed, and neither rule checks that the set is closed.",
+  "rule_kinds": {
+   "060": "boundary register",
+   "160": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Four of the rules name a construct that switches off an adopted check while the code stands, a `@ts-ignore`/`@ts-expect-error`, a `# noqa`/`# type: ignore`/`eslint-disable` directive, a build-file `NoWarn`/`Nullable disable`, or an unjustified suppression, and the suppression itself is the stated defect.",
+  "rule_kinds": {
+   "052": "candidate pattern",
+   "056": "candidate pattern",
+   "210": "candidate pattern",
+   "332": "boundary register",
+   "566": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "332",
+    "kind": "boundary register",
+    "reason": "It flags any edit to an existing linter config, but that is this failure only when the edit removes or weakens a rule the current change was failing, which the rule does not check."
+   }
+  ]
+ },
+ {
+  "entry_id": "Y-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states a definite contradiction: the producer wraps the payload in an outer envelope while the consumer's declared type describes the unwrapped body, so the declared type is false about the data that actually arrives. That named mismatch is the defect.",
+  "rule_kinds": {
+   "314": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "Y-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The two rules are split: 448 checks the boundary by export visibility (an exported signature referencing a type the package does not export) and states that defect, while 344 assumes a service return is a public boundary without verifying it. The kinds tie one-to-one, so by the tie-break I take the kind of the rule the invariant describes; the invariant speaks of a type 'defined, exported and published' in the contract, which is 448's export-visibility check, a candidate pattern.",
+  "rule_kinds": {
+   "344": "boundary register",
+   "448": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "344",
+    "kind": "boundary register",
+    "reason": "Returning an ORM entity from a service is a leak only when that service actually crosses a public boundary and the entity is not the intended published shape, which the rule does not establish."
+   }
+  ]
+ },
+ {
+  "entry_id": "Y-08",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule names no defective construct; it counts a file's type annotations, counts how many are escape hatches like `Any`/`any`/`interface{}`/`dynamic`/`object`/`dyn Any`, and reports the file when that share exceeds thirty per cent with at least five annotations. It selects files for review by a ratio.",
+  "rule_kinds": {
+   "065": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]
