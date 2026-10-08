@@ -1,0 +1,79 @@
+[
+ {
+  "code": "H",
+  "name": "Hygiene Debris",
+  "group": "Excess",
+  "definition": "A change leaves behind artifacts that no longer contribute to the delivered system. Membership test: nothing in the delivered system depends on the artifact.",
+  "n_rules": 33
+ },
+ {
+  "code": "A",
+  "name": "Annotation Noise",
+  "group": "Excess",
+  "definition": "Prose in the source adds no information that the code does not already carry. Membership test: the comment states nothing that the code cannot.",
+  "n_rules": 26
+ },
+ {
+  "code": "R",
+  "name": "Redundant Guarding",
+  "group": "Excess",
+  "definition": "A runtime check or fallback duplicates a guarantee that something else already provides. Membership test: the repeated guarantee is visible and reliable at that point in the code.",
+  "n_rules": 8
+ },
+ {
+  "code": "S",
+  "name": "Structural and Abstraction Slop",
+  "group": "Excess",
+  "definition": "Organization adds cost and provides no boundary, no variation point, and no reduction in complexity. Membership test: the system that exists does not use the boundary or variation that the structure provides.",
+  "n_rules": 115
+ },
+ {
+  "code": "D",
+  "name": "Duplication",
+  "group": "Excess",
+  "definition": "A change adds a second implementation of something the repository already provides. Membership test: the two implementations encode one concept that must change together.",
+  "n_rules": 33
+ },
+ {
+  "code": "T",
+  "name": "Test Slop",
+  "group": "False Assurance",
+  "definition": "A test produces a success signal without evidence about behavior. Membership test: the test cannot distinguish a correct behavior from a relevant incorrect one.",
+  "n_rules": 25
+ },
+ {
+  "code": "I",
+  "name": "Integrity / Fake-Done",
+  "group": "False Assurance",
+  "definition": "The code or its report presents work as finished that was not done. Membership test: the artifact misrepresents completion.",
+  "n_rules": 73
+ },
+ {
+  "code": "E",
+  "name": "Error-Swallowing",
+  "group": "False Assurance",
+  "definition": "Code suppresses, obscures, or silently converts a failure. Membership test: the caller can no longer distinguish failure from success.",
+  "n_rules": 20
+ },
+ {
+  "code": "Y",
+  "name": "Type Laxity",
+  "group": "False Assurance",
+  "definition": "An escape hatch lets code compile while weakening what the type system guarantees. Membership test: the reason for the escape is not visible or its scope is not contained.",
+  "n_rules": 25
+ },
+ {
+  "code": "K",
+  "name": "Kinetic Slop",
+  "group": "Overreach",
+  "definition": "A change modifies code beyond what the task requested, even when the extra change improves that code. Membership test: the modified region does not trace to the request.",
+  "n_rules": 9
+ },
+ {
+  "code": "L",
+  "name": "Lexical / Naming Slop",
+  "group": "Overreach",
+  "definition": "Vocabulary obscures domain meaning or departs from the terms the project already uses. Membership test: the name does not match what the repository calls the concept.",
+  "n_rules": 17
+ }
+]
