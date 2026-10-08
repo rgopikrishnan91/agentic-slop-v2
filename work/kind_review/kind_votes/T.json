@@ -1,0 +1,362 @@
+[
+ {
+  "entry_id": "T-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule in this entry describes a specific failure: the test's pass comes from doubles or fixtures rather than from executing real production code. Rule 203 says the test is testing nothing real because internal classes are mocked; rule 262 says the test calls no public function from the implementation module; rule 290 says mocking value objects hides field-name typos and validation errors; rule 427 says acceptance tests pass because fixtures implement expected behavior; rule 556 says stubbing the unit-under-test's own methods makes the test verify the mock instead of behavior."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Four of the five rules name the failure outright: a test that calls no production function, one that mocks value or state objects or the unit's own methods, or an acceptance test whose GREEN comes from a fixture rather than production code. Only the mock-count rule 203 flags a surface signal without checking whether the mocks sit on internals."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule here names the defect in its own text: the unit's own methods stubbed (556), data models and entities replaced by mocks instead of real instances (290), a test body that calls no public implementation function (262), fixtures that implement the expected behavior so the acceptance test goes green without production code (427), and patching of internal classes and helpers rather than only system boundaries (203). The patch count in 203 and the four signals in 427 are only how the case is located; the stated wrong is that the asserted result comes from the scaffolding rather than the unit."
+   }
+  },
+  "rule_kinds": {
+   "203": [
+    "candidate pattern",
+    "boundary register",
+    "candidate pattern"
+   ],
+   "262": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "290": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "427": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "556": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "203": 1
+  }
+ },
+ {
+  "entry_id": "T-02",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the four rules state what is wrong with the test assertion. Rule 289 says the test cannot answer what bug it catches that no other test catches, naming specific non-behaviors like framework verification and constructor attribute setting. Rule 327 says assertions pass despite incorrect expected values and gives four checks to detect this. Rule 428 catalogs ten concrete patterns where the assertion cannot fail on wrong behavior, such as tautological assertions and circular verification. Rule 265 only matches a word pattern (unexplained numeric literals) without establishing that the assertion is incorrect."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rules 289, 327 and 428 each state why a green assertion cannot fail on wrong behavior: it only exercises a framework or language guarantee, it binds to an incorrect or circularly recomputed expected value, or it asserts nothing (zero or tautological assertions). Rule 265 only matches numeric literals that lack an explanatory comment."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the four rules state the failure directly: assertions that pass although the expected value is wrong or taken from a tangential field (327), the enumerated theater shapes of zero assertions, tautologies, circular recomputation and try/except-wrapped assertions (428), and tests whose subject is a constructor assignment or a framework guarantee so that they still pass when the project's own code is deleted (289). Rule 265 is the exception: it looks for a multi-digit numeric literal with no neighbouring comment, which flags an undocumented expectation without saying the assertion is wrong."
+   }
+  },
+  "rule_kinds": {
+   "265": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "289": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "327": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "428": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "265": 3
+  }
+ },
+ {
+  "entry_id": "T-03",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three rules say what is wrong: verification is weakened or disabled to keep the suite green. Rule 207 says tests are updated to follow implementation changes rather than testing desired behavior, with assertions weakened or tests deleted. Rule 208 says tests are disabled via skip/ignore attributes instead of being fixed. Rule 342 says skip markers remain after their reason has expired, leaving tests that should be running in a skipped state."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule names an edit that leaves the suite green with less evidence behind it: a lowered or removed assertion that follows the implementation, a test disabled with a skip or ignore marker instead of being fixed, or a skip whose reason has expired. The weakening or disabling is itself the stated failure."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three rules describe an edit that removes evidence and say so in their text: assertions weakened or deleted and expectations rewritten to accept what the implementation now returns (207), test methods carrying Skip or Ignore attributes or sitting inside #if false as a substitute for fixing them (208), and skip annotations whose stated reason is gone or no longer valid (342). The attribute and annotation lists are the locating device; the named wrong is that the suite still reports success with the check switched off or lowered."
+   }
+  },
+  "rule_kinds": {
+   "207": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "208": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "342": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "T-04",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three rules say what is wrong: the test verdict depends on timing or leftover state rather than on the behavior under test. Rule 209 says timing workarounds are added instead of fixing the underlying race condition. Rule 266 says tests use global/nonlocal state, creating hidden execution-order dependencies. Rule 326 says sleep-based synchronization is used instead of condition-based polling, making the result depend on timing rather than completion."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two sleep rules name a fixed delay or spin standing in for waiting on an observable condition, which is itself the mechanism that decides the verdict by elapsed time. Rule 266 names an execution-order dependency but only detects that a test declares global or nonlocal state."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule pairs a syntactic trigger with an explicit statement of the failure: a fixed sleep, delay or spin standing in for waiting on an observable condition (326), the same delay calls in test methods as a workaround for an unfixed race (209), and global or nonlocal state in a test that makes the verdict depend on which test ran first (266). Mirdan's note that a global declaration alone does not prove an order dependency concerns how well the detector finds the case, not whether the rule names it."
+   }
+  },
+  "rule_kinds": {
+   "209": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "266": [
+    "candidate pattern",
+    "boundary register",
+    "candidate pattern"
+   ],
+   "326": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "266": 1
+  }
+ },
+ {
+  "entry_id": "T-05",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong: the test is coupled to internal structure rather than observable behavior. Rule 288 says tests assert internal helper function calls (assert_called_with on non-boundary functions) rather than observable outcomes, breaking during refactoring while missing integration bugs. Rule 325 says per-method test classes mirror production structure and multiple tests assert the same behavior through different internal paths, causing behavior-preserving refactors to break the suite."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules name the failure of binding a test to the shape of the implementation: asserting calls into non-boundary helpers, or mirroring production layout with per-method classes and reaching one outcome through several internal paths, so a behavior-preserving refactor breaks the test while a wrong observable result can stay green."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong without needing a count or a keyword: a test asserting that a non-boundary internal helper was called instead of the return value or state a caller can see (288), and per-method test classes mirroring the production layout plus several tests reaching one observable outcome by different internal paths (325). Each also states the consequence, that a behavior-preserving refactor turns the suite red while integration bugs go unseen."
+   }
+  },
+  "rule_kinds": {
+   "288": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "325": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "T-06",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two rules tie at one each. Rule 263 (candidate pattern) identifies tests with identical AST structure that should be parameterized, stating the failure is duplicated test logic adding no new verification. Rule 429 (proxy group) applies a formula counting tests per behavior. The entry's invariant -- each test must add verification of a behavior no other test pins -- aligns with rule 263's defect description, so the entry takes its kind."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 263 names the failure, test bodies with identical structure that re-verify one behavior and should be a single parameterized case; rule 429 only counts tests against a per-behavior budget. The two kinds tie one to one, so the entry takes the kind of the rule its invariant describes, the per-test duplication that rule 263 states."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two rules split evenly, so the kind follows the invariant that each test must add verification no other test already pins: rule 263 is the rule that states that per-test wrong, naming test functions with identical bodies differing only in input and output values that should be a single parameterized case. Rule 429 instead divides the test count by twice the number of distinct behaviors and reads the excess as bloat, which is an aggregate measure and never says which test adds nothing."
+   }
+  },
+  "rule_kinds": {
+   "263": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "429": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {
+   "429": 3
+  }
+ },
+ {
+  "entry_id": "T-07",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two rules tie at one each. Rule 430 (candidate pattern) provides a 15-item checklist naming specific missing coverage categories: empty inputs, boundary values, illegal events, idempotency, malformed input, and error contracts, stating what the suite fails to exercise. Rule 264 (proxy group) matches word substrings in test names. The entry's invariant -- the suite must exercise boundary, empty, and error cases the contract names -- aligns with rule 430's specific coverage categories, so the entry takes its kind."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 430 enumerates the specific contract cases a suite must exercise (empty and minimum inputs, boundary values, illegal events, cardinality, idempotency, malformed input, the error contract) and reports which are absent; rule 264 only checks whether any test name mentions an edge case. The two kinds tie one to one, so the entry takes the kind of the rule its invariant describes, the coverage of specific named cases that rule 430 states."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two rules split evenly, so the kind follows the invariant that the suite must exercise the boundary, empty and error cases the behavior's contract names: rule 430 is the rule that does this, listing the specific absent cases (empty and minimum input, boundary values, illegal events, n in 0/1/many, idempotency, malformed input, the declared error contract) and reporting which are missing. Rule 264 only counts tests in a file and looks for edge, boundary, error, empty or null in their names."
+   }
+  },
+  "rule_kinds": {
+   "264": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "430": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "264": 3
+  }
+ },
+ {
+  "entry_id": "T-08",
+  "status": "full",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "boundary register",
+    "condition": "the passing suite is presented as evidence that the untested code works, for instance a change reported as tested or done",
+    "reason": "All three rules find production code that no test reaches, but untested code is Test Slop only when the suite result is offered as evidence for that code. Rule 308 identifies untested files via import-graph BFS and ranks them by risk. Rule 322 flags implementation files modified without a corresponding test file. Rule 466 finds exported symbols unreachable from any test in the module graph. None of the rules check whether the suite result is actually claimed as verification for the untested code; without that claim, the gap is a coverage concern, not a false success signal."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the passing test suite is presented as evidence that the untested code works, for example the change is reported as tested or done",
+    "reason": "All three rules establish only that production code is unreached by any test: a source file unreachable through the import graph, a changed implementation file with no test file, or an exported symbol unreachable in the module graph. Untested code is a coverage gap and becomes Test Slop only when the passing suite is offered as evidence for that code, a condition none of the rules check."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the passing suite is presented as evidence for that code, for instance the change is reported as tested or done; and the code is not generated, thin glue, experimental, or exercised by an integration suite the import or module graph cannot see",
+    "reason": "All three rules establish a determinate reachability fact rather than a weak assertion: a source file not reached by breadth-first search from the test files through the import graph (308), a modified implementation file with no test file found by the language's naming convention (322), and an exported symbol unreachable from any test in the module graph (466). Absent verification becomes a false success signal only once the green suite is offered as evidence for that code, and none of the three checks whether such a claim was made."
+   }
+  },
+  "rule_kinds": {
+   "308": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ],
+   "322": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ],
+   "466": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "T-09",
+  "status": "full",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule matches the word 'and' in the test name as a proxy for multi-behavior tests. It inspects only the name, not the body or assertions, so it nominates candidates for review rather than establishing that the test actually covers multiple behaviors. A test named 'rejects_empty_and_whitespace_input' describes one behavior, while an integration test may legitimately walk a composite scenario."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule matches the word \"and\" in a test name as a sign the test covers more than one behavior. It inspects the name, not the body or its assertions, so it nominates candidates for review rather than naming a failure."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The entry's one rule looks for the substring \"and\" in a test's name and reads it as a sign that the test covers more than one behavior. It never inspects the body or the assertions, so it says nothing about whether the test's verdict is sound; it only hands a reviewer a list of names to read."
+   }
+  },
+  "rule_kinds": {
+   "127": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

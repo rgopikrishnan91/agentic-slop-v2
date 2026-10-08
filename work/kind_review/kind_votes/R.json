@@ -1,0 +1,144 @@
+[
+ {
+  "entry_id": "R-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule names a specific redundancy: re-coercing a value whose primitive type is already established (053), null-checking a value the type system guarantees non-null (068), or re-validating parameters already validated by a trusted upstream boundary (070). All three state what is wrong rather than just matching a pattern or counting."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule names the redundancy in its own text: re-coercing a parameter already of the primitive type, a null or runtime type check on a value the type system already proves, and validation of data a caller or upstream boundary already validated. The settled property is part of what the rule claims to detect, so the text states the failure."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three rules name the duplicated guarantee in their own text: a primitive parameter coerced again to the type it already has, a null/undefined or runtime type check on a value the type system already proves non-null or of that type, and validation of a parameter that a trusted caller or upstream boundary has already validated. Each text states the failure rather than merely selecting a construct for review."
+   }
+  },
+  "rule_kinds": {
+   "053": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "068": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "070": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "R-02",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules state what the failure is: a catch block that only rethrows the same error unchanged (040), and a try-catch wrapping code that cannot throw or that rethrows unchanged (069). Each rule text says the error-handling construct is redundant because default propagation or non-throwing code makes it a no-op."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules state the failure outright: a catch that only rethrows the same error unchanged adds nothing over default propagation, and a try/catch wrapping code that cannot throw handles a failure that cannot occur. The 'does nothing' condition is the detection criterion itself."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules describe an error-handling construct whose own description contains the defect: a catch block that does nothing but rethrow the same error, and a try/catch wrapping code that cannot throw or handling a logically impossible state. The qualifiers 'only rethrow' and 'cannot throw' are what makes the construct a no-op, so the text says what is wrong without needing an outside condition."
+   }
+  },
+  "rule_kinds": {
+   "040": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "069": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "R-03",
+  "status": "full",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "boundary register",
+    "condition": "the input data shape is already fixed by an upstream contract or normalizing boundary, so only one key form or nesting depth can arrive",
+    "reason": "The two rules are split: 066 matches a code pattern (.get({}).get() chains) without stating what is wrong, and 067 states a defensive dual-key lookup for an unknown data shape, which is redundant guarding only if the shape is already fixed. Because the entry's invariant describes a shape guarantee that the rules do not check, the tie goes to boundary register."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "An upstream input contract or normalizing boundary already fixes the data's key form and required fields, so the empty-container default or the alternative-key branch can never be reached; the rules match the fallback shape but do not establish this.",
+    "reason": "Each rule matches a defensive access shape (a chain of dict gets defaulting to empty containers, or an atom-key-or-string-key lookup) that is a fallback for a second data shape. Per the detector note for 067, there is no dataflow or call-context proof that the alternative form cannot arrive, so the fallback is redundant only if the input shape is already fixed, which the rules do not check."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the producing boundary or input contract already fixes the shape of the data at that point, so the intermediate key is always present (rule 066) or only one of the two key forms can ever arrive (rule 067), making the default or the alternative access path unreachable",
+    "reason": "Rule 066 matches the syntactic shape `.get({}).get()` and rule 067 matches an OR of an atom-key and a string-key lookup on the same map; each states a defensive second access path but neither establishes that the shape it defends against cannot occur, which is exactly what makes the path a duplicated guarantee rather than working adapter code. The ex_slop inspection for 067 confirms the detector has no dataflow or call-context proof that both key forms are unnecessary and that boundary adapters can be intentional."
+   }
+  },
+  "rule_kinds": {
+   "066": [
+    "proxy group",
+    "boundary register",
+    "boundary register"
+   ],
+   "067": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {
+   "066": 1
+  }
+ },
+ {
+  "entry_id": "R-04",
+  "status": "full",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "boundary register",
+    "condition": "the tested state is already settled at that point by a type, a validating caller, or a prior normalization, so the precondition check duplicates an existing guarantee",
+    "reason": "Rule 571 identifies eight LBYL patterns where a condition is tested before an operation that would itself report the condition. The rule text frames this as a style preference (use EAFP), but it is a redundant guarding failure only under the added condition that something already settles the tested state, which the rule does not check."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "The tested state is already settled at that point by a type, a validating caller, or a prior normalization; the rule matches the syntactic look-before-you-leap shape but does not establish that any guarantee fixes the condition.",
+    "reason": "The rule matches eight Python precondition shapes (key present, attribute present, path exists, non-empty, not None, numeric string, non-zero divisor, isinstance) placed just before the operation they guard. Such a guard is redundant only if something already settles the tested state, and the rule checks none of that, so without the added condition the branch is ordinary control flow."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the tested state (key present, attribute present, path exists, non-empty, not None, numeric string, non-zero divisor, runtime type) is already settled at that point by a declared type, a validating caller or a prior normalization, so the guard's false branch cannot be reached",
+    "reason": "The single rule of this entry matches eight Python look-before-you-leap shapes and justifies them with an EAFP style preference, which is not a duplicated guarantee: an absent key, a zero divisor or a narrowing isinstance guard is ordinary intended control flow. The rule states a possible failure but checks nothing about whether a reliable guarantee already settles the condition, so it only reaches this family under the added condition."
+   }
+  },
+  "rule_kinds": {
+   "571": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

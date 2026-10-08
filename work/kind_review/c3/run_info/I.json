@@ -1,0 +1,28 @@
+{
+ "family": "I",
+ "role": "coder 3",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5",
+  "configured_model": "claude-opus-5",
+  "matches_roster_model": true
+ },
+ "effort": "high",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat, ls, wc, git; python3 -I for reading the JSON files, for writing kinds/I.json via heredoc, and for validating the output against entries/I.json)",
+  "mcp__claude-code-remote__get_session (model identifier)"
+ ],
+ "sources_read": [
+  "INSTRUCTIONS.md",
+  "families.json (family I definition)",
+  "entries/I.json (all 17 entries)",
+  "rules.json (all 73 rules of these entries: name and full description)",
+  "detector_source_inspections.json (notes for rules 176, 200, 201, 208, 248, 530)"
+ ],
+ "notes": [
+  "No web access was used; no rule description required opening a tool URL.",
+  "No subagents, workflows or other models were used; every kind decision and reason was written by hand in this session.",
+  "No entry had a tie between two kinds, so the invariant tie-breaker was not needed."
+ ]
+}

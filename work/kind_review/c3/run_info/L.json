@@ -1,0 +1,25 @@
+{
+ "family": "L",
+ "role": "coder 3",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5",
+  "configured_model": "claude-opus-5",
+  "matches_roster_model_for_coder_3": true
+ },
+ "effort": "default (no effort override set for this session; permission mode auto)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat, mkdir, heredoc writes, python3 for JSON reading and validation)",
+  "mcp__claude-code-remote__get_session (model identifier)",
+  "git (add, commit, push)"
+ ],
+ "inputs_read": [
+  "INSTRUCTIONS.md",
+  "families.json",
+  "entries/L.json",
+  "rules.json (rules 115, 126, 128, 129, 130, 131, 132, 133, 198, 316, 321, 351, 372, 384, 414, 555, 564)",
+  "detector_source_inspections.json (SRC23, SRC24, SRC30, SRC32)"
+ ],
+ "notes": "No web access used; no subagents or workflows used; every reason written by hand for its entry."
+}

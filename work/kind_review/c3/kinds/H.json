@@ -1,0 +1,165 @@
+[
+ {
+  "entry_id": "H-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here resolves references and reports a declaration that no other part of the system references: an import, a top-level declaration, a file, an export, a type, a manifest dependency, a class or enum member, a component, a prop, an emitted event, a server action, or code that is both duplicated and unreferenced. Each rule names the artifact and states the failure itself, that nothing consumes it, so none of them merely selects code for a reviewer.",
+  "rule_kinds": {
+   "001": "candidate pattern",
+   "006": "candidate pattern",
+   "007": "candidate pattern",
+   "008": "candidate pattern",
+   "009": "candidate pattern",
+   "010": "candidate pattern",
+   "444": "candidate pattern",
+   "453": "candidate pattern",
+   "454": "candidate pattern",
+   "455": "candidate pattern",
+   "456": "candidate pattern",
+   "465": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules check where a production dependency is imported from and report the case where every import site is one that does not ship: type-import positions, which are erased at compile time, or test files, which are not delivered. The failure is stated outright, a manifest entry claiming a run-time requirement that the shipped runtime never loads, and each rule even names the remedy, moving the entry to devDependencies.",
+  "rule_kinds": {
+   "446": "candidate pattern",
+   "447": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 003 reports statements sitting after a return, throw, raise, break or continue, and rule 004 reports a branch whose condition is a literal constant; in both cases the rule text states the failure, that the code cannot be reached on any execution path. The detector note records that 003 and 004 are line-based recognizers rather than a full control-flow analysis, but a weak implementation does not change what the rule asserts is wrong.",
+  "rule_kinds": {
+   "003": "candidate pattern",
+   "004": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule reports blocks of real code that were turned into comments and left in the source file. Naming the artifact as commented-out code retained in a file is itself the statement of the failure, so no further judgement is needed to know what the finding alleges.",
+  "rule_kinds": {
+   "329": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "nothing in the system expects an effect from the operation, so the declaration can simply be deleted",
+  "reason": "Both rules report a declared operation whose body performs no work: a non-trivial Python function that does nothing useful, and a React useEffect with no executable body. That is a stated failure, but it is Hygiene Debris only when no caller or requirement expects an effect and the declaration can be deleted; if an effect is expected, the same finding is omitted work presented as done, and neither rule looks at what the invoking sites expect.",
+  "rule_kinds": {
+   "017": "boundary register",
+   "018": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The three rules report a console or print or fmt.Print call, a bare debugger keyword, and a console.log paired with a debug or temp comment, each qualified as being in production code. The statement match is only how the finding is located; what each rule asserts, that development instrumentation is being delivered in a production path, is the failure itself. The note on rule 002 records narrow method coverage and no semantic proof that the log is unnecessary, which weakens the detector without turning the rule into mere selection.",
+  "rule_kinds": {
+   "002": "candidate pattern",
+   "330": "candidate pattern",
+   "370": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 019 reports named scratch and planning files committed at the repository root rather than under a structured documentation directory, and rule 495 reports generator leftovers such as oai_citation, sandbox:/mnt/data/, utm_source=chatgpt.com and unresolved placeholder tokens in delivered text. The filename list and the token list are the matching mechanism; both rules say what is wrong, that a trace of the authoring process was shipped as product.",
+  "rule_kinds": {
+   "019": "candidate pattern",
+   "495": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states the obligation and the failure together: when a fix attempt fails its changes must be reverted at once, and dead code accumulated from abandoned attempts is forbidden. The detector note shows this is agent-facing prompt text with no scope analysis behind it, which makes it unverifiable in practice but leaves the asserted failure fully named.",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "One rule reports an event published through pg_notify, a Redis publish or an emit that no subscriber consumes; the mirror rule reports a registered listener for which no publisher exists in the codebase. Matching channel names across the two ends is how each finding is located, and the absence of the counterpart is stated as the failure rather than left to a reviewer.",
+  "rule_kinds": {
+   "345": "candidate pattern",
+   "346": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-10",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the migration has completed, so no remaining caller, published API or still-supported release needs the old path",
+  "reason": "The single rule lumps together deprecated-but-called symbols, mixed old and new APIs, stale shims, completed migration wrappers and abandoned 'remove later' TODOs, and its report never distinguishes which of these it found. Only the finished-migration cases are debris in this family; while callers still use the old path the same finding is live compatibility structure or unfinished migration work, and the rule does not establish that the migration completed.",
+  "rule_kinds": {
+   "092": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-11",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 005 reports several import statements drawing from the same module and rule 014 reports one symbol exported more than once. Grouping a file's declarations by what they bind is the detection method, while the rule text names the failure directly, that a second declaration repeats a binding the first already established.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 445 tracks which fallow-ignore or @expected-unused annotations get consumed during analysis and reports those whose target finding no longer exists; rule 567 reports header Suppressions entries with no matching directive in the code body. Each rule states the failure, an annotation left behind after the thing it covered was removed, not just the presence of an annotation.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-13",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule computes dead functions plus duplicate functions over total functions and fails when that fraction crosses a configured threshold. It is a measurement against a cutoff: it points at a whole codebase without naming any artifact or saying what obligation a particular function breaks, so it selects code for a person to look at.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]

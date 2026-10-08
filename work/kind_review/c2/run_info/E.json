@@ -1,0 +1,19 @@
+{
+ "role": "coder 2",
+ "family": "E",
+ "model_reported": {
+  "session_context.model": "claude-opus-4-8",
+  "external_metadata.last_served_model": "claude-opus-4-8"
+ },
+ "roster_model_expected": "claude-opus-4-8 (Claude Opus 4.8)",
+ "model_matches_roster": true,
+ "effort": "default (high)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Read",
+  "Bash (python3 to extract specific rule/detector-note records for reading)",
+  "Write",
+  "mcp__claude-code-remote__get_session (model identity)"
+ ],
+ "notes": "Single session, family E only. Reasons written per entry by hand; no script generated reasons. No subagents, workflows, or other models used. Only files in this folder were read."
+}

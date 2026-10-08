@@ -1,0 +1,91 @@
+[
+ {
+  "entry_id": "L-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three of the rules name specific contentless identifiers as the failure: a role word plus a counter or a sequential numbered variable (126), a blocklisted filler function name such as process_data or do_stuff (414), and grab-bag module names such as utils or helpers (555). Rule 133 instead only measures the share of one- and two-character identifiers in a function, so it selects the function for review rather than stating a failing name.",
+  "rule_kinds": {
+   "126": "candidate pattern",
+   "133": "proxy group",
+   "414": "candidate pattern",
+   "555": "candidate pattern"
+  },
+  "misfit_rules": [
+   {"rule_id": "133", "kind": "proxy group", "reason": "It flags a function by a >50% ratio of short identifiers, a measurement that selects code without naming any identifier that fails to denote its concept."}
+  ]
+ },
+ {
+  "entry_id": "L-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the failure outright: 129 flags a name that carries a redundant context prefix or type suffix restating the scope it already sits in, and 132 flags an identifier that repeats two or more tokens already supplied by its enclosing module, class or function.",
+  "rule_kinds": {
+   "129": "candidate pattern",
+   "132": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule takes the project's (or the language's) established convention as the standard and reports the deviation from it: a style not found elsewhere in the codebase (115), mixed casing within a directory (128), a name inconsistent with the rest of its own file (131), a file name whose casing breaks the per-language rule (384), and a file placed where a declared per-directory rule forbids (564).",
+  "rule_kinds": {
+   "115": "candidate pattern",
+   "128": "candidate pattern",
+   "131": "candidate pattern",
+   "384": "candidate pattern",
+   "564": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule names a concrete failure: one field is spelled differently across the database, API-response and client layers and the name transformations are applied inconsistently at the boundaries, which shows up as field-access errors.",
+  "rule_kinds": {
+   "316": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states that an identifier is misspelled at its declaration site and confirms the error by cross-referencing the spelling used by comparable identifiers in the repository.",
+  "rule_kinds": {
+   "351": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-06",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Both rules select inline literals purely by surface form, numeric literals by digit count, magnitude or count per function (198) and CSS values by pixel size or color format such as hex, rgba() or hsl() (372), without checking that the value carries a domain meaning or that a named constant or token exists for it; they hand code to a reviewer rather than state a broken obligation.",
+  "rule_kinds": {
+   "198": "proxy group",
+   "372": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-07",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the project's own existing sources avoid these emoji and typographic characters for this purpose, so the introduced glyph lies outside the project's character register",
+  "reason": "Both rules flag characters introduced into source, emoji in code or comments (130) and decorative typographic glyphs such as em dashes, smart quotes, ellipses and arrows (321), treating their mere presence as the defect; neither compares the glyph against the character register the project's own sources already use, which is what would make it a departure from repository vocabulary.",
+  "rule_kinds": {
+   "130": "boundary register",
+   "321": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]

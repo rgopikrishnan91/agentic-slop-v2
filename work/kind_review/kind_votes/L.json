@@ -1,0 +1,268 @@
+[
+ {
+  "entry_id": "L-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the four rules state what is wrong: rule 126 says names are generic placeholders (helper_1, data2), rule 414 flags specific blocklisted filler verb phrases (process_data, handle_response), and rule 555 says module names like utils and helpers are grab-bag names lacking domain cohesion. Rule 133 only measures the density of short identifiers without stating the naming failure."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the rules name specific contentless identifiers as the failure: a role word plus a counter or a sequential numbered variable (126), a blocklisted filler function name such as process_data or do_stuff (414), and grab-bag module names such as utils or helpers (555). Rule 133 instead only measures the share of one- and two-character identifiers in a function, so it selects the function for review rather than stating a failing name."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the four rules name the defect in the identifier itself: a placeholder shape such as helper_1 or data2 (126), a function name drawn from a filler blocklist like process_data or handle_response (414), and a module called utils, helpers, common or shared that names no bounded context (555); the blocklists and name shapes are only how the case is found. Rule 133 instead measures the share of short identifiers in a function, so it does not state a defect in any one name."
+   }
+  },
+  "rule_kinds": {
+   "126": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "133": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "414": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "555": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "133": 3
+  }
+ },
+ {
+  "entry_id": "L-02",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong: rule 129 says names carry redundant context prefixes and obscure intent (getUserDataFromDatabase when getUser suffices), and rule 132 says identifiers repeat tokens already present in the enclosing scope (user_update_user_profile in UserService)."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules state the failure outright: 129 flags a name that carries a redundant context prefix or type suffix restating the scope it already sits in, and 132 flags an identifier that repeats two or more tokens already supplied by its enclosing module, class or function."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong with the name as written: 129 calls out redundant context prefixes and intent-obscuring type suffixes (getUserDataFromDatabase, currentUserAuthenticationStatusBoolean), and 132 calls out an identifier that repeats tokens its enclosing module, class or function already supplies (user_update_user_profile in UserService). The word-token average in 129 and the two-token overlap floor in 132 are the means of finding the case, not the statement of the failure."
+   }
+  },
+  "rule_kinds": {
+   "129": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "132": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "L-03",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All five rules state a specific convention departure: rule 115 says patterns or style are not found elsewhere in the codebase, rule 128 says naming conventions are mixed within a directory, rule 131 says style is inconsistent within the same file, rule 384 says file names violate per-language casing rules, and rule 564 says files violate declared per-directory placement patterns."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule takes the project's (or the language's) established convention as the standard and reports the deviation from it: a style not found elsewhere in the codebase (115), mixed casing within a directory (128), a name inconsistent with the rest of its own file (131), a file name whose casing breaks the per-language rule (384), and a file placed where a declared per-directory rule forbids (564)."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Four rules state the failure as a mismatch with a standard the project itself holds: a style or pattern found nowhere else in the codebase (115), casings mixed within one directory (128), an identifier or import block out of step with the rest of its own file (131), and a file sitting where the project's declared per-directory patterns forbid it (564). Rule 384 states a casing violation too, but against a language table it carries rather than against the project."
+   }
+  },
+  "rule_kinds": {
+   "115": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "128": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "131": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "384": [
+    "candidate pattern",
+    "candidate pattern",
+    "boundary register"
+   ],
+   "564": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "384": 1
+  }
+ },
+ {
+  "entry_id": "L-04",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 316 says what is wrong: naming conventions diverge across architectural layers with transformations applied inconsistently, leading to field access errors when a consumer reads a field under a form the producer never emits."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule names a concrete failure: one field is spelled differently across the database, API-response and client layers and the name transformations are applied inconsistently at the boundaries, which shows up as field-access errors."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule states the failure outright: the name transformation between the database, the API response and the frontend types is applied at some boundaries and not others, and a consumer ends up reading a field under a spelling the producer never emits, which the rule reports as field-access errors. The per-layer casings it lists are the context of the failure, not the trigger on their own."
+   }
+  },
+  "rule_kinds": {
+   "316": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "L-05",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 351 says what is wrong: an identifier has a spelling error at its declaration site, confirmed by cross-referencing comparable identifiers in the repository, so the domain term exists under two spellings and stops being one searchable word."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule states that an identifier is misspelled at its declaration site and confirms the error by cross-referencing the spelling used by comparable identifiers in the repository."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The rule says what is wrong at the declaration site: the identifier spells its term incorrectly, and the finding is settled by cross-referencing how comparable identifiers in the repository spell it. The comparison against repository usage is the check, so nothing further has to be supplied before the finding counts."
+   }
+  },
+  "rule_kinds": {
+   "351": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "L-06",
+  "status": "majority",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 372 says hardcoded CSS values are used instead of design tokens or CSS variables, stating the failure. Rule 198 only measures numeric literals by digit count or per-function count without saying what is wrong. The tie is broken by the entry's invariant, which describes values that should be referred to through named constants or design tokens, aligning with rule 372's stated failure."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Both rules select inline literals purely by surface form, numeric literals by digit count, magnitude or count per function (198) and CSS values by pixel size or color format such as hex, rgba() or hsl() (372), without checking that the value carries a domain meaning or that a named constant or token exists for it; they hand code to a reviewer rather than state a broken obligation."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Both rules pick literals out by surface measurement alone: numbers above 1000 or with four or more digits, or more than three distinct non-trivial literals in a function (198), and pixel sizes of three or four digits, hex colours, rgba() and hsl() (372). Rule 372 names design tokens as the alternative but still tests only the format, so neither rule establishes that the value carries a domain meaning the project already names; they hand the code to a reader."
+   }
+  },
+  "rule_kinds": {
+   "198": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "372": [
+    "candidate pattern",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {
+   "198": 1
+  }
+ },
+ {
+  "entry_id": "L-07",
+  "status": "majority",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Both rules select code by matching character classes without stating what naming or lexical failure occurs: rule 130 matches emoji characters in source, and rule 321 matches specific decorative non-ASCII code points (em dashes, smart quotes, ellipses, arrows) by regex. Neither checks whether the project's own sources avoid these characters."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the project's own existing sources avoid these emoji and typographic characters for this purpose, so the introduced glyph lies outside the project's character register",
+    "reason": "Both rules flag characters introduced into source, emoji in code or comments (130) and decorative typographic glyphs such as em dashes, smart quotes, ellipses and arrows (321), treating their mere presence as the defect; neither compares the glyph against the character register the project's own sources already use, which is what would make it a departure from repository vocabulary."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the project's own sources keep these characters out of this position, so the glyph is ornament rather than content the project intends (not a user-facing or localised string, documentation, deliberately decorated CLI output, a non-ASCII natural-language identifier, a documented Unicode operator, or data that exercises Unicode handling)",
+    "reason": "Rule 130 reports emoji in source or comments and rule 321 reports em dashes, curly quotes, ellipses and arrows in edited source text, recommending ASCII in their place; each states a real defect only where the project's own character register excludes the glyph, and neither reads that register from the repository. The Pilot Shell inspection notes that the checker's own warning admits it cannot tell intentional Unicode from ornament, and that it falls back to scanning the whole file."
+   }
+  },
+  "rule_kinds": {
+   "130": [
+    "proxy group",
+    "boundary register",
+    "boundary register"
+   ],
+   "321": [
+    "proxy group",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

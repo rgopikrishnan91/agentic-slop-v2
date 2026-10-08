@@ -1,0 +1,18 @@
+{
+ "role": "coder 3",
+ "family": "R",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5",
+  "configured_model": "claude-opus-5",
+  "matches_roster_model": true
+ },
+ "effort": "no explicit effort/thinking setting is reported by the system for this session; run at the session default",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat, ls, mkdir, heredoc writes, python3 -I for reading the JSON files)",
+  "mcp__claude-code-remote__get_session (to report the model identifier)",
+  "git (add, commit, push)"
+ ],
+ "notes": "Only the files in this session folder were read: INSTRUCTIONS.md, families.json, entries/R.json, rules.json, detector_source_inspections.json. No web access, no other git branch, no subagents or workflows. Each reason was written by hand for its entry."
+}

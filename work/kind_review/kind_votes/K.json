@@ -1,0 +1,147 @@
+[
+ {
+  "entry_id": "K-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All four rules state what is wrong: 083 says the delivered code includes unrequested features and speculative abstractions; 206 says the agent responds to a fix request with unrelated changes or superficial substitutes; 296 says behavior changes are smuggled into a refactor; 298 says the agent edits code unrelated to the current task. Each rule names a concrete failure in which the delivered change exceeds the requested scope."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule names the scope failure in its own text: an unrequested feature or speculative abstraction (083), answering a fix request by changing unrelated files or adding tests instead of fixing (206), a behaviour change smuggled into a presented refactor (296), and refactoring, cleanup, comment edits or file moves unrelated to the task (298). The text states what is wrong, so these are candidate pattern even though their detectors are mostly natural-language prompts."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each of the four rules names the fault in its own words: features, abstractions and 'just in case' code built beyond the requirements (083), a fix request answered with tests, docs or edits to unrelated files instead of the fix (206), a behaviour change smuggled into what is presented as a refactor (296), and optimizing, reorganizing or re-commenting code the current task does not touch (298). The 3x line trigger in 083 and the lineage wording in 083 and 298 only help locate the case; the texts already say what has gone wrong."
+   }
+  },
+  "rule_kinds": {
+   "083": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "206": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "296": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "298": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "K-02",
+  "status": "full",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "All three rules measure size and flag a number without determining whether the growth traces to the request. Rule 107 scores complexity times net LOC growth over a time window. Rule 204 flags any positive non-test LOC delta from git numstat. Rule 483 flags a file that grew more than 20% since its last daily baseline. None reads the task or checks whether the growth was requested."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "All three rules only measure size or growth and flag a number: net non-test LOC delta over a diff (204), a file grown more than 20% since its daily baseline (483), and complexity multiplied by churn/net growth over a time window (107). None reads the request or states what is wrong, so each selects code for a reviewer rather than stating a failure."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "All three rules pick code out by a size number and leave the verdict to whoever reads the result: summed complexity multiplied by net line growth inside a 14-day or 90-day window (107), any positive non-test line delta in a diff (204), and a source file more than 20 percent above its last daily baseline (483). A bigger file or a positive delta is not itself a fault, none of the three reads the request that would account for the growth, and the inspected hotspot detector calls its own output prioritization rather than evidence of Kinetic Slop."
+   }
+  },
+  "rule_kinds": {
+   "107": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "204": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "483": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "K-03",
+  "status": "full",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Rule 421 matches the word 'and' on a word boundary in the commit subject line, case-insensitively. It inspects no diff and no request. The keyword match selects commits for a person to review but does not say what is wrong, since many single-concern subjects legitimately contain 'and'."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Rule 421 matches the word 'and' on a word boundary in the commit subject and reads nothing else. It matches a keyword and does not say what is wrong, so it selects commits for a person to inspect rather than stating a mixed-concern failure."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Rule 421 matches the word 'and' on a word boundary, case-insensitively, in the first line of the commit subject, and goes no further than saying this suggests the commit does more than one thing. The inspected check takes no diff, task or dependency input, so the match selects commits for a person to open rather than stating a failure."
+   }
+  },
+  "rule_kinds": {
+   "421": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "K-04",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 540 says what is wrong: when an attempted fix fails, its edits must be reverted before delivery, and accumulated dead code from failed fix attempts is forbidden. It names the failure (leftover changes from a discarded attempt) and states the obligation (immediate revert)."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 540 states the failure directly: edits from a fix attempt that failed were left in the working tree instead of being reverted, so dead code from the abandoned attempt accumulates in the delivered change. The text says what is wrong, so it is candidate pattern even though the detector is a prompt obligation."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Rule 540 states the fault directly: when a fix attempt fails, its edits were not reverted, so dead code accumulated from the abandoned attempt travels with the delivered change. It is an obligation written as prose rather than a count or a keyword, and the text names both the trigger (the failed attempt) and the wrong outcome (its changes left standing)."
+   }
+  },
+  "rule_kinds": {
+   "540": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

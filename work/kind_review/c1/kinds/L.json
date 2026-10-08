@@ -1,0 +1,101 @@
+[
+ {
+  "entry_id": "L-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three of the four rules state what is wrong: rule 126 says names are generic placeholders (helper_1, data2), rule 414 flags specific blocklisted filler verb phrases (process_data, handle_response), and rule 555 says module names like utils and helpers are grab-bag names lacking domain cohesion. Rule 133 only measures the density of short identifiers without stating the naming failure.",
+  "rule_kinds": {
+   "126": "candidate pattern",
+   "133": "proxy group",
+   "414": "candidate pattern",
+   "555": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "133",
+    "kind": "proxy group",
+    "reason": "The rule measures the percentage of identifiers with two or fewer characters in a function, selecting code by a density threshold rather than stating what naming failure each identifier has."
+   }
+  ]
+ },
+ {
+  "entry_id": "L-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: rule 129 says names carry redundant context prefixes and obscure intent (getUserDataFromDatabase when getUser suffices), and rule 132 says identifiers repeat tokens already present in the enclosing scope (user_update_user_profile in UserService).",
+  "rule_kinds": {
+   "129": "candidate pattern",
+   "132": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All five rules state a specific convention departure: rule 115 says patterns or style are not found elsewhere in the codebase, rule 128 says naming conventions are mixed within a directory, rule 131 says style is inconsistent within the same file, rule 384 says file names violate per-language casing rules, and rule 564 says files violate declared per-directory placement patterns.",
+  "rule_kinds": {
+   "115": "candidate pattern",
+   "128": "candidate pattern",
+   "131": "candidate pattern",
+   "384": "candidate pattern",
+   "564": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 316 says what is wrong: naming conventions diverge across architectural layers with transformations applied inconsistently, leading to field access errors when a consumer reads a field under a form the producer never emits.",
+  "rule_kinds": {
+   "316": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 351 says what is wrong: an identifier has a spelling error at its declaration site, confirmed by cross-referencing comparable identifiers in the repository, so the domain term exists under two spellings and stops being one searchable word.",
+  "rule_kinds": {
+   "351": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "L-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 372 says hardcoded CSS values are used instead of design tokens or CSS variables, stating the failure. Rule 198 only measures numeric literals by digit count or per-function count without saying what is wrong. The tie is broken by the entry's invariant, which describes values that should be referred to through named constants or design tokens, aligning with rule 372's stated failure.",
+  "rule_kinds": {
+   "198": "proxy group",
+   "372": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "198",
+    "kind": "proxy group",
+    "reason": "The rule selects numeric literals by size (over 1000 or four or more digits) or by count (more than three per function) without stating what naming or domain-meaning failure the literal causes."
+   }
+  ]
+ },
+ {
+  "entry_id": "L-07",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Both rules select code by matching character classes without stating what naming or lexical failure occurs: rule 130 matches emoji characters in source, and rule 321 matches specific decorative non-ASCII code points (em dashes, smart quotes, ellipses, arrows) by regex. Neither checks whether the project's own sources avoid these characters.",
+  "rule_kinds": {
+   "130": "proxy group",
+   "321": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]

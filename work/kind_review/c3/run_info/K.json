@@ -1,0 +1,17 @@
+{
+ "role": "coder 3",
+ "family": "K",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5",
+  "configured_model": "claude-opus-5",
+  "matches_roster_model_for_coder_3": true
+ },
+ "effort": "default; the session reports no effort or thinking-level override (permission_mode auto)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat to read INSTRUCTIONS.md, families.json, entries/K.json; python3 -I inline readers to pull the nine rules from rules.json and their notes from detector_source_inspections.json; heredoc to write kinds/K.json and run_info/K.json; git for status, add, commit, push)",
+  "mcp__claude-code-remote__get_session (to read the reported model identifiers)"
+ ],
+ "notes": "No subagents, workflows or other models used. No web access and no files outside this folder were read. Each entry reason was written by hand for that entry."
+}

@@ -1,0 +1,126 @@
+[
+ {
+  "entry_id": "D-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state a specific duplication failure: rule 005 reports multiple imports from the same module, and rule 014 reports the same symbol exported more than once. Each rule names the duplicated declaration and identifies the redundancy directly.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Most rules in this entry identify a specific repeated definition and state what is duplicated: identical type shapes (054), identical response structures (336), repeated parameter groups (438), byte-identical prop sets (461), and unnecessary DTO reshaping where shapes match (546). Two rules (123, 574) instead match a name or literal across files and signal a possible missing shared definition without confirming it.",
+  "rule_kinds": {
+   "054": "candidate pattern",
+   "123": "proxy group",
+   "336": "candidate pattern",
+   "438": "candidate pattern",
+   "461": "candidate pattern",
+   "546": "candidate pattern",
+   "574": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "123",
+    "kind": "proxy group",
+    "reason": "The rule matches same-named ALL_CAPS constants across files and signals a possible missing shared constant, but does not confirm the constants represent the same concept."
+   },
+   {
+    "rule_id": "574",
+    "kind": "proxy group",
+    "reason": "The rule matches recurring string literals across files and signals a possible missing enum or constant, but the literal match alone does not confirm a shared domain concept."
+   }
+  ]
+ },
+ {
+  "entry_id": "D-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule computes a ratio of dead and duplicate functions over total functions and fails when a threshold is exceeded. It measures an aggregate score for the repository without identifying any specific duplicated function pair or stating what is duplicated.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules select candidate functions from surface features without comparing implementations. Rule 119 matches normalized signature shapes, rule 122 matches function names with differing signatures, and rule 124 counts shared callees between sibling functions. None says what is duplicated in the function bodies; a detector note for 124 explicitly states that callee overlap does not prove duplicate behavior.",
+  "rule_kinds": {
+   "119": "proxy group",
+   "122": "proxy group",
+   "124": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule states a specific duplication failure in test code: rule 120 reports test setup and mock patterns duplicated across files, rule 263 reports test functions with identical AST structure that should be parameterized, and rule 325 reports multiple tests asserting the same observable behavior through different internal paths.",
+  "rule_kinds": {
+   "120": "candidate pattern",
+   "263": "candidate pattern",
+   "325": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a capability that an existing facility already provides and says the code reimplements it: rule 125 reports scaffolding new code instead of reusing codebase infrastructure, rule 136 reports building a KV store with GenServer instead of Agent or ETS, rule 147 reports manually reimplementing String.length and String.reverse from grapheme operations, and rule 541 reports writing custom code for generic needs without checking for existing libraries.",
+  "rule_kinds": {
+   "125": "candidate pattern",
+   "136": "candidate pattern",
+   "147": "candidate pattern",
+   "541": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-07",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "The copied function and its source still encode one concept whose shared logic should have been extracted, so they must change together.",
+  "reason": "The rule states a correctness failure: a function produced by copy-and-modify inherits wrong bounds and null semantics from its source. This belongs to the Duplication family only if the copy and source still share a concept that must change together, and the rule does not check that condition.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All twelve rules state that a specific behavior, logic, or pattern has a second implementation in the repository. They range from textual clones (117) and repeated call chains (118) to semantic duplications such as repeated business rules (549), scattered domain predicates (550), and repeated structural patterns like validation (333), queries (334), mapping (335), and cross-cutting concerns (485). Each rule names what is duplicated and says the implementations must change together.",
+  "rule_kinds": {
+   "071": "candidate pattern",
+   "117": "candidate pattern",
+   "118": "candidate pattern",
+   "121": "candidate pattern",
+   "333": "candidate pattern",
+   "334": "candidate pattern",
+   "335": "candidate pattern",
+   "465": "candidate pattern",
+   "485": "candidate pattern",
+   "549": "candidate pattern",
+   "550": "candidate pattern",
+   "551": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

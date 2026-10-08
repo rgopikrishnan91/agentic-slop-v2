@@ -1,0 +1,118 @@
+[
+ {
+  "entry_id": "D-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules report a second declaration of a binding the scope already has, a module imported again (005) or a symbol exported again (014); the redundant re-declaration is named directly, so the Duplication failure is stated by the rule text.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Most rules assert that a shared shape or value is written out again at several sites, a repeated type shape (054), API response structure (336), parameter group (438), prop name set (461), or identical DTO round-trip (546), which names the restated definition; rules 123 and 574 only match a recurring constant name or string literal and so merely select candidates.",
+  "rule_kinds": {
+   "054": "candidate pattern",
+   "123": "proxy group",
+   "336": "candidate pattern",
+   "438": "candidate pattern",
+   "461": "candidate pattern",
+   "546": "candidate pattern",
+   "574": "proxy group"
+  },
+  "misfit_rules": [
+   {"rule_id": "123", "kind": "proxy group", "reason": "It matches a recurring ALL_CAPS constant name across files and does not confirm the constants encode one shared concept."},
+   {"rule_id": "574", "kind": "proxy group", "reason": "It matches and counts repeated string literals across files and does not confirm they form one closed-set domain value."}
+  ]
+ },
+ {
+  "entry_id": "D-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule compares an aggregate redundancy ratio (dead plus duplicate functions over all functions) against a threshold; it measures one score for the whole codebase and names no specific duplicated pair, so it only selects a codebase for review.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules select candidate functions from surface features, a shared normalized signature shape (119), a repeated function name with differing signatures (122), or an overlap score on shared callees (124), without comparing the function bodies, so each measures a signal rather than states a duplicate.",
+  "rule_kinds": {
+   "119": "proxy group",
+   "122": "proxy group",
+   "124": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a restated copy inside the test suite: setup and mock wiring duplicated across test files (120), test bodies of identical structure differing only in their literals (263), and the same observable behavior asserted again through another internal path (325).",
+  "rule_kinds": {
+   "120": "candidate pattern",
+   "263": "candidate pattern",
+   "325": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names code that rebuilds a facility already provided, existing codebase infrastructure (125), an Agent/ETS key-value store reimplemented with a GenServer (136), stdlib String functions written by hand (147), or library functionality reimplemented (541); the second implementation of the facility is stated.",
+  "rule_kinds": {
+   "125": "candidate pattern",
+   "136": "candidate pattern",
+   "147": "candidate pattern",
+   "541": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-07",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the copied function and its source still encode one concept that must change together, so the shared logic should have been extracted and called rather than copied",
+  "reason": "The single rule detects a function produced by copying and modifying a similar one, which is primarily a correctness defect (kept bounds and null semantics); it is a Duplication failure only when the copy and its source still encode one concept, a condition the rule does not check.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule reports that a behavior already implemented in the repository is implemented again, recognized through normalized line windows, body hashes, AST structure, or semantic comparison of a dispatch ladder, call chain, validation, query, mapping, business rule, concept, or cross-cutting pattern; each states that two bodies must change together.",
+  "rule_kinds": {
+   "071": "candidate pattern",
+   "117": "candidate pattern",
+   "118": "candidate pattern",
+   "121": "candidate pattern",
+   "333": "candidate pattern",
+   "334": "candidate pattern",
+   "335": "candidate pattern",
+   "465": "candidate pattern",
+   "485": "candidate pattern",
+   "549": "candidate pattern",
+   "550": "candidate pattern",
+   "551": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

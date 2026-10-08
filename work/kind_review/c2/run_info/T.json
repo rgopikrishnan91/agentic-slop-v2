@@ -1,0 +1,18 @@
+{
+ "role": "coder 2",
+ "family": "T",
+ "model_identifier": {
+  "roster_model": "Claude Opus 4.8 (claude-opus-4-8)",
+  "session_context_model": "claude-opus-4-8",
+  "external_metadata_last_served_model": "claude-opus-4-8"
+ },
+ "effort_setting": "default (not separately configurable in this session; high reasoning applied)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Read (INSTRUCTIONS.md, families.json, entries/T.json)",
+  "Bash (python3 -I to extract the needed rules from rules.json and the detector notes from detector_source_inspections.json; git for branch check and commit)",
+  "mcp__claude-code-remote__get_session (to report the model identifier)",
+  "Write (kinds/T.json, run_info/T.json)"
+ ],
+ "notes": "Each entry classified by applying the kind test to every rule (rules.json name and full description, plus the detector_source_inspections.json note where present) and then taking the entry kind as the kind of most of its rules. T-06 and T-07 were one-to-one ties resolved by the kind the entry invariant describes. No subagents, workflows, or scripts were used to generate reasons; each reason was written for its entry."
+}

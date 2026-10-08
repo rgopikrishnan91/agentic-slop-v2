@@ -1,0 +1,126 @@
+[
+ {
+  "entry_id": "D-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules check that a module scope declares the same thing twice: more than one import clause for one module, or one symbol carried by more than one export. The repeated declaration is itself the stated defect, so neither rule needs an extra judgement to name what is wrong.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Most rules of this entry compare the shared definition itself and report it as restated: a type or interface repeated with the same shape, a response structure repeated across endpoints with no DTO, an identical parameter group in several signatures, an identical significant prop set in several components, and a layer hop that reshapes between identical shapes. Two rules of the entry instead match a constant name or a string literal and count the files it appears in, which selects a candidate without showing a shared concept.",
+  "rule_kinds": {
+   "054": "candidate pattern",
+   "123": "proxy group",
+   "336": "candidate pattern",
+   "438": "candidate pattern",
+   "461": "candidate pattern",
+   "546": "candidate pattern",
+   "574": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "123",
+    "kind": "proxy group",
+    "reason": "It matches an ALL_CAPS name across files and counts the files; two constants sharing a name need not share a value or a concept, so the match only points a reviewer at the pair."
+   },
+   {
+    "rule_id": "574",
+    "kind": "proxy group",
+    "reason": "It counts occurrences of string literals and the number of distinct values across files, and infers a missing enum from those counts rather than showing that the literals form one closed set."
+   }
+  ]
+ },
+ {
+  "entry_id": "D-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule of this entry divides dead plus duplicate functions by all functions and compares the fraction against a threshold. It reports one number for the repository and never names the duplicated functions behind it, so the gate measures and selects rather than stating a duplication failure.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules key on a surface feature and a count: a normalized signature shape seen in at least three files, one function name seen in at least three files with different signatures, and a pair of sibling functions whose shared callees pass a count and an overlap score. None of them looks at what the bodies do, and the inspection note for the callee rule records that the overlap does not establish duplicate behavior.",
+  "rule_kinds": {
+   "119": "proxy group",
+   "122": "proxy group",
+   "124": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a copy inside the suite as the defect: setup and mock wiring repeated across test files, test functions with the same body that should have been parameterized, and several tests asserting one observable behavior through different internal paths. The counts and the AST comparison locate the copies; the texts still say that the repetition is the failure.",
+  "rule_kinds": {
+   "120": "candidate pattern",
+   "263": "candidate pattern",
+   "325": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule states that new code rebuilds a facility that is already available: infrastructure the codebase itself provides, an Elixir platform primitive for key-value state, a standard String function expressed through graphemes, or functionality an established library already supplies. The ten-line and thirty-line gates in the prompt rules are only triggers for the search; the failure named is the hand-rolled reimplementation.",
+  "rule_kinds": {
+   "125": "candidate pattern",
+   "136": "candidate pattern",
+   "147": "candidate pattern",
+   "541": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-07",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the copy and its source still encode one concept that must change together, so the part they share should have been extracted and called instead of copied",
+  "reason": "The rule checks the provenance of a function written by copying a neighbour and editing it, and the failure it states is a correctness one: the inherited bounds and null semantics do not match what the new function was specified to do. It never checks whether the two functions still share logic that has to change under one edit, which is what would make the copy a Duplication failure.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "D-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here reports a behavior that the repository already implements being carried out a second time: a normalized or hashed clone of a block or function body, a structurally matched function cluster, a repeated call chain or dispatch ladder, a validation rule, query, mapping or cross-cutting wrapper re-encoded elsewhere, a business rule or domain predicate restated under other names, and a duplicate that is also unused. The recognition techniques vary in strength, but each text names the second implementation as the defect.",
+  "rule_kinds": {
+   "071": "candidate pattern",
+   "117": "candidate pattern",
+   "118": "candidate pattern",
+   "121": "candidate pattern",
+   "333": "candidate pattern",
+   "334": "candidate pattern",
+   "335": "candidate pattern",
+   "465": "candidate pattern",
+   "485": "candidate pattern",
+   "549": "candidate pattern",
+   "550": "candidate pattern",
+   "551": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

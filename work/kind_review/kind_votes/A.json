@@ -1,0 +1,365 @@
+[
+ {
+  "entry_id": "A-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule in this entry detects an annotation whose content can be reconstructed from the code it annotates: a comment restating the code, a doc section repeating the signature, a narrator sentence paraphrasing the function name, a long docstring over a trivial body, or an explicit type that inference already supplies. Each rule text says what is wrong -- the annotation adds nothing the code does not already carry."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule names the fault in its own text: the annotation reproduces what the code already carries, whether a trivial comment restating a line, a docstring whose first sentence paraphrases the name (Jaccard overlap), a @doc Parameters block repeating the signature, a long docstring over a short body, or an explicit type that inference already supplies."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule here names redundancy itself as the fault: a comment that restates the code or adds nothing beyond the signature, a Parameters block that restates the head, narration that repeats the name, a long docstring that only restates a short body, and a type annotation that inference already supplies. The detection is keyword- and threshold-driven, but each rule text says what the failure is."
+   }
+  },
+  "rule_kinds": {
+   "021": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "025": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "027": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "030": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "058": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "A-02",
+  "status": "majority",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Two of the three rules state what is wrong: rule 022 says the comment is a decorative separator or section header signalling the file needs splitting, and rule 112 says in-function dividers signal missing decomposition. Rule 026 matches numbered step comments by keyword pattern without stating a failure, making it the minority proxy group rule."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Two of the three rules only match or count a banner form and treat it as a sign to look (numbered Step N comments; more than two divider comments that 'signal missing decomposition') without saying what is wrong, so the entry is a proxy group; rule 022 is the exception because it characterises its matches as decorative, changelog-style or empty, which states the noise."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Two of the three rules only recognise a banner form and hand the body to a reader: numbered Step comments are a keyword match, and the divider rule counts dividers past a threshold and calls each one a signal of missing decomposition without checking the decomposition. Neither states what the banner gets wrong."
+   }
+  },
+  "rule_kinds": {
+   "022": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "026": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ],
+   "112": [
+    "candidate pattern",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {
+   "026": 1,
+   "022": 2
+  }
+ },
+ {
+  "entry_id": "A-03",
+  "status": "no majority",
+  "majority_kind": null,
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule identifies comments that grade the code with the author's stance and names the failure: unverified assumptions (035), false certainty (036), apologetic self-deprecation (037), hedging language expressing uncertainty rather than verified facts (200), and a debug log accompanied by a comment acknowledging it should be removed (370). All five use keywords to find the case, but their text labels the matched content with a stated failure."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the stance comment does not also state the underlying fact behind its judgement: what is unverified and where the invariant is enforced, the constraint that forced the shape, or the measured uncertainty and the fallback it justifies",
+    "reason": "Each rule matches a word that grades the code (assuming/presumably, obviously/simply, sorry/hacky, should-work/hopefully, or a temp/debug note by a console.log) but never checks whether the comment also supplies the fact the maintainer needs, and the same words are legitimate once that fact is attached."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "Four of these rules are word lists over comment text, assuming and presumably, obviously and simply, sorry and hacky, should work and hopefully, and none of them checks whether the comment supplies the fact behind the judgement; they mark a comment for a person to read. The entry's own invariant, that the stance comment must state the underlying fact, is precisely the thing none of the detectors tests."
+   }
+  },
+  "rule_kinds": {
+   "035": [
+    "candidate pattern",
+    "boundary register",
+    "proxy group"
+   ],
+   "036": [
+    "candidate pattern",
+    "boundary register",
+    "proxy group"
+   ],
+   "037": [
+    "candidate pattern",
+    "boundary register",
+    "proxy group"
+   ],
+   "200": [
+    "candidate pattern",
+    "boundary register",
+    "proxy group"
+   ],
+   "370": [
+    "candidate pattern",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {
+   "370": 1
+  }
+ },
+ {
+  "entry_id": "A-04",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong: rule 028 labels matched phrases as filler comments describing work that has not been done, and rule 559 identifies AI handoff phrases where the agent defers implementation to the user, leaving a placeholder comment in place of absent code."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules match prose that describes behaviour as something to be added later (add more validation, handle additional cases, can be extended in the future; replace this with your actual implementation, add your code here, in a real application you would), so the comment itself names code that was never written."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules match prose, but the matched prose is itself the statement of the fault: add more validation, replace this with your actual implementation, add your logic here, in a real application you would. The text says what is wrong, namely that the source carries a sentence standing in for work that was not written."
+   }
+  },
+  "rule_kinds": {
+   "028": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "559": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "A-05",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules say what is wrong: rule 445 reports suppression annotations whose target finding no longer exists (the tool tracks consumption at analysis time), and rule 567 reports header documentation entries with no corresponding directive in the code body. Each states that the annotation has outlived its referent."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules state the fault directly: an ignore/expected-unused directive whose finding is no longer raised during analysis, and a header Suppressions entry with no matching directive in the body; each verifies the referent is absent and reports the dangling annotation."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules compare an annotation against a referent and report the mismatch: a suppression directive that no analysis run consumes because its finding is gone, and a header Suppressions entry with no directive in the body. Each text states the failure, a dangling annotation that asserts something no longer in the code."
+   }
+  },
+  "rule_kinds": {
+   "445": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "567": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "A-06",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three rules say what is wrong: rule 033 identifies agent self-narration recording change history in comments, rule 034 detects version history embedded in source comments, and rule 562 flags temporal language in file headers and explicitly states that headers should be atemporal. Each describes an annotation that records how the code changed rather than describing the code as it stands."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule identifies a comment that records an edit rather than the present code: change-narration memos (changed from/to, refactored, moved from/to), embedded version changelogs, and temporal or state-change language in a file header that should be atemporal."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All three say what the fault is rather than leaving it to a reader: a comment narrating the edit the author made, embedded version history such as v1.2 added feature, and a file header that should be atemporal carrying dates, for now, formerly or coming soon. The regexes and word categories are only the means of finding the case."
+   }
+  },
+  "rule_kinds": {
+   "033": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "034": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "562": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "A-07",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Two rules are candidate pattern and two are boundary register, so the tie is broken by the entry's invariant, which describes source comments that narrate the authoring session or converse with the user. Rules 023 and 299 directly check source comments for that problem, while rules 199 and 202 read the agent's conversational reply and belong to this family only if that text is committed to source, a condition they do not check."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two in-source rules read the delivered file and name the fault directly (meta comments narrating the generation process; comments used to talk to the user), while rules 199 and 202 read the agent's reply and so are only Annotation Noise if that register is committed to the source; the kinds tie two to two, and the entry's invariant about what a source comment must do describes the in-source rules, so the entry is a candidate pattern."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Two rules state the fault in the source itself, a comment about implementation phases or the generation process, and a comment used to describe changes to the user or ask them a question instead of using a channel where it can be answered. The other two rules split the entry evenly, so the tie is resolved by the invariant, which is about what a source comment must document for the next reader, and that is what 023 and 299 check."
+   }
+  },
+  "rule_kinds": {
+   "023": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "199": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ],
+   "202": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ],
+   "299": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "199": 3,
+   "202": 3
+  }
+ },
+ {
+  "entry_id": "A-08",
+  "status": "full",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule counts new comment lines added across changed files and flags the change once the count passes a threshold. It measures volume and selects diffs for review; it does not say what is wrong with any individual comment."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule counts comment lines added across the changed files and fires once the count passes a threshold; it says nothing about what any one comment states and only selects the diff for a reviewer."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule counts comment lines added across the changed files, using per-extension comment syntax, and fires on the total passing a limit. It never looks at what any comment says, so it selects a diff for review rather than naming a fault."
+   }
+  },
+  "rule_kinds": {
+   "029": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "A-09",
+  "status": "full",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "boundary register",
+    "condition": "the compatibility obligation the informal note describes has ended, the note names the wrong successor, or the note repeats a deprecation status already declared elsewhere in the code",
+    "reason": "The rule fires when an informal deprecation comment appears without a formal tag. Without the formal tag, the informal note is the only record of the deprecation and carries information the code does not already have. The note is annotation noise only if the obligation has ended, the note names the wrong successor, or the status is declared elsewhere, and the rule does not check any of these conditions."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the informal note is redundant (repeats a status the code already declares), stale (the compatibility obligation has ended), or misleading (names the wrong successor); where the alias is still kept and no formal tag exists, the prose carries information the code does not",
+    "reason": "The single rule fires on informal compatibility prose (legacy alias, back-compat, deprecated alias, kept for compatibility) whenever no formal @deprecated tag accompanies it; absence of the machine-readable tag is all it observes, and that prose is noise only when it is redundant, stale or wrong, which the rule does not check."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the informal note is in fact redundant, stale or misleading: it repeats a deprecation the code already declares, the compatibility obligation it records has ended, or it names the wrong successor. The rule checks only that no formal @deprecated tag accompanies the prose.",
+    "reason": ""
+   }
+  },
+  "rule_kinds": {
+   "032": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

@@ -1,0 +1,51 @@
+[
+ {
+  "entry_id": "K-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All four rules state what is wrong: 083 says the delivered code includes unrequested features and speculative abstractions; 206 says the agent responds to a fix request with unrelated changes or superficial substitutes; 296 says behavior changes are smuggled into a refactor; 298 says the agent edits code unrelated to the current task. Each rule names a concrete failure in which the delivered change exceeds the requested scope.",
+  "rule_kinds": {
+   "083": "candidate pattern",
+   "206": "candidate pattern",
+   "296": "candidate pattern",
+   "298": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules measure size and flag a number without determining whether the growth traces to the request. Rule 107 scores complexity times net LOC growth over a time window. Rule 204 flags any positive non-test LOC delta from git numstat. Rule 483 flags a file that grew more than 20% since its last daily baseline. None reads the task or checks whether the growth was requested.",
+  "rule_kinds": {
+   "107": "proxy group",
+   "204": "proxy group",
+   "483": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Rule 421 matches the word 'and' on a word boundary in the commit subject line, case-insensitively. It inspects no diff and no request. The keyword match selects commits for a person to review but does not say what is wrong, since many single-concern subjects legitimately contain 'and'.",
+  "rule_kinds": {
+   "421": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 540 says what is wrong: when an attempted fix fails, its edits must be reverted before delivery, and accumulated dead code from failed fix attempts is forbidden. It names the failure (leftover changes from a discarded attempt) and states the obligation (immediate revert).",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

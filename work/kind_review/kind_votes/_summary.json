@@ -1,0 +1,12 @@
+{
+ "entries": 114,
+ "full_agreement": 106,
+ "majority_2_of_3": 7,
+ "no_majority": 1,
+ "fleiss_kappa": 0.892,
+ "kind_share": {
+  "candidate pattern": 0.702,
+  "proxy group": 0.173,
+  "boundary register": 0.126
+ }
+}

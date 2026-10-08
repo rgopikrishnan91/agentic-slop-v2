@@ -1,0 +1,245 @@
+[
+ {
+  "entry_id": "I-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule in this entry identifies code that references an API, import, method, or attribute that does not exist in the target library or language. The rule text itself names the failure: the reference is fabricated.",
+  "rule_kinds": {
+   "012": "candidate pattern",
+   "176": "candidate pattern",
+   "181": "candidate pattern",
+   "182": "candidate pattern",
+   "183": "candidate pattern",
+   "184": "candidate pattern",
+   "185": "candidate pattern",
+   "186": "candidate pattern",
+   "187": "candidate pattern",
+   "188": "candidate pattern",
+   "369": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-02",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the copied implementation actually departs from the specification it is presented as satisfying",
+  "reason": "The single rule detects that code was copied from a similar context, but it does not check whether the result satisfies the specification of the place it now occupies. The failure belongs to the Integrity family only if the copy actually misrepresents completion.",
+  "rule_kinds": {
+   "287": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule states that a claim, value, or verification result is presented without the evidence or computation that would support it. The text says what is wrong: the artifact asserts something it has not established.",
+  "rule_kinds": {
+   "031": "candidate pattern",
+   "201": "candidate pattern",
+   "318": "candidate pattern",
+   "323": "candidate pattern",
+   "530": "candidate pattern",
+   "531": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: one flags an inappropriate fix response that substitutes a workaround for the requested repair, and the other flags gaming of a metric or process to produce a pass without doing the work.",
+  "rule_kinds": {
+   "206": "candidate pattern",
+   "543": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule identifies a placeholder, stub marker, sample value, or TODO tag that remains in a delivered artifact. The rule text says what is wrong: unfinished content is shipped as though it were complete.",
+  "rule_kinds": {
+   "028": "candidate pattern",
+   "174": "candidate pattern",
+   "180": "candidate pattern",
+   "223": "candidate pattern",
+   "233": "candidate pattern",
+   "294": "candidate pattern",
+   "495": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: tests produce a green signal by using fixtures or patterns that never exercise the production code path, so the pass misrepresents whether the behavior works.",
+  "rule_kinds": {
+   "427": "candidate pattern",
+   "428": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule identifies a concrete mismatch between a description (comment, docstring, documentation page, changelog) and the code or system it describes. The text says what is wrong: the description contradicts the implementation.",
+  "rule_kinds": {
+   "279": "candidate pattern",
+   "280": "candidate pattern",
+   "291": "candidate pattern",
+   "328": "candidate pattern",
+   "337": "candidate pattern",
+   "338": "candidate pattern",
+   "339": "candidate pattern",
+   "340": "candidate pattern",
+   "442": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule identifies a function or operation whose body is empty, returns a canned value, or does nothing. The text says what is wrong: the operation has a name and signature that promise behavior it does not deliver.",
+  "rule_kinds": {
+   "017": "candidate pattern",
+   "018": "candidate pattern",
+   "175": "candidate pattern",
+   "177": "candidate pattern",
+   "178": "candidate pattern",
+   "179": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule says that part of the specified work is absent: an incomplete migration leaves old paths live, a state machine omits transitions, or a plan item is not implemented. The text names the gap.",
+  "rule_kinds": {
+   "060": "candidate pattern",
+   "092": "candidate pattern",
+   "315": "candidate pattern",
+   "324": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-10",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Each rule matches vocabulary: hedging words, certainty phrases, or completion-without-verification language. The rules select text for a person to judge whether the confidence is warranted; they do not themselves say what is wrong.",
+  "rule_kinds": {
+   "035": "proxy group",
+   "036": "proxy group",
+   "200": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-11",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the hidden functions belong to the surface the project presents as documented and supported",
+  "reason": "The rule flags public functions annotated with @doc false, but hiding a public function from generated docs is a fake-done failure only if those functions are part of the project's intended documented API. The rule does not check that condition.",
+  "rule_kinds": {
+   "024": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule identifies a check that is weakened, disabled, or suppressed so that a pass is obtained without the code satisfying the original requirement. The text says what is wrong: the pass is manufactured.",
+  "rule_kinds": {
+   "207": "candidate pattern",
+   "208": "candidate pattern",
+   "210": "candidate pattern",
+   "211": "candidate pattern",
+   "332": "candidate pattern",
+   "542": "candidate pattern",
+   "566": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-13",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule says that material information, a known gap, or an assumption is withheld from the report or output. The text names the failure: the report is incomplete by omission.",
+  "rule_kinds": {
+   "312": "candidate pattern",
+   "320": "candidate pattern",
+   "533": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-14",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules say what is wrong: a parameter or dependency is declared at one end of an integration point but never wired from any caller or provider, so the integration exists in form only.",
+  "rule_kinds": {
+   "114": "candidate pattern",
+   "452": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-15",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule identifies a safeguard that is present in the source but inert where it runs: an assert disabled in production, a security check that performs no real validation, or a directive placed where the framework ignores it. The text says what is wrong.",
+  "rule_kinds": {
+   "155": "candidate pattern",
+   "248": "candidate pattern",
+   "451": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-16",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules identify a dependency that the code uses but that is not declared in the project's manifest. The text says what is wrong: the build or deployment will fail when the implicit dependency is absent.",
+  "rule_kinds": {
+   "011": "candidate pattern",
+   "013": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "I-17",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule identifies a mismatch between a declared interface (JSDoc signature, API response schema, override contract) and the code behind it. The text says what is wrong: the implementation does not honor the contract it advertises.",
+  "rule_kinds": {
+   "284": "candidate pattern",
+   "314": "candidate pattern",
+   "316": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

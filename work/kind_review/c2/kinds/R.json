@@ -1,0 +1,50 @@
+[
+ {
+  "entry_id": "R-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names the redundancy in its own text: re-coercing a parameter already of the primitive type, a null or runtime type check on a value the type system already proves, and validation of data a caller or upstream boundary already validated. The settled property is part of what the rule claims to detect, so the text states the failure.",
+  "rule_kinds": {
+   "053": "candidate pattern",
+   "068": "candidate pattern",
+   "070": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the failure outright: a catch that only rethrows the same error unchanged adds nothing over default propagation, and a try/catch wrapping code that cannot throw handles a failure that cannot occur. The 'does nothing' condition is the detection criterion itself.",
+  "rule_kinds": {
+   "040": "candidate pattern",
+   "069": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-03",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "An upstream input contract or normalizing boundary already fixes the data's key form and required fields, so the empty-container default or the alternative-key branch can never be reached; the rules match the fallback shape but do not establish this.",
+  "reason": "Each rule matches a defensive access shape (a chain of dict gets defaulting to empty containers, or an atom-key-or-string-key lookup) that is a fallback for a second data shape. Per the detector note for 067, there is no dataflow or call-context proof that the alternative form cannot arrive, so the fallback is redundant only if the input shape is already fixed, which the rules do not check.",
+  "rule_kinds": {
+   "066": "boundary register",
+   "067": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-04",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "The tested state is already settled at that point by a type, a validating caller, or a prior normalization; the rule matches the syntactic look-before-you-leap shape but does not establish that any guarantee fixes the condition.",
+  "reason": "The rule matches eight Python precondition shapes (key present, attribute present, path exists, non-empty, not None, numeric string, non-zero divisor, isinstance) placed just before the operation they guard. Such a guard is redundant only if something already settles the tested state, and the rule checks none of that, so without the added condition the branch is ordinary control flow.",
+  "rule_kinds": {
+   "571": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]

@@ -1,0 +1,334 @@
+[
+ {
+  "entry_id": "Y-01",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule in this entry identifies a specific type assertion construct (double cast, non-null assertion, narrowing as-cast, Kotlin !!, Go single-value type assertion) that overrides the type checker without a runtime check, and the rule text says what is wrong in each case."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule names a concrete assertion construct that overrides the checker by fiat: a double cast `as unknown as X`, a `!` or Kotlin `!!` non-null assertion, a narrowing `u64 as u32`, or a Go `x.(T)` without comma-ok. Each construct is itself the stated defect, an unproven narrowing that can misbehave or panic, so the text says what is wrong."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule here names a construct that is itself the escape: a double assertion through `unknown`, a `!` or `!!` non-null assertion, a narrowing `as` cast used where `TryFrom` is required, and a single-value Go type assertion that panics on mismatch. Each text identifies the assertion that overrides the checker rather than counting or sampling code for review."
+   }
+  },
+  "rule_kinds": {
+   "051": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "057": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "063": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "358": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "478": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "Y-02",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule identifies a specific annotation or cast that gives a value an opaque or top type (as any, Record<string, unknown>, object, bare dict, Array<any>) where the code depends on a structure the type checker can no longer see, and the rule text says what is wrong."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule points at a specific opaque or top-type construct, `any`/`cast(Any, ...)`, `object`, a bare `dict` return, `Array<any>` or an `any` index signature, and `as Record<string, unknown>` on a payload, and states the defect directly: the type admits any shape so the checker stops restricting member access on a value whose structure the code uses."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "All five rules state the defect as an imprecise declaration: `as any` or `cast(Any, ...)`, `object` where a Protocol or union belongs, a bare `dict` return with no TypedDict or model, `Array<any>` and `[key: string]: any`, and a cast of a payload to `Record<string, unknown>`. Each says the type written admits any shape instead of the structure the code reads, which is the failure itself and not a measurement of it."
+   }
+  },
+  "rule_kinds": {
+   "050": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "055": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "061": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "062": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "373": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "Y-03",
+  "status": "majority",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Each rule identifies a domain concept carried as a raw primitive (stringly-typed parameter, primitive obsession, stringly-typed cross-file value, type invariant design gap) where the type does not encode the constrained value set, and the rule text states what the failure is."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the primitive genuinely carries a closed set of legal values owned by this code (a domain enum or state set), not free text, an externally-defined or wire vocabulary, an identifier or key, or a repeated message or path",
+    "reason": "The two carrying rules (064, 439) flag a `str` or raw primitive used for a concept like status/mode/kind, but a plain string or int is a legitimate type and becomes type laxity only when the concept has a closed, code-owned value set; the rules infer that from sentinel names and literal cardinality and never establish it."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Three of the four rules assert the failure outright: a `str` parameter for a status or mode that should be `Literal[...]` or an `Enum`, raw strings and ints standing in for domain concepts instead of typed wrappers, and a type model whose definitions omit the business rules and leave loopholes around the invariant. The fourth rule only tallies repeated literals, so the entry's kind comes from the three that name the unencoded constraint."
+   }
+  },
+  "rule_kinds": {
+   "064": [
+    "candidate pattern",
+    "boundary register",
+    "candidate pattern"
+   ],
+   "331": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "439": [
+    "candidate pattern",
+    "boundary register",
+    "candidate pattern"
+   ],
+   "574": [
+    "candidate pattern",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {
+   "331": 1,
+   "574": 2
+  }
+ },
+ {
+  "entry_id": "Y-04",
+  "status": "full",
+  "majority_kind": "boundary register",
+  "votes": {
+   "coder1": {
+    "kind": "boundary register",
+    "condition": "the set of variants being dispatched over is closed (a discriminated union or exhaustive enum), not an open hierarchy or externally defined value set",
+    "reason": "Both rules find dispatch sites (match/switch, isinstance/elif chains) that lack exhaustiveness enforcement, but the failure belongs to this family only if the variant set is closed; neither rule checks that condition."
+   },
+   "coder2": {
+    "kind": "boundary register",
+    "condition": "the set of variants being dispatched is closed and owned here, not an open type hierarchy that third parties extend or a value parsed from input where the default arm is the real error path",
+    "reason": "Both rules flag a `match`/`switch` lacking `assert_never` or an `isinstance`/enum `if`/`elif` chain, but a dispatch that lacks an exhaustiveness assertion is a type-laxity failure only when the variant set is closed, and neither rule checks that the set is closed."
+   },
+   "coder3": {
+    "kind": "boundary register",
+    "condition": "the dispatch runs over a closed variant set, a discriminated union or enum the checker owns, so that adding a member could be made a compile error; if the set is open or the value comes from untyped input, a default or final arm is the correct general case",
+    "reason": "Both rules key on a missing exhaustiveness device: a `match` or `switch` whose default arm omits `assert_never`/`assertNever`, and an `isinstance` or enum `if`/`elif` chain written in place of `match`/`case` with `assert_never`. Neither establishes that the branched-over set is closed, which is what makes the absent assertion a type-laxity failure rather than ordinary dispatch on open input."
+   }
+  },
+  "rule_kinds": {
+   "060": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ],
+   "160": [
+    "boundary register",
+    "boundary register",
+    "boundary register"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "Y-05",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Every rule identifies a specific construct that suppresses an adopted check rather than satisfying it: inline TS directives, lint escape directives, build config warning suppression, linter config modification, and unjustified lint suppression. Each rule text says what is wrong."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Four of the rules name a construct that switches off an adopted check while the code stands, a `@ts-ignore`/`@ts-expect-error`, a `# noqa`/`# type: ignore`/`eslint-disable` directive, a build-file `NoWarn`/`Nullable disable`, or an unjustified suppression, and the suppression itself is the stated defect."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Four rules point at the waiver itself and at what makes it unaccountable: bare `# noqa`, `#[allow(clippy::` without justification, `//nolint` without a reason and an unrestored `#pragma warning disable`; suppressions with no Suppressions-section entry or ten-character inline justification; `@ts-ignore`/`@ts-nocheck`; and `<NoWarn>`, `<Nullable>disable</Nullable>` or `TreatWarningsAsErrors` cleared in the build files. The fifth rule, on config edits, is the exception."
+   }
+  },
+  "rule_kinds": {
+   "052": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "056": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "210": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ],
+   "332": [
+    "candidate pattern",
+    "boundary register",
+    "boundary register"
+   ],
+   "566": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "332": 2
+  }
+ },
+ {
+  "entry_id": "Y-06",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule identifies a concrete mismatch where a consumer's declared type contradicts the shape the producing endpoint actually sends, and the rule text states what the failure is."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule states a definite contradiction: the producer wraps the payload in an outer envelope while the consumer's declared type describes the unwrapped body, so the declared type is false about the data that actually arrives. That named mismatch is the defect."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The single rule states the defect directly: the consumer's declared type contradicts the runtime shape the API sends, with the producer wrapping the payload in an outer object while the consumer type expects the unwrapped body. It names a false declaration and the fact that per-component tests cannot see it, rather than selecting code by a count or a token."
+   }
+  },
+  "rule_kinds": {
+   "314": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {}
+ },
+ {
+  "entry_id": "Y-07",
+  "status": "full",
+  "majority_kind": "candidate pattern",
+  "votes": {
+   "coder1": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules identify a published signature that exposes a type not part of the boundary contract (an ORM entity leaked through an API, or a private type referenced by an export), and the rule text says what is wrong."
+   },
+   "coder2": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "The two rules are split: 448 checks the boundary by export visibility (an exported signature referencing a type the package does not export) and states that defect, while 344 assumes a service return is a public boundary without verifying it. The kinds tie one-to-one, so by the tie-break I take the kind of the rule the invariant describes; the invariant speaks of a type 'defined, exported and published' in the contract, which is 448's export-visibility check, a candidate pattern."
+   },
+   "coder3": {
+    "kind": "candidate pattern",
+    "condition": "",
+    "reason": "Both rules describe a signature plus the consequence for whoever calls it: an ORM entity returned from a service method with no response DTO, which puts the persistence schema in front of API consumers, and an exported function whose signature references a type the package does not export, which stops consumers annotating against it. The failing shape and the harm are both in the rule text."
+   }
+  },
+  "rule_kinds": {
+   "344": [
+    "candidate pattern",
+    "boundary register",
+    "candidate pattern"
+   ],
+   "448": [
+    "candidate pattern",
+    "candidate pattern",
+    "candidate pattern"
+   ]
+  },
+  "misfit_votes": {
+   "344": 1
+  }
+ },
+ {
+  "entry_id": "Y-08",
+  "status": "full",
+  "majority_kind": "proxy group",
+  "votes": {
+   "coder1": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The rule counts escape-hatch annotations as a ratio of all type annotations in a file and flags files exceeding thirty per cent with at least five annotations; it names no individual defective construct and selects files for review by a ratio."
+   },
+   "coder2": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The single rule names no defective construct; it counts a file's type annotations, counts how many are escape hatches like `Any`/`any`/`interface{}`/`dynamic`/`object`/`dyn Any`, and reports the file when that share exceeds thirty per cent with at least five annotations. It selects files for review by a ratio."
+   },
+   "coder3": {
+    "kind": "proxy group",
+    "condition": "",
+    "reason": "The one rule computes a share: it reports a file when escape hatches (`Any`, `any`, `interface{}`, `dynamic`, `object`, `dyn Any`) exceed thirty per cent of at least five annotations. No annotation is called wrong, and the file as a whole is what gets handed to a reviewer."
+   }
+  },
+  "rule_kinds": {
+   "065": [
+    "proxy group",
+    "proxy group",
+    "proxy group"
+   ]
+  },
+  "misfit_votes": {}
+ }
+]

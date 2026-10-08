@@ -1,0 +1,165 @@
+[
+ {
+  "entry_id": "H-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule names a concrete declared artifact (import, declaration, file, export, type, dependency, class/enum member, component, prop, emitted event, server action, or duplicate-and-unused code) and states the failure as that artifact being referenced or rendered by nothing else, which is the stated wrong.",
+  "rule_kinds": {
+   "001": "candidate pattern",
+   "006": "candidate pattern",
+   "007": "candidate pattern",
+   "008": "candidate pattern",
+   "009": "candidate pattern",
+   "010": "candidate pattern",
+   "444": "candidate pattern",
+   "453": "candidate pattern",
+   "454": "candidate pattern",
+   "455": "candidate pattern",
+   "456": "candidate pattern",
+   "465": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the failure outright: a package declared as a production dependency is used only in positions that never reach the shipped runtime (type-only imports that are erased, or imports confined to test files), so the manifest claims a run-time requirement the running system never loads.",
+  "rule_kinds": {
+   "446": "candidate pattern",
+   "447": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name the wrong directly: code placed after a return/throw/raise/break/continue that no path can reach, and a branch guarded by a literal-constant condition that is dead or always taken.",
+  "rule_kinds": {
+   "003": "candidate pattern",
+   "004": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states the failure: blocks of real code disabled by commenting them out and left in the source file rather than deleted.",
+  "rule_kinds": {
+   "329": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "nothing expects an effect from the operation, so it can simply be deleted; if a caller or requirement expects the effect, the empty body is omitted work (family I) rather than debris",
+  "reason": "Both rules find a declared operation (a non-trivial function or a React useEffect) with an empty or do-nothing body, but neither checks whether anything expects an effect from it, which is what decides whether the empty body is removable debris or omitted behaviour.",
+  "rule_kinds": {
+   "017": "boundary register",
+   "018": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names the wrong directly: a debug print/console call left in production code, a bare debugger statement in production code, or a console.log paired with an apologetic debug/temp comment, all of them diagnostic instrumentation rather than product behaviour.",
+  "rule_kinds": {
+   "002": "candidate pattern",
+   "330": "candidate pattern",
+   "370": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name the trace itself as the wrong: a scratch/planning file (PLAN.md, SCRATCH.md and the like) committed outside docs/, or a generator marker (citation tokens, sandbox paths, tracking parameters, placeholder tokens) left in delivered text, neither of which the delivered system reads.",
+  "rule_kinds": {
+   "019": "candidate pattern",
+   "495": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-08",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The single rule states the wrong within its own text: edits produced by a fix attempt that failed were not reverted, leaving dead code from the abandoned attempt in the change.",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-09",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the wrong: an event published with no subscriber consuming it, or a listener registered with no publisher emitting to it, so one end of the channel is wired but carries nothing.",
+  "rule_kinds": {
+   "345": "candidate pattern",
+   "346": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-10",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the migration has completed and no remaining caller, published API, or still-supported release needs the old path; while old call sites remain, the shim is live compatibility structure and the mixed state is unfinished migration work (families S and I)",
+  "reason": "The single rule reports deprecated symbols, mixed old/new APIs, shims and abandoned removal notes together without saying whether the migration finished, and the finding is hygiene debris only once the move is complete and nothing still needs the old path.",
+  "rule_kinds": {
+   "092": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-11",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the wrong: importing the same module twice or exporting the same symbol twice, where the first declaration already established the binding and the repeat adds nothing.",
+  "rule_kinds": {
+   "005": "candidate pattern",
+   "014": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-12",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the wrong: a suppression annotation or a header Suppressions entry whose paired finding or directive no longer exists in the code, so the annotation is left stranded.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "H-13",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule scores dead plus duplicate functions as a fraction of all functions and fails when the fraction crosses a configured threshold; it only measures a ratio and names no artifact or obligation that is broken.",
+  "rule_kinds": {
+   "303": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]

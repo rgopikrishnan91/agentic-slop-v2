@@ -1,0 +1,123 @@
+[
+ {
+  "entry_id": "A-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule names the fault in its own text: the annotation reproduces what the code already carries, whether a trivial comment restating a line, a docstring whose first sentence paraphrases the name (Jaccard overlap), a @doc Parameters block repeating the signature, a long docstring over a short body, or an explicit type that inference already supplies.",
+  "rule_kinds": {
+   "021": "candidate pattern",
+   "025": "candidate pattern",
+   "027": "candidate pattern",
+   "030": "candidate pattern",
+   "058": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Two of the three rules only match or count a banner form and treat it as a sign to look (numbered Step N comments; more than two divider comments that 'signal missing decomposition') without saying what is wrong, so the entry is a proxy group; rule 022 is the exception because it characterises its matches as decorative, changelog-style or empty, which states the noise.",
+  "rule_kinds": {
+   "022": "candidate pattern",
+   "026": "proxy group",
+   "112": "proxy group"
+  },
+  "misfit_rules": [
+   {"rule_id": "022", "kind": "candidate pattern", "reason": "Its text names the fault (decorative separators, changelog-style comments, JSDoc without meaningful tags all add no information), rather than merely matching a banner form."}
+  ]
+ },
+ {
+  "entry_id": "A-03",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the stance comment does not also state the underlying fact behind its judgement: what is unverified and where the invariant is enforced, the constraint that forced the shape, or the measured uncertainty and the fallback it justifies",
+  "reason": "Each rule matches a word that grades the code (assuming/presumably, obviously/simply, sorry/hacky, should-work/hopefully, or a temp/debug note by a console.log) but never checks whether the comment also supplies the fact the maintainer needs, and the same words are legitimate once that fact is attached.",
+  "rule_kinds": {
+   "035": "boundary register",
+   "036": "boundary register",
+   "037": "boundary register",
+   "200": "boundary register",
+   "370": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules match prose that describes behaviour as something to be added later (add more validation, handle additional cases, can be extended in the future; replace this with your actual implementation, add your code here, in a real application you would), so the comment itself names code that was never written.",
+  "rule_kinds": {
+   "028": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state the fault directly: an ignore/expected-unused directive whose finding is no longer raised during analysis, and a header Suppressions entry with no matching directive in the body; each verifies the referent is absent and reports the dangling annotation.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule identifies a comment that records an edit rather than the present code: change-narration memos (changed from/to, refactored, moved from/to), embedded version changelogs, and temporal or state-change language in a file header that should be atemporal.",
+  "rule_kinds": {
+   "033": "candidate pattern",
+   "034": "candidate pattern",
+   "562": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The two in-source rules read the delivered file and name the fault directly (meta comments narrating the generation process; comments used to talk to the user), while rules 199 and 202 read the agent's reply and so are only Annotation Noise if that register is committed to the source; the kinds tie two to two, and the entry's invariant about what a source comment must do describes the in-source rules, so the entry is a candidate pattern.",
+  "rule_kinds": {
+   "023": "candidate pattern",
+   "199": "boundary register",
+   "202": "boundary register",
+   "299": "candidate pattern"
+  },
+  "misfit_rules": [
+   {"rule_id": "199", "kind": "boundary register", "reason": "It matches praise in the agent's output, not the source, so it is Annotation Noise only on the added, unchecked condition that the praise is committed to a comment or docstring."},
+   {"rule_id": "202", "kind": "boundary register", "reason": "It matches preambles, closing summaries and disclaimers in the agent's output, so it is Annotation Noise only on the added, unchecked condition that this chat register is committed to the source."}
+  ]
+ },
+ {
+  "entry_id": "A-08",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule counts comment lines added across the changed files and fires once the count passes a threshold; it says nothing about what any one comment states and only selects the diff for a reviewer.",
+  "rule_kinds": {
+   "029": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-09",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the informal note is redundant (repeats a status the code already declares), stale (the compatibility obligation has ended), or misleading (names the wrong successor); where the alias is still kept and no formal tag exists, the prose carries information the code does not",
+  "reason": "The single rule fires on informal compatibility prose (legacy alias, back-compat, deprecated alias, kept for compatibility) whenever no formal @deprecated tag accompanies it; absence of the machine-readable tag is all it observes, and that prose is noise only when it is redundant, stale or wrong, which the rule does not check.",
+  "rule_kinds": {
+   "032": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]

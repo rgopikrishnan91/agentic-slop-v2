@@ -1,0 +1,51 @@
+[
+ {
+  "entry_id": "K-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each of the four rules names the fault in its own words: features, abstractions and 'just in case' code built beyond the requirements (083), a fix request answered with tests, docs or edits to unrelated files instead of the fix (206), a behaviour change smuggled into what is presented as a refactor (296), and optimizing, reorganizing or re-commenting code the current task does not touch (298). The 3x line trigger in 083 and the lineage wording in 083 and 298 only help locate the case; the texts already say what has gone wrong.",
+  "rule_kinds": {
+   "083": "candidate pattern",
+   "206": "candidate pattern",
+   "296": "candidate pattern",
+   "298": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "All three rules pick code out by a size number and leave the verdict to whoever reads the result: summed complexity multiplied by net line growth inside a 14-day or 90-day window (107), any positive non-test line delta in a diff (204), and a source file more than 20 percent above its last daily baseline (483). A bigger file or a positive delta is not itself a fault, none of the three reads the request that would account for the growth, and the inspected hotspot detector calls its own output prioritization rather than evidence of Kinetic Slop.",
+  "rule_kinds": {
+   "107": "proxy group",
+   "204": "proxy group",
+   "483": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Rule 421 matches the word 'and' on a word boundary, case-insensitively, in the first line of the commit subject, and goes no further than saying this suggests the commit does more than one thing. The inspected check takes no diff, task or dependency input, so the match selects commits for a person to open rather than stating a failure.",
+  "rule_kinds": {
+   "421": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "K-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 540 states the fault directly: when a fix attempt fails, its edits were not reverted, so dead code accumulated from the abandoned attempt travels with the delivered change. It is an obligation written as prose rather than a count or a keyword, and the text names both the trigger (the failed attempt) and the wrong outcome (its changes left standing).",
+  "rule_kinds": {
+   "540": "candidate pattern"
+  },
+  "misfit_rules": []
+ }
+]

@@ -1,0 +1,17 @@
+{
+ "role": "coder 3",
+ "family": "D",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5",
+  "configured_model": "claude-opus-5",
+  "matches_roster_model": true
+ },
+ "effort": "default (no effort override set for this session)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat, mkdir, heredoc writes, python3 for reading rules.json/detector_source_inspections.json and validating the output JSON)",
+  "mcp__claude-code-remote__get_session (to read the reported model identifiers)"
+ ],
+ "notes": "Only the files in this folder were read: INSTRUCTIONS.md, families.json, entries/D.json, rules.json, detector_source_inspections.json. No web access, no other git branch, no subagents or workflows. Each entry reason and each misfit reason was written by hand for that entry."
+}

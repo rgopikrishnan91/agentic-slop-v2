@@ -1,34 +1,35 @@
 step	role	family	session_id	branch	dispatched_model	configured_model	served_model_reported_by_platform	model_in_run_info	status	notes
-kind_review	coder1	K	session_01K3CznNLouWVhTERscSPmsT	orch/kr-c1-K	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder2	K	session_01EF6kRfD1MdZngZMo2dXQbi	orch/kr-c2-K	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder3	K	session_01NXsKBA3YGCzCDjGY8zvMXg	orch/kr-c3-K	claude-opus-5	claude-opus-5				
-kind_review	coder1	A	session_019JBsVkLkPxoAbhPXsdBL6t	orch/kr-c1-A	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	D	session_01Q7bF7s4PxqLcK4fwWYgxPj	orch/kr-c1-D	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	E	session_01CEswzQcoQW2VfJ8CXq1iYV	orch/kr-c1-E	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	H	session_01TaiGBoMyS72sizD2fa6Vjz	orch/kr-c1-H	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	I	session_01KjRVqV7G95LUgJnPHf3xmY	orch/kr-c1-I	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	L	session_014WwNZj1GELjLaLEmNcyT75	orch/kr-c1-L	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	R	session_016TV45n14awqHY9oXxMivqM	orch/kr-c1-R	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	S	session_01B5wuWVakzu44qyYLDQSjSv	orch/kr-c1-S	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	T	session_01Wf8GEYgUxXGKCPDUNSJx6Z	orch/kr-c1-T	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder1	Y	session_01LVAdcPJziTusAi3y8kz8Cf	orch/kr-c1-Y	claude-opus-4-6	claude-opus-4-6				
-kind_review	coder2	A	session_01KMtNeEQUREAz4vFFXPLVvs	orch/kr-c2-A	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	D	session_016b2r1LoJpyoteJnbjVMY72	orch/kr-c2-D	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	E	session_014HziQA2jcoRmezoDWzTasB	orch/kr-c2-E	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	H	session_01JJCAMGgiQWKBNcuaH89sc7	orch/kr-c2-H	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	I	session_01NLdB2L6VM6LKrnAdYGfAJG	orch/kr-c2-I	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	L	session_01WJWSFhpwBMhTU4KjcjM4Sv	orch/kr-c2-L	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	R	session_01PMHy7Eua1nyyjvFvYGbB3Z	orch/kr-c2-R	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	S	session_01HAH61ETGbtWBFKxuSz86M7	orch/kr-c2-S	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	T	session_013GSkuBFKWpQTgJ8tAurNL9	orch/kr-c2-T	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder2	Y	session_01LoWkR8e49Ziv8HW7qy6k9U	orch/kr-c2-Y	claude-opus-4-8	claude-opus-4-8				
-kind_review	coder3	A	session_01T75ap7VDktHaqEG1kHvwoH	orch/kr-c3-A	claude-opus-5	claude-opus-5				
-kind_review	coder3	D	session_016C7a1BHNFFN9fzekzdpKpg	orch/kr-c3-D	claude-opus-5	claude-opus-5				
-kind_review	coder3	E	session_01NdK8tz5e8LgvsF1JdP8CCe	orch/kr-c3-E	claude-opus-5	claude-opus-5				
-kind_review	coder3	H	session_011RZPprT4kvQgqSX7ArSTZW	orch/kr-c3-H	claude-opus-5	claude-opus-5				
-kind_review	coder3	I	session_01EptTA1L3CxonYGXeTxFLAZ	orch/kr-c3-I	claude-opus-5	claude-opus-5				
-kind_review	coder3	L	session_01V6DrWYHM52XXH6cMTBC1KW	orch/kr-c3-L	claude-opus-5	claude-opus-5				
-kind_review	coder3	R	session_01PyiVWw1x99AkT8C76Wqf5Z	orch/kr-c3-R	claude-opus-5	claude-opus-5				
-kind_review	coder3	S	session_011aJybeH27i55zwNyfKoSdE	orch/kr-c3-S	claude-opus-5	claude-opus-5				
-kind_review	coder3	T	session_01UViqhConHmp6oyZc6GsyeD	orch/kr-c3-T	claude-opus-5	claude-opus-5				
-kind_review	coder3	Y	session_01Dkn43NJBdzg3SzaeVtLfaj	orch/kr-c3-Y	claude-opus-5	claude-opus-5				
+kind_review	coder1	K	session_01K3CznNLouWVhTERscSPmsT	orch/kr-c1-K	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder2	K	session_01EF6kRfD1MdZngZMo2dXQbi	orch/kr-c2-K	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (no effort override set for this session)
+kind_review	coder3	K	session_01NXsKBA3YGCzCDjGY8zvMXg	orch/kr-c3-K	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default; the session reports no effort or thinking-level override (permission_mode auto)
+kind_review	coder1	A	session_019JBsVkLkPxoAbhPXsdBL6t	orch/kr-c1-A	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: auto (not explicitly set)
+kind_review	coder1	D	session_01Q7bF7s4PxqLcK4fwWYgxPj	orch/kr-c1-D	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	E	session_01CEswzQcoQW2VfJ8CXq1iYV	orch/kr-c1-E	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	H	session_01TaiGBoMyS72sizD2fa6Vjz	orch/kr-c1-H	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: not set (default)
+kind_review	coder1	I	session_01KjRVqV7G95LUgJnPHf3xmY	orch/kr-c1-I	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	L	session_014WwNZj1GELjLaLEmNcyT75	orch/kr-c1-L	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	R	session_016TV45n14awqHY9oXxMivqM	orch/kr-c1-R	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	S	session_01B5wuWVakzu44qyYLDQSjSv	orch/kr-c1-S	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: high
+kind_review	coder1	T	session_01Wf8GEYgUxXGKCPDUNSJx6Z	orch/kr-c1-T	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: not set (default)
+kind_review	coder1	Y	session_01LVAdcPJziTusAi3y8kz8Cf	orch/kr-c1-Y	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	claude-opus-4-6	done	effort reported: not explicitly set
+kind_review	coder2	A	session_01KMtNeEQUREAz4vFFXPLVvs	orch/kr-c2-A	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: high
+kind_review	coder2	D	session_016b2r1LoJpyoteJnbjVMY72	orch/kr-c2-D	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: not surfaced in session metadata; ran at the session default reasoning effort
+kind_review	coder2	E	session_014HziQA2jcoRmezoDWzTasB	orch/kr-c2-E	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (high)
+kind_review	coder2	H	session_01JJCAMGgiQWKBNcuaH89sc7	orch/kr-c2-H	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (standard reasoning; no custom effort setting)
+kind_review	coder2	I	session_01NLdB2L6VM6LKrnAdYGfAJG	orch/kr-c2-I	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (no separate effort setting reported by the system for this session)
+kind_review	coder2	L	session_01WJWSFhpwBMhTU4KjcjM4Sv	orch/kr-c2-L	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (no effort override set for this session)
+kind_review	coder2	R	session_01PMHy7Eua1nyyjvFvYGbB3Z	orch/kr-c2-R	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (no custom effort setting applied)
+kind_review	coder2	S	session_01HAH61ETGbtWBFKxuSz86M7	orch/kr-c2-S	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (high)
+kind_review	coder2	T	session_013GSkuBFKWpQTgJ8tAurNL9	orch/kr-c2-T	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (not separately configurable in this session; high reasoning applied)
+kind_review	coder2	Y	session_01LoWkR8e49Ziv8HW7qy6k9U	orch/kr-c2-Y	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	claude-opus-4-8	done	effort reported: default (high)
+kind_review	coder3	A	session_01T75ap7VDktHaqEG1kHvwoH	orch/kr-c3-A	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default (no effort override set for this session)
+kind_review	coder3	D	session_016C7a1BHNFFN9fzekzdpKpg	orch/kr-c3-D	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default (no effort override set for this session)
+kind_review	coder3	E	session_01NdK8tz5e8LgvsF1JdP8CCe	orch/kr-c3-E	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default (no effort override set for this session; permission mode auto)
+kind_review	coder3	H	session_011RZPprT4kvQgqSX7ArSTZW	orch/kr-c3-H	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: high
+kind_review	coder3	I	session_01EptTA1L3CxonYGXeTxFLAZ	orch/kr-c3-I	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: high
+kind_review	coder3	L	session_01V6DrWYHM52XXH6cMTBC1KW	orch/kr-c3-L	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default (no effort override set for this session; permission mode auto)
+kind_review	coder3	R	session_01PyiVWw1x99AkT8C76Wqf5Z	orch/kr-c3-R	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: no explicit effort/thinking setting is reported by the system for this session; run at the session default
+kind_review	coder3	S	session_011aJybeH27i55zwNyfKoSdE	orch/kr-c3-S	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: not reported: no effort or thinking-budget setting was surfaced to this session; the session ran at its default setting (permission mode auto)
+kind_review	coder3	T	session_01UViqhConHmp6oyZc6GsyeD	orch/kr-c3-T	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: auto (permission mode auto; no explicit reasoning-effort override set for this session)
+kind_review	coder3	Y	session_01Dkn43NJBdzg3SzaeVtLfaj	orch/kr-c3-Y	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default for this session; no explicit effort setting is reported by the system (permission_mode: auto)
+kind_review	judge	A	session_01LWGp6AfFtQiXEEBSmFQuGu	orch/kr-judge-A	claude-opus-5-5	claude-opus-5-5			running	

@@ -1,0 +1,82 @@
+[
+ {
+  "entry_id": "E-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule in this entry names a specific mechanism by which a failure signal is discarded: empty or log-only catch blocks, bare except clauses, Go blank-identifier error suppression, unchecked catch without narrowing or rethrow, Next.js redirect caught by try/catch, C# async void swallowing exceptions, dropped Rust JoinHandle, and changes that suppress errors instead of fixing the root cause. Each rule text states what is wrong.",
+  "rule_kinds": {
+   "038": "candidate pattern",
+   "039": "candidate pattern",
+   "041": "candidate pattern",
+   "046": "candidate pattern",
+   "049": "candidate pattern",
+   "214": "candidate pattern",
+   "261": "candidate pattern",
+   "367": "candidate pattern",
+   "542": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule identifies a specific way a failure or missing value is replaced by a plausible default that the consumer cannot distinguish from a real result: .catch() returning null or empty collections, nullish-coalescing operators masking required data with sentinel values, chained .get({}).get() fallback chains hiding missing keys, and secret environment variables with hardcoded fallback strings. Every rule text states the failure it detects.",
+  "rule_kinds": {
+   "044": "candidate pattern",
+   "047": "candidate pattern",
+   "066": "candidate pattern",
+   "233": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All four rules describe a conversion or re-raise that strips the structured identity or cause chain from an error: the ternary instanceof-or-String normalization pattern in JS/TS, Python raise without from losing the traceback, Rust .to_string() or format! applied too early discarding the error type, and Go fmt.Errorf with %v instead of %w breaking errors.Is/errors.As unwrapping. Each rule text states exactly what context is destroyed.",
+  "rule_kinds": {
+   "045": "candidate pattern",
+   "254": "candidate pattern",
+   "366": "candidate pattern",
+   "470": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The sole rule counts error-handling constructs (try/except, try/catch, .catch, ErrorBoundary, None checks) in a file before and after a change and warns on a decrease. It does not identify which failure path lost its handling or whether the removed construct was necessary; the count comparison is the entire predicate.",
+  "rule_kinds": {
+   "385": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "A call path crosses from one error mechanism to the other without translating the failure, so a caller handling one mechanism sees success while a failure was raised through the other.",
+  "reason": "The rule inventories which error mechanisms a module uses and reports when more than one coexists, but it does not check whether any caller actually misses a failure because of the mixture. The co-presence of mixed mechanisms belongs in the error-swallowing family only when a crossing loses a failure signal.",
+  "rule_kinds": {
+   "348": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-06",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "The console.log call is the handler's entire disposition of the error, with nothing rethrown or returned, so the failure is only reported on the non-error channel and never propagated.",
+  "reason": "The rule flags console.log inside a catch clause, which logs the error on the info channel instead of the error channel. This is an error-swallowing failure only when the log is the handler's sole disposition of the error; when the handler also rethrows or returns a failure value, the channel choice is a logging best-practice issue, not error suppression. The rule does not check whether the handler also propagates the error.",
+  "rule_kinds": {
+   "560": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
