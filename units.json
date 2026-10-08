@@ -1,0 +1,1491 @@
+[
+ {
+  "unit_id": "U-A-01",
+  "name": "Annotation that restates its own code",
+  "invariant": "An annotation must carry something the annotated code cannot state for itself, above all the reason the code is as it is.",
+  "legitimate": "Restatement earns its place where the reader is not expected to read the code: a published API docstring that a documentation generator turns into reference for callers, a project or language convention that requires a doc entry on every public member, a line over an opaque idiom whose meaning is not readable, and an explicit type written to pin a widening or to stop an inferred type from drifting with a dependency.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "A-01"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "021",
+   "025",
+   "027",
+   "030",
+   "058"
+  ]
+ },
+ {
+  "unit_id": "U-A-02",
+  "name": "Prose banner where a named unit belongs",
+  "invariant": "A stretch of code distinct enough to deserve a heading must take its name from a code unit that can be called, tested and moved, not from a line of prose above it.",
+  "legitimate": "A heading is the right tool where extraction is not available: a long declarative literal such as a constants table, a configuration map or a generated data block; file-scope grouping in a language with no unit narrower than the file; and the one conventional line that separates imports from definitions, which marks layout rather than standing in for a function.",
+  "kind": "proxy group",
+  "member_entries": [
+   "A-02"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "022",
+   "026",
+   "112"
+  ]
+ },
+ {
+  "unit_id": "U-A-03",
+  "name": "Author's stance where a fact is owed",
+  "invariant": "A comment that flags the code as uncertain, obvious, unpleasant or provisional must state the fact behind that judgement: what is not known, what constraint forced the shape, or what would have to change.",
+  "legitimate": "The same words are informative once the fact is attached: an assumption comment that names the invariant it rests on and where that invariant is enforced, a hack comment that names the platform bug or deadline forcing it and the condition for removing it, and a hedge that reports a measured uncertainty, such as an undocumented third-party response shape, with the fallback it justifies.",
+  "kind": "boundary register",
+  "member_entries": [
+   "A-03"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "035",
+   "036",
+   "037",
+   "200",
+   "370"
+  ]
+ },
+ {
+  "unit_id": "M-01",
+  "name": "Stand-in left where delivered work is owed",
+  "invariant": "An artifact presented as delivered must contain the work it owes; nothing in it (a comment, a placeholder, a sample value, a deferral marker) may stand in for behaviour or content that was not done.",
+  "legitimate": "A stand-in is honest when it makes no claim of completion: a TODO tied to a tracked ticket where the unit still meets the contract it advertises, a truly optional and documented extension point, a template or scaffold distributed to be filled in, a future-work heading, and example configuration or seed data declared as such or guarded from production.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "A-04",
+   "I-05"
+  ],
+  "families": [
+   "A",
+   "I"
+  ],
+  "rule_ids": [
+   "028",
+   "174",
+   "180",
+   "223",
+   "233",
+   "294",
+   "495",
+   "559"
+  ]
+ },
+ {
+  "unit_id": "M-02",
+  "name": "Suppression annotation that outlived its referent",
+  "invariant": "An annotation that names a specific finding, directive or workaround must have that referent present in the code, and must be removed together with it.",
+  "legitimate": "The referent is real but out of reach of the run that reported the annotation as unconsumed: a check that is off in this configuration or runs only in another profile or tool, a directive that fires only on another platform, language version or build flag, generated or conditionally compiled code where the finding comes and goes, or a staged cleanup or forward-looking entry that the project accepts and notes.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "A-05",
+   "H-12"
+  ],
+  "families": [
+   "A",
+   "H"
+  ],
+  "rule_ids": [
+   "445",
+   "567"
+  ]
+ },
+ {
+  "unit_id": "U-A-06",
+  "name": "Change history kept inside the file",
+  "invariant": "A comment must describe the code as it now stands; how the code came to be that way belongs to the commit record, which is the only copy that stays true.",
+  "legitimate": "History in the file is right when the past still constrains the present and cannot be recovered from the log: a workaround naming the upstream bug and the version that fixes it, a compatibility shim naming the client release it must outlive, a deprecation carrying a removal date, or a header date required for licence or provenance.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "A-06"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "033",
+   "034",
+   "562"
+  ]
+ },
+ {
+  "unit_id": "U-A-07",
+  "name": "Source text written to the authoring session instead of the code reader",
+  "invariant": "A source comment must document the delivered code for whoever opens the file next, not narrate the authoring session or converse with the user; exchanges with the user belong in the review or chat channel, where they can be answered and closed.",
+  "legitimate": "Rules 199 and 202 belong to Annotation Noise only under the added condition, which they do not test, that the praise, preamble or disclaimer is committed to a comment or docstring; in a reply to a person a short preamble or a stated limit is ordinary and can be information. For the in-source rules 023 and 299, an addressed note is fine when its reader is any future maintainer: a header saying the file is generated and which command regenerates it, a pointer to the design document or ticket that fixed the shape, a scaffold instruction meant to be removed on customization, or a warning about an invariant the next editor must keep.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "A-07"
+  ],
+  "families": [
+   "A"
+  ],
+  "rule_ids": [
+   "023",
+   "199",
+   "202",
+   "299"
+  ]
+ },
+ {
+  "unit_id": "M-03",
+  "name": "Repeated declaration of one import or export",
+  "invariant": "Each module dependency and each exported symbol must be declared once in its scope.",
+  "legitimate": "The language or the tooling requires the second declaration, or the public surface chooses it: a type-only import beside a value import, a side-effect import beside a named one, a default and a named export kept for existing importers, a deliberate or deprecated alias, and a re-export a barrel or public entry point needs.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "D-01",
+   "H-11"
+  ],
+  "families": [
+   "D",
+   "H"
+  ],
+  "rule_ids": [
+   "005",
+   "014"
+  ]
+ },
+ {
+  "unit_id": "M-04",
+  "name": "Shared shape restated at each site instead of declared once",
+  "invariant": "A shape or value that several sites share, including a group of parameters that travels together through several signatures, must be declared once as a named type or constant and referenced from each site.",
+  "legitimate": "The sites agree by coincidence or answer to different owners: parameters or literals that co-occur but mean different things, two unrelated constants with one name, a wire or storage contract that must not follow the internal model, a type in another bounded context, and a test that writes out its expected shape on purpose.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "D-02",
+   "S-20"
+  ],
+  "families": [
+   "D",
+   "S"
+  ],
+  "rule_ids": [
+   "054",
+   "123",
+   "336",
+   "438",
+   "461",
+   "546",
+   "574"
+  ]
+ },
+ {
+  "unit_id": "U-D-04",
+  "name": "Name, signature and callee-overlap similarity signals",
+  "invariant": "A report of duplication rests on duplicated content, not on a matching name, a signature shape or a count of shared callees.",
+  "legitimate": "The signal carries no defect where a name is a convention met independently in many modules (handle, serialize, validate, a framework hook), where an interface or protocol requires the same signature in every implementation, where same-named functions with different signatures are distinct operations or overloads, and where sibling functions share callees because they use the same helpers for different work.",
+  "kind": "proxy group",
+  "member_entries": [
+   "D-04"
+  ],
+  "families": [
+   "D"
+  ],
+  "rule_ids": [
+   "119",
+   "122",
+   "124"
+  ]
+ },
+ {
+  "unit_id": "U-D-05",
+  "name": "Test cases and setup restated per case",
+  "invariant": "A behavior is set up and asserted in one place in the suite, and cases that differ only in their data share one body through parameters or a fixture.",
+  "legitimate": "Repetition earns its place in tests when it is the point: a case written out in full because explicitness makes the expected value readable, a regression test kept independent of the shared fixture so a fixture change cannot hide the bug, or two tests that look alike but pin different contracts (a unit path and an end-to-end path over the same behavior). Setup repeated in two files is also fine before it is clear what the shared fixture should be.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "D-05"
+  ],
+  "families": [
+   "D"
+  ],
+  "rule_ids": [
+   "120",
+   "263",
+   "325"
+  ]
+ },
+ {
+  "unit_id": "M-06",
+  "name": "Facility written again although a provider already exists",
+  "invariant": "A capability that the language, the platform, a library or the codebase already provides must be used through that provider rather than implemented again beside it.",
+  "legitimate": "The provider does not fit: it misses a requirement (performance, platform, dependency weight, licence, API shape), the semantics must differ in a documented way, or the custom code is smaller than the cost of the dependency. A thin adapter over the provider is not a reimplementation.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "D-06",
+   "S-03"
+  ],
+  "families": [
+   "D",
+   "S"
+  ],
+  "rule_ids": [
+   "125",
+   "136",
+   "147",
+   "541"
+  ]
+ },
+ {
+  "unit_id": "U-D-08",
+  "name": "Second implementation of logic the repository already has",
+  "invariant": "One behavior has one implementation in the repository, and every site that needs it calls that implementation.",
+  "legitimate": "Two bodies may look alike and still be right to keep apart: when they serve different bounded contexts or published versions whose rules are free to diverge, when the resemblance is incidental (short accessors, framework boilerplate, generated or vendored code), when a regulatory or deployment boundary requires independent implementations, or when a deliberate copy buys independence worth more than the shared edit. Repetition is also acceptable while a third occurrence has not yet shown which part is really common.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "D-08"
+  ],
+  "families": [
+   "D"
+  ],
+  "rule_ids": [
+   "071",
+   "117",
+   "118",
+   "121",
+   "333",
+   "334",
+   "335",
+   "465",
+   "485",
+   "549",
+   "550",
+   "551"
+  ]
+ },
+ {
+  "unit_id": "U-E-01",
+  "name": "Failure signal dropped before it reaches its owner",
+  "invariant": "A failure signal raised, returned or spawned by an operation must either be genuinely handled where it is received, so that the caller's promised postcondition holds, or reach the party that owns it; it must not be caught, ignored or detached and then dropped.",
+  "legitimate": "The handler genuinely recovers so the promised postcondition holds; the operation is optional by contract (best-effort cache warm-up, telemetry flush, cleanup on a path already shutting down); a boundary whose job is to stop every failure (request handler, supervisor loop) reports it on the monitored channel; a catch narrows to the failures it names and lets the rest (such as a framework redirect signal) continue; or a spawned task's failure is observed by another declared owner.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "E-01"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "038",
+   "039",
+   "041",
+   "046",
+   "049",
+   "214",
+   "261",
+   "367",
+   "542"
+  ]
+ },
+ {
+  "unit_id": "U-E-02",
+  "name": "Failure disguised as a valid value",
+  "invariant": "A failure or genuinely missing value must surface to the consumer; it must not be replaced by a default or sentinel that a successful operation could also have produced.",
+  "legitimate": "The default is the documented, domain-correct value for a genuinely optional input whose absence is an expected case rather than a failure, and the consumer is designed to treat it so (an optional display label defaulting to an empty string, a pagination offset defaulting to zero).",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "E-02"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "044",
+   "047",
+   "066",
+   "233"
+  ]
+ },
+ {
+  "unit_id": "U-E-03",
+  "name": "Error identity or cause chain destroyed in propagation",
+  "invariant": "When an error is converted, wrapped or re-raised, its structured identity and cause chain must stay available to the handlers above it.",
+  "legitimate": "A human-readable string is derived at a display or serialization boundary (UI message, HTTP response body, operator log line) while the structured error is still propagated or recorded internally.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "E-03"
+  ],
+  "families": [
+   "E"
+  ],
+  "rule_ids": [
+   "045",
+   "254",
+   "366",
+   "470"
+  ]
+ },
+ {
+  "unit_id": "U-H-01",
+  "name": "Declared artifact with no consumer",
+  "invariant": "Every declaration a change leaves in the delivered system must be referenced by at least one other part of that system.",
+  "legitimate": "The artifact is consumed from outside the analysed repository (a published library surface, a plugin contract, an SDK type), or it is an entry point the framework calls by convention (a route, a layout, a CLI command, a registered hook, a migration script). It is also legitimate when the only reference is one static analysis cannot see, such as a dynamic import, a string-keyed registry, reflection or a build step that generates the call site.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-01"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "001",
+   "006",
+   "007",
+   "008",
+   "009",
+   "010",
+   "444",
+   "453",
+   "454",
+   "455",
+   "456",
+   "465"
+  ]
+ },
+ {
+  "unit_id": "U-H-02",
+  "name": "Production dependency the shipped runtime never loads",
+  "invariant": "A package declared as a production dependency must be required by code that ships and runs.",
+  "legitimate": "A library that re-exports the package's types in its own public API must keep it where its consumers will install it. The same holds when the package is loaded through a dynamic or plugin resolution the analyser cannot follow, and in a setup where one manifest deliberately serves shipped code and tests together, so the production and development split carries no meaning.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-02"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "446",
+   "447"
+  ]
+ },
+ {
+  "unit_id": "U-H-03",
+  "name": "Permanently unreachable code",
+  "invariant": "Every statement and branch left in delivered code must be reachable on some execution path.",
+  "legitimate": "A constant condition can be a deliberate compile-time or build-time switch (a debug flag, a platform constant the bundler folds away), and some unreachable statements are required: an exhaustiveness default, a return after an exit call, or a raise the compiler or linter insists on.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-03"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "003",
+   "004"
+  ]
+ },
+ {
+  "unit_id": "U-H-05",
+  "name": "Operation declared with an empty body",
+  "invariant": "An operation that performs no work and from which nothing expects an effect should not be declared or registered at all.",
+  "legitimate": "The finding belongs to Hygiene Debris only on the added condition that nothing expects an effect from the operation, so it can be deleted; if a caller or a stated requirement expects the effect, the empty body is work omitted and presented as done (family I). An empty body is acceptable outright where the slot is mandatory: an abstract or protocol method, an interface conformance, a deliberate no-op default or handler, a pass in an exception subclass, or a useEffect whose purpose is the cleanup function it returns.",
+  "kind": "boundary register",
+  "member_entries": [
+   "H-05"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "017",
+   "018"
+  ]
+ },
+ {
+  "unit_id": "U-H-06",
+  "name": "Debug instrumentation shipped with the change",
+  "invariant": "Output and breakpoints added to observe a run during development must be removed, or replaced by the project's own logging, before the change is delivered.",
+  "legitimate": "Writing to standard output is the product in a CLI, a build script, a generator or a test reporter, and deliberate operator-facing output or structured telemetry through the project's logger is not debris. A debugger statement is legitimate only in code that never ships, such as a local development harness or a path gated to development builds.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-06"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "002",
+   "330",
+   "370"
+  ]
+ },
+ {
+  "unit_id": "U-H-07",
+  "name": "Traces of the authoring process delivered as product",
+  "invariant": "A change delivers the product only; scratch files and generator markers made while producing it must be removed or resolved before delivery.",
+  "legitimate": "Design records kept on purpose are not residue: an ADR, a maintained ROADMAP or TODO the team works from, or documentation under docs/. Placeholder text is legitimate in a template or fixture whose job is to be filled in, and in prose that discusses the markers themselves. Where a placeholder stands in for content the document was required to carry, the failure is an incomplete delivery (family I) rather than debris.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-07"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "019",
+   "495"
+  ]
+ },
+ {
+  "unit_id": "U-H-09",
+  "name": "Half-wired event channel",
+  "invariant": "Each end a change registers on an event channel must have its counterpart in the same system, so that what is published is received and what is listened for can arrive.",
+  "legitimate": "The counterpart lives outside the analysed code: another service, a separate repository, an external consumer of a documented event contract, a plugin or extension API, or an operator watching a channel by hand. It is also legitimate when the channel name is assembled at run time, so name matching cannot pair the two ends, and when an emit belongs to a public component API whose listeners are written by its users.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-09"
+  ],
+  "families": [
+   "H"
+  ],
+  "rule_ids": [
+   "345",
+   "346"
+  ]
+ },
+ {
+  "unit_id": "M-08",
+  "name": "Variation or compatibility point the delivered system does not use",
+  "invariant": "A boundary or variation point must be exercised by the system as it is delivered; a migration shim, deprecated symbol or removal marker is such a point and must go once nothing uses the old path.",
+  "legitimate": "Something outside the repository depends on the point: a published plugin contract, an interface implemented by a test double or a second runtime, an abstract base for third-party implementors, a deprecation window the project promised, or a shim an external consumer on an older version still needs.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "H-10",
+   "S-06"
+  ],
+  "families": [
+   "H",
+   "S"
+  ],
+  "rule_ids": [
+   "059",
+   "083",
+   "085",
+   "092",
+   "093",
+   "094",
+   "113",
+   "563"
+  ],
+  "condition": "H-10 (boundary register, rule 092) belongs to this unit only when the migration has completed and no caller, published API or still-supported release needs the old path; while old call sites remain, the shim is live compatibility structure and the finding is unfinished migration work."
+ },
+ {
+  "unit_id": "U-I-01",
+  "name": "Hallucinated or nonexistent API reference",
+  "invariant": "Every module, API, member or symbol the code names must exist in the environment where the code will run.",
+  "legitimate": "Optional imports guarded by try/except for graceful degradation, development-time type stubs not executed at runtime, framework-specific reexports that alias the original API, and version-conditional imports with proper fallbacks.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-01"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "012",
+   "176",
+   "181",
+   "182",
+   "183",
+   "184",
+   "185",
+   "186",
+   "187",
+   "188",
+   "369"
+  ]
+ },
+ {
+  "unit_id": "U-I-03",
+  "name": "Claim or value presented as established without evidence",
+  "invariant": "A claim of completion, correctness or performance, or a concrete value written into the work, must be backed by evidence obtained and verified in the current run, not asserted, assumed or invented.",
+  "legitimate": "A claim or figure accompanied by the fresh command output, measured baseline or citation that substantiates it; an estimate or example value that is explicitly labelled as such.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-03"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "031",
+   "201",
+   "318",
+   "323",
+   "530",
+   "531"
+  ]
+ },
+ {
+  "unit_id": "U-I-04",
+  "name": "Substitute delivered in place of the requested work",
+  "invariant": "A change presented as answering a requirement or finding must actually fulfill it, not deliver another artifact or a gamed metric that only produces the acceptance signal.",
+  "legitimate": "A substitute the requester accepts once it is named as one, for instance a regression test added after showing that the reported behavior is in fact correct; and cases where the metric genuinely is the goal rather than a proxy for it.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-04"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "206",
+   "543"
+  ]
+ },
+ {
+  "unit_id": "M-09",
+  "name": "Green test whose assertion cannot catch the wrong behaviour",
+  "invariant": "A passing test must assert the observable outcome of the production code it names against an expectation derived from the requirement, so that it turns red when that behaviour is wrong.",
+  "legitimate": "A test weak by design and named for what it does, while the behaviour is covered elsewhere: a smoke or import test, a compile-only or type-level check, a characterization test that pins current output before a refactor; a framework test where the project configured the framework in a way that can regress; a fixture standing in for an external system while the assertion still targets production logic; a self-evident literal needs no derivation.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-06",
+   "T-02"
+  ],
+  "families": [
+   "I",
+   "T"
+  ],
+  "rule_ids": [
+   "265",
+   "289",
+   "327",
+   "427",
+   "428"
+  ]
+ },
+ {
+  "unit_id": "U-I-07",
+  "name": "Description that contradicts the system it describes",
+  "invariant": "Every statement a description makes about the system must be true of the system as delivered.",
+  "legitimate": "Text explicitly scoped to another version or to the past (changelogs, release notes, architecture decision records), and a comment that records intent, rationale or a known deviation rather than describing current behavior.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-07"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "279",
+   "280",
+   "291",
+   "328",
+   "337",
+   "338",
+   "339",
+   "340",
+   "442"
+  ]
+ },
+ {
+  "unit_id": "U-I-08",
+  "name": "Operation with an empty or canned body",
+  "invariant": "An operation presented as implemented must actually perform its specified work.",
+  "legitimate": "Abstract methods, protocol and interface declarations, and overridable hooks whose documented behavior is to do nothing (null objects, default no-op handlers, a deliberately empty cleanup). There the empty body is the behavior, not a missing one.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-08"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "017",
+   "018",
+   "175",
+   "177",
+   "178",
+   "179"
+  ]
+ },
+ {
+  "unit_id": "U-I-09",
+  "name": "Part of the specified work never implemented",
+  "invariant": "Every case, step and task the specification or plan requires must be realized in the implementation before the work is reported as delivered.",
+  "legitimate": "A requirement explicitly cut from this change and recorded as out of scope; a migration staged on purpose with the remaining call sites tracked and the old path still supported; a partial match whose remaining variants are unreachable by construction and asserted to be so.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-09"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "060",
+   "092",
+   "315",
+   "324"
+  ]
+ },
+ {
+  "unit_id": "U-I-10",
+  "name": "Confidence vocabulary in prose",
+  "invariant": "Prose about the code should express no more and no less certainty than the author has grounds for.",
+  "legitimate": "A hedge that honestly records a limit ('may be null here, not yet verified') is the disclosure this family wants, not a defect; and 'simply' or 'obviously' in an explanation of something genuinely simple carries no claim about the software at all.",
+  "kind": "proxy group",
+  "member_entries": [
+   "I-10"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "035",
+   "036",
+   "200"
+  ]
+ },
+ {
+  "unit_id": "M-10",
+  "name": "Pass obtained by switching off or weakening the check",
+  "invariant": "A check the project runs (a test, a type or lint diagnostic, a build or dependency gate) must be passed by changing the code so it satisfies the check; the check must not be skipped, disabled, loosened or reconfigured to produce the pass.",
+  "legitimate": "A waiver that records a live reason and is confined to what it excuses (a skip tied to an unimplemented feature, a missing platform or a ticketed upstream bug; a suppression naming the analyser ID or upstream issue on one line); a check, test or expectation retired or changed because the specified behaviour itself changed, with the decision recorded; adopting a configuration, tightening a rule or fixing a path or glob.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-12",
+   "T-03",
+   "Y-05"
+  ],
+  "families": [
+   "I",
+   "T",
+   "Y"
+  ],
+  "rule_ids": [
+   "052",
+   "056",
+   "207",
+   "208",
+   "210",
+   "211",
+   "332",
+   "342",
+   "542",
+   "566"
+  ]
+ },
+ {
+  "unit_id": "U-I-13",
+  "name": "Known gap or assumption kept out of the report",
+  "invariant": "A report must disclose the gaps, assumptions and known defects of the work alongside its results.",
+  "legitimate": "Gaps already recorded where the reader is pointed at them (an issue tracker, a risk register referenced in the report), and omissions of what the agreed scope plainly excludes, which no reader would read as covered.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-13"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "312",
+   "320",
+   "533"
+  ]
+ },
+ {
+  "unit_id": "M-11",
+  "name": "Declared dependency point with no provider",
+  "invariant": "A dependency or integration point that one side declares must be supplied by some provider on every path that reaches it in the delivered system.",
+  "legitimate": "The provider is out of sight of static analysis or out of scope by design: it arrives in the same change, it is registered at run time (plugin registry, DI container, test harness), the point is an extension published for consumers outside the repository, a parameter kept for backwards compatibility, or a genuinely optional dependency whose default is the intended behaviour.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-14",
+   "S-18"
+  ],
+  "families": [
+   "I",
+   "S"
+  ],
+  "rule_ids": [
+   "114",
+   "452"
+  ]
+ },
+ {
+  "unit_id": "U-I-15",
+  "name": "Safeguard present in the source and inert where it runs",
+  "invariant": "A mechanism presented as enforcing a property must actually enforce it in the configuration the code runs in.",
+  "legitimate": "An assert used deliberately as a development-time sanity check where the real enforcement lives elsewhere; a fast non-cryptographic hash used for cache keys or checksums rather than for secrets; a directive in a file whose boundary the framework establishes by another route.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-15"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "155",
+   "248",
+   "451"
+  ]
+ },
+ {
+  "unit_id": "U-I-16",
+  "name": "Dependency used but never declared",
+  "invariant": "Everything the change needs at build or run time must be declared in the project manifest, so the change works in an environment built from that manifest alone.",
+  "legitimate": "Packages the runtime or standard library supplies, peer dependencies the consuming application is expected to declare, workspace packages resolved by a monorepo root manifest, and type-only imports that are erased before the code ships.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-16"
+  ],
+  "families": [
+   "I"
+  ],
+  "rule_ids": [
+   "011",
+   "013"
+  ]
+ },
+ {
+  "unit_id": "M-12",
+  "name": "Declared contract not honoured by what stands behind it",
+  "invariant": "The contract a consumer is written against (a supertype, an interface, a declared type for data it receives) must be honoured by the implementation or producer behind it.",
+  "legitimate": "The contract itself admits the gap: the base type declares the operation optional or documents partial support and callers test for it, the declared type is deliberately wider or partial and the consumer validates the payload at run time, or the declaration is kept in step with the producer by a shared schema, a generated client or a typed adapter.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "I-17",
+   "S-09",
+   "Y-06"
+  ],
+  "families": [
+   "I",
+   "S",
+   "Y"
+  ],
+  "rule_ids": [
+   "284",
+   "314",
+   "316"
+  ]
+ },
+ {
+  "unit_id": "U-K-01",
+  "name": "Change beyond the requested scope",
+  "invariant": "Every region the change modifies or adds traces to the task the user actually requested, and a change presented as behaviour-preserving carries no unrequested behavioural edit.",
+  "legitimate": "The extra edit is acceptable when the request itself authorizes it (the task asked for the cleanup, refactor, reorganization or migration), when it is a mechanically required consequence of the requested change (a rename that must propagate, callers of a changed interface, an import the new call needs, a restructuring that makes the fix possible), or when the project convention or the user explicitly accepts the broadened scope and the change description declares it.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "K-01"
+  ],
+  "families": [
+   "K"
+  ],
+  "rule_ids": [
+   "083",
+   "206",
+   "296",
+   "298"
+  ]
+ },
+ {
+  "unit_id": "U-K-02",
+  "name": "Measured growth as a stand-in for unrequested scope",
+  "invariant": "Growth in the delivered code must be accounted for by the request, not merely kept small.",
+  "legitimate": "Any request that adds a feature, a test suite, a generated client or a vendored dependency makes the code bigger, and a file under active development grows every day it is worked on. The numbers are usable as a review queue or a trend to watch; they are not a finding by themselves.",
+  "kind": "proxy group",
+  "member_entries": [
+   "K-02"
+  ],
+  "families": [
+   "K"
+  ],
+  "rule_ids": [
+   "107",
+   "204",
+   "483"
+  ]
+ },
+ {
+  "unit_id": "U-L-01",
+  "name": "Placeholder name in place of the domain term",
+  "invariant": "Every named artifact must denote the specific domain concept it holds, so that the concept can be read off the name without reading the implementation.",
+  "legitimate": "A contentless or very short name is right when the code is genuinely generic over the concept or the scope makes it unambiguous: a type parameter, loop indices and coordinates (i, j, k, x, y), a lambda argument in a one-line pipeline, established abbreviations the project uses (id, db, err), or a utility module that the project's own convention names utils and keeps to one documented purpose.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "L-01"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "126",
+   "133",
+   "414",
+   "555"
+  ]
+ },
+ {
+  "unit_id": "U-L-02",
+  "name": "Name restates the context it already sits in",
+  "invariant": "A name must add the distinction its enclosing scope does not already make, and must not repeat what the scope or type already supplies.",
+  "legitimate": "Repetition is right when the scope is not visible at the use site: an exported symbol read unqualified in another module, a flat C-style or global namespace, a name the project's public API spells in full, a multi-word domain term the project already uses, or two names in one scope that only the longer form tells apart.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "L-02"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "129",
+   "132"
+  ]
+ },
+ {
+  "unit_id": "U-L-03",
+  "name": "Departure from the naming convention in force",
+  "invariant": "An added identifier, file name or file location must take the form the project already uses for that kind of artifact.",
+  "legitimate": "A different form is correct when another convention governs the artifact: generated code, vendored third-party sources, a name a framework or wire format fixes (HTTP headers, environment variables, serialised keys), migration or fixture directories, files such as __init__.py, Makefile or Dockerfile, and a documented project-wide migration in which new code takes the target convention.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "L-03"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "115",
+   "128",
+   "131",
+   "384",
+   "564"
+  ]
+ },
+ {
+  "unit_id": "U-L-06",
+  "name": "Raw literal selected by size or format",
+  "invariant": "A value with domain meaning should be referred to through the named constant or design token the project gives it, not inlined as an anonymous literal.",
+  "legitimate": "A literal is the right text when the value has no name to carry: 0, 1 and -1 as structural values, a mathematical constant in a formula, the definition of the named constant itself, a value used once where its meaning is evident, a one-off value in a test or fixture, a value in a declarative configuration file whose key names it, and a style value in a prototype or a file outside the design system.",
+  "kind": "proxy group",
+  "member_entries": [
+   "L-06"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "198",
+   "372"
+  ]
+ },
+ {
+  "unit_id": "U-L-07",
+  "name": "Decorative glyphs in source text",
+  "invariant": "Source files and comments should keep to the character register the project's own sources use, without decorative or typographic glyphs.",
+  "legitimate": "The added condition the rules do not check: the finding belongs to this family only if the project's existing sources avoid these characters for this purpose. Where they do not, the glyph is correct: emoji and typographic punctuation in user-facing strings, localisation data, documentation and Markdown, CLI output the project deliberately decorates, identifiers in a non-ASCII natural language, documented Unicode operators in scientific code, and test data that exercises Unicode handling.",
+  "kind": "boundary register",
+  "member_entries": [
+   "L-07"
+  ],
+  "families": [
+   "L"
+  ],
+  "rule_ids": [
+   "130",
+   "321"
+  ]
+ },
+ {
+  "unit_id": "U-R-01",
+  "name": "Runtime re-establishment of an already-assured value property",
+  "invariant": "A check, coercion or recomputation may only establish a property of a value that is not already assured at that point in the code, whether the assurance comes from the type system or from a trusted caller or boundary.",
+  "legitimate": "The check is the real guarantee at a trust boundary where the static type or the caller's validation cannot be relied on: a public or exported API callable by untrusted or untyped code, an HTTP or CLI entry point, a deserializer, parsed JSON or values typed as any or unknown, data read from a file or database, or code reached after an unsafe cast. It is also right when the project deliberately asserts the invariant as a precondition contract, or when the compiler does not run in a mode that proves the property.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "R-01"
+  ],
+  "families": [
+   "R"
+  ],
+  "rule_ids": [
+   "053",
+   "068",
+   "070"
+  ]
+ },
+ {
+  "unit_id": "U-R-02",
+  "name": "Error handling that reproduces default propagation",
+  "invariant": "An error-handling construct must enclose code that can fail and must change what the caller observes when it fails, beyond what default error propagation already provides.",
+  "legitimate": "The catch does work when it logs with context, wraps or translates the error into a type the caller's contract names, recovers, or releases a resource on the way out. A try/catch around apparently safe code is justified when the called code can throw in ways the local source does not show, such as a dynamic import, an untyped dependency, a caller-supplied callback or resource exhaustion.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "R-02"
+  ],
+  "families": [
+   "R"
+  ],
+  "rule_ids": [
+   "040",
+   "069"
+  ]
+ },
+ {
+  "unit_id": "U-R-03",
+  "name": "Fallback access for an input shape that is already fixed",
+  "invariant": "A data accessor must read the shape that the producing boundary guarantees, and may carry a default or an alternative key only for a form that can really arrive.",
+  "legitimate": "The fallback is real work in an adapter that genuinely receives both shapes (decoded JSON with string keys and internal structs with atom keys, or old and new payloads during a migration), for raw external data with no validated schema, or for a sparse structure in which the absent field is a meaningful state and the default is the intended value for absence.",
+  "kind": "boundary register",
+  "member_entries": [
+   "R-03"
+  ],
+  "families": [
+   "R"
+  ],
+  "rule_ids": [
+   "066",
+   "067"
+  ]
+ },
+ {
+  "unit_id": "U-S-01",
+  "name": "Directory population counts",
+  "invariant": "A directory should hold the files of one concern, at a granularity that helps navigation.",
+  "legitimate": "Flat directories are normal for route trees, migrations, fixtures, icons and generated clients, where the files are peers and further grouping only adds depth. Many small files are also right where each is one component with its own test.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-01"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "080",
+   "081",
+   "088"
+  ]
+ },
+ {
+  "unit_id": "U-S-02",
+  "name": "Change-history risk score",
+  "invariant": "Complexity should not accumulate in the code that is changed most often.",
+  "legitimate": "High churn over complex code is the expected signature of active feature work, and growth is the normal signature of an accepted large change. The measures also mislead on young repositories, bulk reformatting and vendored code.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-02"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "107",
+   "463",
+   "483"
+  ]
+ },
+ {
+  "unit_id": "U-S-07",
+  "name": "Code outside the place the architecture assigns it",
+  "invariant": "Code must reside in, and depend only on, the locations that the project's declared or inferred layers, boundaries and placement rules permit for it.",
+  "legitimate": "A crossing or placement is acceptable when it is a recorded exception in the boundary configuration, when an inversion seam makes a seemingly upward edge legal, when the platform fixes the location of a file, or when the placement rule is out of date with a layout the project has since chosen.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-07"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "087",
+   "098",
+   "285",
+   "305",
+   "306",
+   "484",
+   "564"
+  ]
+ },
+ {
+  "unit_id": "U-S-08",
+  "name": "Responsibility not co-located with what changes with it",
+  "invariant": "Each responsibility, with the data and behavior that change together, must live in one cohesive unit, and each unit must hold one responsibility.",
+  "legitimate": "Cross-object access is the unit's defined job (a serializer, mapper, visitor or report), the data holder is an inert transfer object by design, the spread is a cross-cutting concern handled by an agreed mechanism, or the shared edits are a mechanical rename. A module of genuinely cross-domain primitives whose name says what they are is not a grab-bag.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-08"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "432",
+   "433",
+   "434",
+   "436",
+   "437",
+   "547",
+   "555"
+  ]
+ },
+ {
+  "unit_id": "U-S-10",
+  "name": "Size and complexity measure above a limit",
+  "invariant": "A unit's size and decision load should follow from the one responsibility it carries.",
+  "legitimate": "Essential complexity has to live somewhere: a parser, a state machine, a protocol decoder, generated code, data tables and a cohesive module with a wide single-purpose API exceed these limits in their clearest form. The scores also move with style, since guard clauses and early returns change the count without changing the design.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-10"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "073",
+   "074",
+   "075",
+   "076",
+   "082",
+   "084",
+   "090",
+   "100",
+   "101",
+   "102",
+   "103",
+   "110",
+   "111",
+   "112",
+   "302",
+   "356",
+   "459",
+   "482"
+  ]
+ },
+ {
+  "unit_id": "U-S-11",
+  "name": "Framework boundary directive that does not match the code",
+  "invariant": "A framework boundary directive must be placed where it takes effect and must match the runtime needs of the code it covers.",
+  "legitimate": "The directive is required by a parent module or framework convention even though the file itself calls no client API.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-11"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "220",
+   "450",
+   "451"
+  ]
+ },
+ {
+  "unit_id": "U-S-12",
+  "name": "Route identity conflict",
+  "invariant": "Each URL path must resolve to exactly one handler, and sibling dynamic segments must share one parameter name.",
+  "legitimate": "Route groups that intentionally share a path with different layouts, as the framework documents.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-12"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "457",
+   "458"
+  ]
+ },
+ {
+  "unit_id": "M-13",
+  "name": "Test bound to internal structure instead of observable behaviour",
+  "invariant": "A test must be organized around, and assert, results a caller can observe, so that a behaviour-preserving refactor of production internals cannot change its verdict.",
+  "legitimate": "The internal-looking target is itself the specified behaviour: an outgoing call that is the contract (a published message, an audit record, a request to a payment API), per-method tests where each method is a public behaviour, and a per-class test file that mirrors production but still asserts through the public interface.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-13",
+   "T-05"
+  ],
+  "families": [
+   "S",
+   "T"
+  ],
+  "rule_ids": [
+   "288",
+   "325"
+  ]
+ },
+ {
+  "unit_id": "U-S-15",
+  "name": "Library unit taking a decision that belongs to its host",
+  "invariant": "A library unit must take its state and collaborators from its caller and leave process-wide decisions to the entry point.",
+  "legitimate": "These actions belong in the entry point itself: a CLI main, a cmd/ program, a test harness, a one-file script. A process-wide singleton is fine when the entry point creates it and the library only receives it, and framework plugin autodiscovery can require registration at import time.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-15"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "096",
+   "154",
+   "158",
+   "159",
+   "473",
+   "480"
+  ]
+ },
+ {
+  "unit_id": "U-S-17",
+  "name": "Dependency-graph shape above a limit",
+  "invariant": "The dependency graph should let each unit be changed and understood without reasoning about much of the rest.",
+  "legitimate": "A hub with high fan-in or fan-out is often correct by design: a shared domain type, a logging facade, a design-system component used on every screen, a framework base class. The scores are also sensitive to packaging, and a deep hierarchy can mirror a real domain taxonomy.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-17"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "104",
+   "105",
+   "106",
+   "108",
+   "300",
+   "301",
+   "304",
+   "307",
+   "462"
+  ]
+ },
+ {
+  "unit_id": "U-S-19",
+  "name": "Computation and effects interleaved",
+  "invariant": "Pure computation must be separable from I/O and side effects, so that each phase can be called, tested and understood on its own.",
+  "legitimate": "The computation is a single expression feeding an I/O call, where separating the phases would add indirection without aiding comprehension or testing.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-19"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "116",
+   "554"
+  ]
+ },
+ {
+  "unit_id": "U-S-21",
+  "name": "Caller navigating through a collaborator's internals",
+  "invariant": "A unit must use only the interface of its immediate collaborators and must not depend on the structure behind them.",
+  "legitimate": "Long chains are the interface itself in fluent builders and query DSLs, and walking is the point for structures a caller is meant to traverse: an AST, a DOM, a parsed document, a configuration tree. Module-qualified access is a path through namespaces, not through objects.",
+  "kind": "proxy group",
+  "member_entries": [
+   "S-21"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "435",
+   "565"
+  ]
+ },
+ {
+  "unit_id": "U-S-22",
+  "name": "Expression step that cannot change the result",
+  "invariant": "Every step of an expression must affect the value the expression produces.",
+  "legitimate": "The step stays when it changes something: an await inside a try block that must catch the rejection, a binding that names an opaque sub-expression or is reused, an identity clause written for exhaustiveness, and an IIFE that creates a scope the module cannot give.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-22"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "015",
+   "016",
+   "020",
+   "140",
+   "143",
+   "146",
+   "152",
+   "371"
+  ]
+ },
+ {
+  "unit_id": "U-S-23",
+  "name": "Circular module dependency",
+  "invariant": "Modules must form an acyclic dependency graph, and a cycle must not be hidden behind a deferred import.",
+  "legitimate": "Rule 089 belongs here only when the function-level import exists to hide a cycle; a deferred import is correct for an optional extra, a heavy SDK kept out of start-up, a platform-specific module, or an import under a type-checking guard.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-23"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "086",
+   "089",
+   "449"
+  ]
+ },
+ {
+  "unit_id": "M-14",
+  "name": "Public boundary exposing names it does not own",
+  "invariant": "Everything a public boundary exposes, including every type that appears in its signatures, must be a name the boundary itself enumerates, exports and owns as part of its contract.",
+  "legitimate": "The boundary is internal or the interior type is the declared contract: modules of one package calling each other, an internal barrel used only inside the repository, a layered application that shares its domain model on purpose, a type exported through another entry point, a persistence or read-model type documented as the response, and a facade package defined as the union of submodules released together.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-24",
+   "Y-07"
+  ],
+  "families": [
+   "S",
+   "Y"
+  ],
+  "rule_ids": [
+   "079",
+   "095",
+   "344",
+   "448"
+  ]
+ },
+ {
+  "unit_id": "U-S-27",
+  "name": "Effects hidden from the call site",
+  "invariant": "A function's name and signature must reveal its effects; a query must not mutate and a command must not masquerade as a query.",
+  "legitimate": "The effect is the function's named, documented purpose, or it is transparent to the caller, such as caching that preserves semantics.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-27"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "099",
+   "109",
+   "281",
+   "552",
+   "553"
+  ]
+ },
+ {
+  "unit_id": "U-S-28",
+  "name": "Interposed unit that only forwards",
+  "invariant": "A unit placed between a consumer and a provider must change the data, the contract or the guarantees that pass through it.",
+  "legitimate": "The hop earns its place when it pins a boundary the consumer must not cross: a stable public surface over a volatile internal one, a seam for a test double or second implementation, or a deprecation alias kept for one release.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-28"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "072",
+   "077",
+   "078",
+   "097",
+   "440",
+   "460",
+   "546"
+  ]
+ },
+ {
+  "unit_id": "U-S-29",
+  "name": "Variant handled by branching inside one body",
+  "invariant": "Variant selection must use a mechanism that states the variant set once and lets a new variant be added without editing existing bodies.",
+  "legitimate": "The variant set is small, closed and handled at one site, or the ladder is a data-driven mapping that polymorphism would not improve.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "S-29"
+  ],
+  "families": [
+   "S"
+  ],
+  "rule_ids": [
+   "071",
+   "160",
+   "282",
+   "283"
+  ]
+ },
+ {
+  "unit_id": "U-T-01",
+  "name": "Test subject replaced by doubles or fixtures",
+  "invariant": "The result a test asserts on must be produced by executing the production code the test claims to verify, with doubles used only at genuine external boundaries.",
+  "legitimate": "Doubling a genuine edge (network, clock, filesystem, database, a paid third-party SDK) is the intended use; an interaction test may assert on a double when the outgoing call is itself the specified behavior, and a fixture may build input state as long as the asserted outcome still comes from production code.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "T-01"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "203",
+   "262",
+   "290",
+   "427",
+   "556"
+  ]
+ },
+ {
+  "unit_id": "U-T-04",
+  "name": "Verdict decided by elapsed time or leftover state",
+  "invariant": "A test's verdict must depend only on the behavior it exercises, starting from the state its own setup establishes and synchronizing on observable conditions rather than assumed delays.",
+  "legitimate": "Sleeping is correct when elapsed time is the behavior under test (a cache TTL, a debounce window, a rate limiter) with an explicit tolerance; shared fixtures are correct when they are read-only or reset between tests.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "T-04"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "209",
+   "266",
+   "326"
+  ]
+ },
+ {
+  "unit_id": "U-T-06",
+  "name": "Redundant tests that add no new verification",
+  "invariant": "Each test in a suite must add verification of a behavior that no other test already pins.",
+  "legitimate": "Repetition is warranted when near-identical tests record separately specified cases (a regression test per reported defect, a table of mandated vectors, a case per locale), or when one behavior has many branches; independent re-verification may be required by a certification standard.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "T-06"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "263",
+   "429"
+  ]
+ },
+ {
+  "unit_id": "U-T-07",
+  "name": "Suite omits the contract's boundary and error cases",
+  "invariant": "A suite presented as verifying a behavior must exercise the boundary, empty and error cases that the behavior's contract names, not only the nominal path.",
+  "legitimate": "Cases the type system or a validating framework makes unreachable need no test, and a behavior with no boundary or error branch is fully covered without them; edge cases may also live in a separate file or a parameterized table.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "T-07"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "264",
+   "430"
+  ]
+ },
+ {
+  "unit_id": "U-T-08",
+  "name": "Shipped code that no test reaches",
+  "invariant": "Code that a passing suite is taken to vouch for must be reached by at least one test that can fail.",
+  "legitimate": "Added condition the rules do not check: untested code belongs to Test Slop only when the passing suite is presented as evidence for that code, for instance a change reported as tested or done. Without that claim it is a coverage gap, not a false success signal. Generated code, thin glue, experimental modules and code exercised by an integration suite the import graph cannot see are also acceptable.",
+  "kind": "boundary register",
+  "member_entries": [
+   "T-08"
+  ],
+  "families": [
+   "T"
+  ],
+  "rule_ids": [
+   "308",
+   "322",
+   "466"
+  ]
+ },
+ {
+  "unit_id": "U-Y-01",
+  "name": "Unverified narrowing assertion in place of a check",
+  "invariant": "Code may treat a value as a narrower, non-null or range-limited type only when the checker can prove that type or a runtime check establishes it before the use.",
+  "legitimate": "The assertion is sound and the check is elsewhere: a value just validated by a schema parser or a comma-ok branch, a non-null assertion right after a guard the checker cannot follow across a closure or an array index, a cast to the type a test double deliberately violates, or a narrowing conversion whose source range is already bounded by construction.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "Y-01"
+  ],
+  "families": [
+   "Y"
+  ],
+  "rule_ids": [
+   "051",
+   "057",
+   "063",
+   "358",
+   "478"
+  ]
+ },
+ {
+  "unit_id": "U-Y-02",
+  "name": "Opaque or top type where the code depends on a structure",
+  "invariant": "A value whose fields or elements the code reads or returns must have that structure named in its declared type, not an opaque top type that admits any shape.",
+  "legitimate": "The value genuinely has no structure the code relies on, or the shape is unknown at that point and is narrowed right after: a pass-through logger or cache holding an opaque payload, external JSON received as `unknown` and validated into a typed shape on the next line, a generic serializer or plugin registry, or an interface typed loosely on purpose to mirror a third-party contract that varies.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "Y-02"
+  ],
+  "families": [
+   "Y"
+  ],
+  "rule_ids": [
+   "050",
+   "055",
+   "061",
+   "062",
+   "373"
+  ]
+ },
+ {
+  "unit_id": "U-Y-03",
+  "name": "Domain concept left in a primitive type",
+  "invariant": "A domain concept with a constrained set of legal values or states must be given a type that excludes the values and states outside that set.",
+  "legitimate": "The value set is not closed or not owned here: free text, an identifier or key whose values come from outside; a string passed straight through to a protocol or external API that defines the vocabulary; a boundary layer that accepts the wire string and converts it once to the typed value; a repeated literal that is a message or a path rather than a member of a domain set; an early prototype whose domain model is still being found.",
+  "kind": "candidate pattern",
+  "member_entries": [
+   "Y-03"
+  ],
+  "families": [
+   "Y"
+  ],
+  "rule_ids": [
+   "064",
+   "331",
+   "439",
+   "574"
+  ]
+ },
+ {
+  "unit_id": "U-Y-04",
+  "name": "Dispatch over a closed variant set with exhaustiveness unenforced",
+  "invariant": "Where code branches over a closed set of variants, adding a variant must make the dispatch a type error until it is handled.",
+  "legitimate": "The set is open by design, so there is nothing to be exhaustive over: dispatch on a type hierarchy third parties extend, on a value parsed from input where the default arm is the real error path, or a chain whose final branch is a documented general case that stays correct for any new member. The rules do not check that the set is closed.",
+  "kind": "boundary register",
+  "member_entries": [
+   "Y-04"
+  ],
+  "families": [
+   "Y"
+  ],
+  "rule_ids": [
+   "060",
+   "160"
+  ]
+ }
+]

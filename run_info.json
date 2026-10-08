@@ -1,0 +1,13 @@
+{
+ "role": "judge",
+ "model_session_context": "claude-opus-5-5",
+ "model_last_served": "claude-opus-5-5",
+ "roster_model": "claude-opus-5-5",
+ "model_matches_roster": true,
+ "effort": "not exposed by get_session; INSTRUCTIONS.md specifies high",
+ "date": "2026-10-08",
+ "tools": ["Bash (read inputs, run python3 to assemble output files, run check scripts, git)", "mcp claude-code-remote get_session (model identifier)", "ToolSearch (load get_session schema)"],
+ "subagents_or_other_models": "none",
+ "check_output": "entries 114 memberships 384 expected 384; OK: no errors",
+ "check_step_b": "units 98 with two or more rules 75 with one rule 23 decisions 22; OK: no errors"
+}

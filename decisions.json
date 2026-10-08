@@ -1,0 +1,178 @@
+[
+ {
+  "a": "A-04",
+  "b": "I-05",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "An artifact presented as delivered must contain the work it owes; nothing in it (a comment, a placeholder, a sample value, a deferral marker) may stand in for behaviour or content that was not done.",
+  "reason": "A-04 says no required behaviour may live only as a sentence in a comment; I-05 says a delivered artifact may hold no stand-in for owed work of any form. The filler comment is one form of stand-in, both carry rules 028 and 559, and each excuse in A-04 (optional hook, scaffold, tracked TODO with the contract still met) is also an excuse in I-05, so a reviewer checks one thing: is anything standing in for work not done."
+ },
+ {
+  "a": "A-05",
+  "b": "H-12",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "An annotation that names a specific finding, directive or workaround must have that referent present in the code, and must be removed together with it.",
+  "reason": "A-05 requires an annotation that names a finding or directive to have that referent present and to leave with it; H-12 requires an annotation that only covers a condition to be removed when the condition goes. Both are rules 445 and 567, both describe the same dangling suppression seen as noise or as debris, and the excuses line up: a check off in this configuration or another tool, a platform-specific directive, conditional code, a noted staged cleanup."
+ },
+ {
+  "a": "D-01",
+  "b": "H-11",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "Each module dependency and each exported symbol must be declared once in its scope.",
+  "reason": "D-01 asks that each import and export be declared once so the list is non-overlapping; H-11 asks that a module brought in or a symbol sent out be declared once. Same rules 005 and 014, same artifact (the import/export list), identical exceptions (type-only beside value import, side-effect import, alias, barrel re-export); the two differ only in calling the repeat duplication or debris."
+ },
+ {
+  "a": "D-02",
+  "b": "S-20",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A shape or value that several sites share, including a group of parameters that travels together through several signatures, must be declared once as a named type or constant and referenced from each site.",
+  "reason": "D-02 asks that a shape or value shared by several sites be declared once and referenced; S-20 asks that a parameter group recurring across signatures become one type. The recurring parameter group is a shared shape restated at each signature, rule 438 sits in both, and S-20's only excuse (parameters that co-occur by coincidence) is D-02's coincidental-match excuse, so the merged sentence needs no list."
+ },
+ {
+  "a": "D-03",
+  "b": "H-13",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "Measure: the share of functions that are dead or duplicated, compared with a configured threshold for the repository. The score selects a codebase for review; it names no copy and no dead function and is not itself a finding.",
+  "reason": "Both are proxy groups over rule 303 alone and use the same measure: the fraction of dead or duplicated functions against a repository threshold. D-03 reads the score as a pointer for duplication review, H-13 as a limit on debris; the measure is identical and the explanations for a high score (generated, vendored, migration, small codebase) coincide, so they are one proxy group."
+ },
+ {
+  "a": "D-06",
+  "b": "S-03",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A capability that the language, the platform, a library or the codebase already provides must be used through that provider rather than implemented again beside it.",
+  "reason": "D-06 says a capability already provided by the language, platform, a library or the codebase is used through that provider; S-03 says new code reuses an existing facility instead of building a parallel mechanism. They share rules 125, 136 and 541 and the same test, and S-03's excuses (unmet performance or API requirement, custom code cheaper than the dependency) are within D-06's documented-misfit excuses."
+ },
+ {
+  "a": "H-08",
+  "b": "K-04",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "When a fix attempt fails or is abandoned, its edits must be reverted before the change is delivered, so the change holds only the accepted solution.",
+  "reason": "H-08 demands that edits of a failed fix attempt be reverted as debris; K-04 demands the same reversion so that the change holds only the accepted solution. Both are rule 540 alone, the obligation is word for word the same, and both keep deliberate useful leftovers (reproducing test, needed code, a refactor) and exempt an attempt still in progress."
+ },
+ {
+  "a": "H-08",
+  "b": "K-01",
+  "votes": 1,
+  "decision": "separate",
+  "merged_invariant": "",
+  "reason": "One vote. H-08 asks only that the leftover edits of the author's own failed attempt be reverted; K-01 asks that every modified region trace to the user's request and that a refactor carry no unrequested behaviour change. K-01 also covers unrequested features, cosmetic edits and scope creep that H-08 says nothing about, and its excuses (request authorizes the extra edit, mechanical consequence) are not H-08's; the obligations are related, not identical."
+ },
+ {
+  "a": "H-09",
+  "b": "I-14",
+  "votes": 1,
+  "decision": "separate",
+  "merged_invariant": "",
+  "reason": "One vote, no shared rule. H-09 asks that each end registered on an event channel have its counterpart so what is published is received and what is listened for can arrive; I-14 asks that whatever one side of an integration point requests some other side supplies. H-09 runs both directions on publish/subscribe channels and excuses runtime-assembled channel names and public component emits; I-14 is about requested providers. Similar, not identical."
+ },
+ {
+  "a": "H-10",
+  "b": "S-06",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A boundary or variation point must be exercised by the system as it is delivered; a migration shim, deprecated symbol or removal marker is such a point and must go once nothing uses the old path.",
+  "reason": "H-10 is a boundary register: once a migration has completed and no caller, published API or supported release needs the old path, its shim, deprecated symbol and removal marker must go. S-06 asks that any boundary or variation point be exercised by the delivered system. Under H-10's condition the surviving shim is exactly a point nothing exercises, so its failure is S-06's obligation; rule 092 is in both, and both keep shims for a promised deprecation window or an external consumer. The unit is a candidate pattern with H-10's condition recorded."
+ },
+ {
+  "a": "I-06",
+  "b": "T-02",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A passing test must assert the observable outcome of the production code it names against an expectation derived from the requirement, so that it turns red when that behaviour is wrong.",
+  "reason": "I-06 says a passing test must pass because the production behaviour it names is correct and be able to fail when it is wrong; T-02 says the test must assert the outcome of the project's own code against a requirement-derived expectation so a break turns it red. T-02 is the concrete form of I-06's demand (rule 428 in both; a fixture-produced end state under rule 427 also fails 'outcome of the production code'). Smoke, compile-only and characterization tests named as such are excused in both. Kept as the surviving link of the I-06 chain."
+ },
+ {
+  "a": "I-06",
+  "b": "T-01",
+  "votes": 3,
+  "decision": "majority not applied",
+  "merged_invariant": "",
+  "reason": "I-06 demands falsifiability of a passing test; T-01 demands that the asserted result come from running production code with doubles only at genuine external edges. A sentence covering both must either be 'a passing test must be able to fail when the behaviour is wrong', which is family T's own membership test and covers most T entries, or a list (production code executed, doubles only at edges, and an assertion that can fail). The chain check T-01/T-02 fails for the same reason; the links tie at three votes, and I kept I-06/T-02 because I-06's falsifiability wording and its rule 428 match T-02. T-01 stays its own unit."
+ },
+ {
+  "a": "T-01",
+  "b": "T-02",
+  "votes": 0,
+  "decision": "chain check: separate",
+  "merged_invariant": "",
+  "reason": "Direct check for the I-06 chain. T-01 is about what the test runs: production code, not doubles of the subject, internal helpers or value objects. T-02 is about what the test asserts: an outcome against a requirement-derived expectation, not a tautology, a recomputation or a framework guarantee. A merged sentence is either a list of the two checks or the family T definition, so the test fails and the three entries are not made one unit."
+ },
+ {
+  "a": "I-12",
+  "b": "T-03",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A check the project runs (a test, a type or lint diagnostic, a build or dependency gate) must be passed by changing the code so it satisfies the check; the check must not be skipped, disabled, loosened or reconfigured to produce the pass.",
+  "reason": "I-12 says a gate is passed only by making the code satisfy it, never by weakening, disabling or reconfiguring the gate; T-03 says a counted test must keep running at its strength and a failing test is fixed, not skipped or loosened. A test is one such gate, rules 207 and 208 sit in both, and T-03's excuses (skip with a live ticketed reason, expectation changed because the specification changed) are I-12's recorded retirement and scoped justified waiver."
+ },
+ {
+  "a": "I-12",
+  "b": "Y-05",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A check the project runs (a test, a type or lint diagnostic, a build or dependency gate) must be passed by changing the code so it satisfies the check; the check must not be skipped, disabled, loosened or reconfigured to produce the pass.",
+  "reason": "I-12 forbids passing any gate by neutralizing it; Y-05 requires a reported type, lint or build diagnostic to be fixed in the code or waived only with a recorded, narrowly scoped reason, never by loosening the check. A diagnostic is one gate, rules 210, 332 and 566 sit in both, and the narrow explained waiver Y-05 permits is the justified one-line suppression I-12 permits."
+ },
+ {
+  "a": "T-03",
+  "b": "Y-05",
+  "votes": 1,
+  "decision": "chain check: merge",
+  "merged_invariant": "A check the project runs (a test, a type or lint diagnostic, a build or dependency gate) must be passed by changing the code so it satisfies the check; the check must not be skipped, disabled, loosened or reconfigured to produce the pass.",
+  "reason": "One vote, and the direct check of the I-12 chain. T-03 forbids a failing test being skipped, weakened or rewritten to current output; Y-05 forbids a reported diagnostic being suppressed inline or configured away. Both are 'satisfy the check, do not switch it off', where the check is named generically rather than by a list of tools, and each accepts the other's legitimate case: a waiver with a live recorded reason confined to the one case it excuses, and a change because the requirement changed. The three entries form one unit."
+ },
+ {
+  "a": "I-14",
+  "b": "S-18",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "A dependency or integration point that one side declares must be supplied by some provider on every path that reaches it in the delivered system.",
+  "reason": "I-14 requires a declared integration point to have both ends present, whatever is requested being supplied; S-18 requires a dependency point a unit declares to be supplied on every path that reaches it. Both are exactly rules 114 and 452, the artifact is the same unprovided injection key or parameter, and the excuses coincide: providers registered at run time, extension points for outside consumers, optional dependencies with an intended default."
+ },
+ {
+  "a": "I-17",
+  "b": "S-09",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "The contract a consumer is written against (a supertype, an interface, a declared type for data it receives) must be honoured by the implementation or producer behind it.",
+  "reason": "I-17 says the contract given to a consumer must be honoured by the implementation behind it; S-09 says a subtype must honour its supertype's contract and stay substitutable. The supertype is a contract given to consumers, rule 284 (override that refuses or narrows) is in both, and S-09's excuse (base declares the operation optional) is I-17's documented partial support with callers testing for it."
+ },
+ {
+  "a": "I-17",
+  "b": "Y-06",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "The contract a consumer is written against (a supertype, an interface, a declared type for data it receives) must be honoured by the implementation or producer behind it.",
+  "reason": "I-17 asks that the contract a consumer is given be honoured behind it; Y-06 asks that a type declared for data crossing a boundary describe what the producer actually sends, with something checking it. A declared payload type is the consumer's contract, rule 314 is in both, and Y-06's excuses (shared schema, generated client, runtime validator, typed adapter) are I-17's deliberately wider type with validation."
+ },
+ {
+  "a": "S-09",
+  "b": "Y-06",
+  "votes": 0,
+  "decision": "chain check: merge",
+  "merged_invariant": "The contract a consumer is written against (a supertype, an interface, a declared type for data it receives) must be honoured by the implementation or producer behind it.",
+  "reason": "Direct check for the I-17 chain. S-09: an override must not refuse or narrow what the supertype promises. Y-06: a declared response type must match the payload the producer sends. Both are one check, does what stands behind a declared contract do what the declaration tells the consumer; the sentence names no list of mechanisms and does not reach most entries of S or Y. The excuses survive: an operation the base declares optional, and a type kept in step by schema or validated at run time, are both cases where the contract is honoured. Y-06's extra demand that something check the payload is a way to honour it, not a second obligation."
+ },
+ {
+  "a": "S-13",
+  "b": "T-05",
+  "votes": 2,
+  "decision": "merge",
+  "merged_invariant": "A test must be organized around, and assert, results a caller can observe, so that a behaviour-preserving refactor of production internals cannot change its verdict.",
+  "reason": "S-13 asks that test organization follow observable behaviour rather than mirror production classes and methods; T-05 asks that a test express its expectation as a caller-observable result so a behaviour-preserving refactor cannot change its verdict. Rule 325 is in both and names the refactor-stability test both use; S-13's excuse (per-class file asserting through the public interface) and T-05's (per-method tests where each method is public behaviour, asserting a call that is the specification) are compatible."
+ },
+ {
+  "a": "S-24",
+  "b": "Y-07",
+  "votes": 3,
+  "decision": "merge",
+  "merged_invariant": "Everything a public boundary exposes, including every type that appears in its signatures, must be a name the boundary itself enumerates, exports and owns as part of its contract.",
+  "reason": "S-24 asks that what a boundary publishes be an enumerated set of names it owns and consumers can reach; Y-07 asks that every type in a public signature be defined, exported and published as part of that contract. A signature type the boundary does not export is a published name consumers cannot reach, rules 344 and 448 are in both, and the excuses (internal boundary, type exported through another entry point, persistence type that is the contract) match."
+ }
+]
