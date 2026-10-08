@@ -1,0 +1,140 @@
+[
+ {
+  "entry_id": "A-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here names redundancy itself as the fault: a comment that restates the code or adds nothing beyond the signature, a Parameters block that restates the head, narration that repeats the name, a long docstring that only restates a short body, and a type annotation that inference already supplies. The detection is keyword- and threshold-driven, but each rule text says what the failure is.",
+  "rule_kinds": {
+   "021": "candidate pattern",
+   "025": "candidate pattern",
+   "027": "candidate pattern",
+   "030": "candidate pattern",
+   "058": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-02",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Two of the three rules only recognise a banner form and hand the body to a reader: numbered Step comments are a keyword match, and the divider rule counts dividers past a threshold and calls each one a signal of missing decomposition without checking the decomposition. Neither states what the banner gets wrong.",
+  "rule_kinds": {
+   "022": "candidate pattern",
+   "026": "proxy group",
+   "112": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "022",
+    "kind": "candidate pattern",
+    "reason": "Unlike the other two it names the fault in the annotation itself, a decorative separator, a JSDoc shell with no meaningful tags, or a changelog-style line recording an edit."
+   }
+  ]
+ },
+ {
+  "entry_id": "A-03",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "Four of these rules are word lists over comment text, assuming and presumably, obviously and simply, sorry and hacky, should work and hopefully, and none of them checks whether the comment supplies the fact behind the judgement; they mark a comment for a person to read. The entry's own invariant, that the stance comment must state the underlying fact, is precisely the thing none of the detectors tests.",
+  "rule_kinds": {
+   "035": "proxy group",
+   "036": "proxy group",
+   "037": "proxy group",
+   "200": "proxy group",
+   "370": "boundary register"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "370",
+    "kind": "boundary register",
+    "reason": "It states a real fault, a debug console.log left in the code that the author marked as temporary, but that is hygiene debris; it is annotation noise only if the adjacent marker comment carries nothing a later reader needs, which the rule never checks."
+   }
+  ]
+ },
+ {
+  "entry_id": "A-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules match prose, but the matched prose is itself the statement of the fault: add more validation, replace this with your actual implementation, add your logic here, in a real application you would. The text says what is wrong, namely that the source carries a sentence standing in for work that was not written.",
+  "rule_kinds": {
+   "028": "candidate pattern",
+   "559": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules compare an annotation against a referent and report the mismatch: a suppression directive that no analysis run consumes because its finding is gone, and a header Suppressions entry with no directive in the body. Each text states the failure, a dangling annotation that asserts something no longer in the code.",
+  "rule_kinds": {
+   "445": "candidate pattern",
+   "567": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "All three say what the fault is rather than leaving it to a reader: a comment narrating the edit the author made, embedded version history such as v1.2 added feature, and a file header that should be atemporal carrying dates, for now, formerly or coming soon. The regexes and word categories are only the means of finding the case.",
+  "rule_kinds": {
+   "033": "candidate pattern",
+   "034": "candidate pattern",
+   "562": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Two rules state the fault in the source itself, a comment about implementation phases or the generation process, and a comment used to describe changes to the user or ask them a question instead of using a channel where it can be answered. The other two rules split the entry evenly, so the tie is resolved by the invariant, which is about what a source comment must document for the next reader, and that is what 023 and 299 check.",
+  "rule_kinds": {
+   "023": "candidate pattern",
+   "199": "boundary register",
+   "202": "boundary register",
+   "299": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "199",
+    "kind": "boundary register",
+    "reason": "It judges praise and celebration language in the agent's reply, which is annotation noise only on the added condition, untested by the rule, that the praise was committed into a comment or docstring."
+   },
+   {
+    "rule_id": "202",
+    "kind": "boundary register",
+    "reason": "Same boundary: preambles, closing summaries and limitation disclaimers are read in the agent's output, and the rule does not establish that any of them reached the source."
+   }
+  ]
+ },
+ {
+  "entry_id": "A-08",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule counts comment lines added across the changed files, using per-extension comment syntax, and fires on the total passing a limit. It never looks at what any comment says, so it selects a diff for review rather than naming a fault.",
+  "rule_kinds": {
+   "029": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "A-09",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the informal note is in fact redundant, stale or misleading: it repeats a deprecation the code already declares, the compatibility obligation it records has ended, or it names the wrong successor. The rule checks only that no formal @deprecated tag accompanies the prose.",
+  "rule_kinds": {
+   "032": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
