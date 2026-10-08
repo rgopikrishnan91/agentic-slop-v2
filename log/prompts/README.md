@@ -1,0 +1,3 @@
+Prompts sent to role sessions. Kind review coder prompts were generated from kind_review_coder_prompt_template.sh (args: coder number, family, roster model).
+Judge and step B prompts follow the same structure: role, folder contents, "follow INSTRUCTIONS.md exactly", isolation rules (only this folder, no other branches, no web, no earlier results, no delegation), output files, run_info with get_session model, roster model check, commit to own branch.
+Step B coder prompts additionally say: "Compare every entry with every entry of the other families; do not sample" and "You may use scripts to read and lay out the files, but the pair decisions, merged invariants and reasons must be your own; do not generate reasons with a script."

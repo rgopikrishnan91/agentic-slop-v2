@@ -1,0 +1,11 @@
+{
+ "role": "judge",
+ "family": "A",
+ "roster_model": "claude-opus-5-5",
+ "session_context_model": "claude-opus-5-5",
+ "last_served_model": "claude-opus-5-5",
+ "effort": "high (per INSTRUCTIONS.md); harness-reported reasoning effort setting was low",
+ "date": "2026-10-08",
+ "tools_used": ["Bash", "ToolSearch", "mcp__claude-code-remote__get_session"],
+ "entries_decided": ["A-03"]
+}

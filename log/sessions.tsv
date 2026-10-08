@@ -32,4 +32,7 @@ kind_review	coder3	R	session_01PyiVWw1x99AkT8C76Wqf5Z	orch/kr-c3-R	claude-opus-5
 kind_review	coder3	S	session_011aJybeH27i55zwNyfKoSdE	orch/kr-c3-S	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: not reported: no effort or thinking-budget setting was surfaced to this session; the session ran at its default setting (permission mode auto)
 kind_review	coder3	T	session_01UViqhConHmp6oyZc6GsyeD	orch/kr-c3-T	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: auto (permission mode auto; no explicit reasoning-effort override set for this session)
 kind_review	coder3	Y	session_01Dkn43NJBdzg3SzaeVtLfaj	orch/kr-c3-Y	claude-opus-5	claude-opus-5	claude-opus-5	claude-opus-5	done	effort reported: default for this session; no explicit effort setting is reported by the system (permission_mode: auto)
-kind_review	judge	A	session_01LWGp6AfFtQiXEEBSmFQuGu	orch/kr-judge-A	claude-opus-5-5	claude-opus-5-5			running	
+kind_review	judge	A	session_01LWGp6AfFtQiXEEBSmFQuGu	orch/kr-judge-A	claude-opus-5-5	claude-opus-5-5	claude-opus-5-5	claude-opus-5-5	done	effort reported: high per instructions; harness-reported reasoning effort low
+step_b	coder1	all	session_01321WfKit4Eb48hJZpY7pRW	orch/sb-c1	claude-opus-4-6	claude-opus-4-6			running	
+step_b	coder2	all	session_01LwF15HXJuoEXmTa9uwFPMh	orch/sb-c2	claude-opus-4-8	claude-opus-4-8			running	
+step_b	coder3	all	session_01EXmQ7BJkxesjJewaL6AE9d	orch/sb-c3	claude-opus-5	claude-opus-5			running	
