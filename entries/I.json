@@ -1,0 +1,712 @@
+[
+ {
+  "id": "I-01",
+  "family": "I",
+  "name": "Hallucinated or nonexistent API reference",
+  "rationale": "These rules detect code that references imports, methods, attributes, or function signatures that do not exist in the target language or library. Cross-language contamination (JS methods in Python, Java methods in Python, etc.) and framework-confused imports (Next.js APIs imported from React) share the same broken obligation: the code calls something that is not there.",
+  "invariant": "Every module, API, member or symbol the code names must exist in the environment where the code will run.",
+  "roles": [
+   "code statement",
+   "referenced API or module",
+   "target runtime environment"
+  ],
+  "relations": [
+   {
+    "from": "code statement",
+    "to": "referenced API or module",
+    "label": "calls or imports",
+    "state": "normal"
+   },
+   {
+    "from": "referenced API or module",
+    "to": "target runtime environment",
+    "label": "exists and is available in",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Optional imports guarded by try/except for graceful degradation, development-time type stubs not executed at runtime, framework-specific reexports that alias the original API, and version-conditional imports with proper fallbacks.",
+  "rule_ids": [
+   "012",
+   "176",
+   "181",
+   "182",
+   "183",
+   "184",
+   "185",
+   "186",
+   "187",
+   "188",
+   "369"
+  ]
+ },
+ {
+  "id": "I-02",
+  "family": "I",
+  "name": "Implementation taken from a neighbour instead of from the specification",
+  "rationale": "This rule targets code written by copying a similar function and editing it, and the bounds and null-handling errors that travel with it. What the rule identifies is the provenance; whether the result actually departs from the specification it is presented as implementing is left unchecked.",
+  "invariant": "An implementation must be derived from the specification it is presented as satisfying.",
+  "roles": [
+   "specification",
+   "source function",
+   "copied implementation",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "caller",
+    "to": "copied implementation",
+    "label": "relies on it for the specified behavior",
+    "state": "normal"
+   },
+   {
+    "from": "copied implementation",
+    "to": "source function",
+    "label": "carries over its bounds and null semantics",
+    "state": "problem"
+   },
+   {
+    "from": "copied implementation",
+    "to": "specification",
+    "label": "is derived from it",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The added condition is that the copied code's behavior really does differ from what was specified. Copying a neighbouring function and adapting it correctly is ordinary practice and misrepresents nothing; the copy is also legitimate where the two cases share one specification, in which case the duplication, not the integrity, is the issue.",
+  "rule_ids": [
+   "287"
+  ]
+ },
+ {
+  "id": "I-03",
+  "family": "I",
+  "name": "Claim or value presented as established without evidence",
+  "rationale": "Each rule flags a claim or value presented as true that is not backed by fresh, direct evidence: completion claims without command output, figures without a baseline, uncited claims, invented paths, keys or versions, and the general no-fabrication and phantom-fix constraints.",
+  "invariant": "A claim of completion, correctness or performance, or a concrete value written into the work, must be backed by evidence obtained and verified in the current run, not asserted, assumed or invented.",
+  "roles": [
+   "claim or value",
+   "evidence",
+   "report or source"
+  ],
+  "relations": [
+   {
+    "from": "report or source",
+    "to": "claim or value",
+    "label": "asserts",
+    "state": "normal"
+   },
+   {
+    "from": "claim or value",
+    "to": "evidence",
+    "label": "is verified against",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A claim or figure accompanied by the fresh command output, measured baseline or citation that substantiates it; an estimate or example value that is explicitly labelled as such.",
+  "rule_ids": [
+   "031",
+   "201",
+   "318",
+   "323",
+   "530",
+   "531"
+  ]
+ },
+ {
+  "id": "I-04",
+  "family": "I",
+  "name": "Substitute delivered in place of the requested work",
+  "rationale": "Both rules target a response that satisfies the form of the request while leaving its substance undone: answering a defect report with tests, documentation or an absence check instead of a code change, and meeting a stated metric in a way that defeats what the metric was measuring. The acceptance signal is produced; the requested work is not.",
+  "invariant": "A change presented as answering a requirement or finding must actually fulfill it, not deliver another artifact or a gamed metric that only produces the acceptance signal.",
+  "roles": [
+   "request",
+   "requested change",
+   "substitute artifact",
+   "acceptance signal"
+  ],
+  "relations": [
+   {
+    "from": "request",
+    "to": "requested change",
+    "label": "asks for it",
+    "state": "normal"
+   },
+   {
+    "from": "acceptance signal",
+    "to": "substitute artifact",
+    "label": "counts it as the answer",
+    "state": "normal"
+   },
+   {
+    "from": "substitute artifact",
+    "to": "requested change",
+    "label": "is delivered in place of it",
+    "state": "problem"
+   },
+   {
+    "from": "requested change",
+    "to": "request",
+    "label": "is delivered",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A substitute the requester accepts once it is named as one, for instance a regression test added after showing that the reported behavior is in fact correct; and cases where the metric genuinely is the goal rather than a proxy for it.",
+  "rule_ids": [
+   "206",
+   "543"
+  ]
+ },
+ {
+  "id": "I-05",
+  "family": "I",
+  "name": "Placeholder, sample value or deferral marker left in a delivered artifact",
+  "rationale": "Each rule flags a stand-in for absent or unfinished work left inside something presented as delivered: TODO/FIXME markers, vague specifications, filler comments, AI handoff phrases, coming-soon headings, Lorem ipsum and demo values, and a hardcoded fallback behind a secret environment variable that makes the system look configured.",
+  "invariant": "An artifact presented as delivered must contain the finished content and the real values it depends on, not a placeholder, sample value or marker that stands in for work still owed.",
+  "roles": [
+   "delivered artifact",
+   "placeholder or sample value",
+   "required content or value"
+  ],
+  "relations": [
+   {
+    "from": "delivered artifact",
+    "to": "placeholder or sample value",
+    "label": "contains",
+    "state": "problem"
+   },
+   {
+    "from": "placeholder or sample value",
+    "to": "required content or value",
+    "label": "stands in for",
+    "state": "problem"
+   },
+   {
+    "from": "delivered artifact",
+    "to": "required content or value",
+    "label": "provides",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A tracked TODO tied to an issue or owner, a transparent future-work heading that makes no claim the work is done, and example configuration or seed data declared as such (.env.example, a demo seed script) or a local default behind a guard that refuses to start in production.",
+  "rule_ids": [
+   "028",
+   "174",
+   "180",
+   "223",
+   "233",
+   "294",
+   "495",
+   "559"
+  ]
+ },
+ {
+  "id": "I-06",
+  "family": "I",
+  "name": "Test that passes without examining the production behavior",
+  "rationale": "Both rules catalogue tests whose green result is manufactured inside the test: the fixture creates the end state, the system under test is mocked away, the expected value is recomputed with the same formula, or there is no assertion at all. Unlike a disabled check, these tests are counted in the suite and read as evidence.",
+  "invariant": "A test that passes must do so because the production behavior it names is correct, and it must be able to fail when that behavior is wrong.",
+  "roles": [
+   "test",
+   "production code",
+   "named behavior",
+   "suite result"
+  ],
+  "relations": [
+   {
+    "from": "suite result",
+    "to": "named behavior",
+    "label": "is read as evidence about it",
+    "state": "normal"
+   },
+   {
+    "from": "test",
+    "to": "production code",
+    "label": "exercises it",
+    "state": "missing"
+   },
+   {
+    "from": "test",
+    "to": "named behavior",
+    "label": "passes whether or not it holds",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Smoke or import tests, and compile-only or type-level checks, when they are named for what they do and the behavior itself is covered elsewhere; and a fixture standing in for an external system while the assertion still targets production logic.",
+  "rule_ids": [
+   "427",
+   "428"
+  ]
+ },
+ {
+  "id": "I-07",
+  "family": "I",
+  "name": "Description that contradicts the system it describes",
+  "rationale": "These rules all compare prose about the system with the system: a comment against adjacent code, doc tags against a signature, a sample against the real API, documentation against the changed code, and documented paths, versions and counts against the repository. Each failure is a statement about the software that is false, which misleads the reader more than silence would.",
+  "invariant": "Every statement a description makes about the system must be true of the system as delivered.",
+  "roles": [
+   "description",
+   "described artifact",
+   "reader",
+   "code change"
+  ],
+  "relations": [
+   {
+    "from": "description",
+    "to": "described artifact",
+    "label": "states facts about it",
+    "state": "normal"
+   },
+   {
+    "from": "reader",
+    "to": "description",
+    "label": "acts on it instead of reading the code",
+    "state": "normal"
+   },
+   {
+    "from": "code change",
+    "to": "description",
+    "label": "is carried into it",
+    "state": "missing"
+   },
+   {
+    "from": "description",
+    "to": "described artifact",
+    "label": "asserts what it contradicts",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Text explicitly scoped to another version or to the past (changelogs, release notes, architecture decision records), and a comment that records intent, rationale or a known deviation rather than describing current behavior.",
+  "rule_ids": [
+   "279",
+   "280",
+   "291",
+   "328",
+   "337",
+   "338",
+   "339",
+   "340",
+   "442"
+  ]
+ },
+ {
+  "id": "I-08",
+  "family": "I",
+  "name": "Operation with an empty or canned body",
+  "rationale": "These rules all flag a callable that occupies the place of a finished operation while its body does nothing or hands back a fixed answer: empty bodies, not-implemented raises and panics, constant returns, and classes where most methods are such bodies.",
+  "invariant": "An operation presented as implemented must actually perform its specified work.",
+  "roles": [
+   "declared operation",
+   "function body",
+   "caller",
+   "promised behavior"
+  ],
+  "relations": [
+   {
+    "from": "caller",
+    "to": "declared operation",
+    "label": "calls it as the finished implementation",
+    "state": "normal"
+   },
+   {
+    "from": "declared operation",
+    "to": "promised behavior",
+    "label": "advertises it by name and signature",
+    "state": "normal"
+   },
+   {
+    "from": "function body",
+    "to": "promised behavior",
+    "label": "carries it out",
+    "state": "missing"
+   },
+   {
+    "from": "function body",
+    "to": "caller",
+    "label": "returns an empty or canned result anyway",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Abstract methods, protocol and interface declarations, and overridable hooks whose documented behavior is to do nothing (null objects, default no-op handlers, a deliberately empty cleanup). There the empty body is the behavior, not a missing one.",
+  "rule_ids": [
+   "017",
+   "018",
+   "175",
+   "177",
+   "178",
+   "179"
+  ]
+ },
+ {
+  "id": "I-09",
+  "family": "I",
+  "name": "Part of the specified work never implemented",
+  "rationale": "These rules compare a stated set of obligations with the implementation and find part of the set absent: variants of a closed domain left unhandled, call sites never moved to the new API, specified transitions with no handler, plan tasks and mitigations not built. The whole is reported as delivered and no marker records the part that is not.",
+  "invariant": "Every case, step and task the specification or plan requires must be realized in the implementation before the work is reported as delivered.",
+  "roles": [
+   "specification",
+   "implementation",
+   "required part",
+   "acceptance"
+  ],
+  "relations": [
+   {
+    "from": "specification",
+    "to": "required part",
+    "label": "requires it",
+    "state": "normal"
+   },
+   {
+    "from": "acceptance",
+    "to": "implementation",
+    "label": "records it as complete",
+    "state": "normal"
+   },
+   {
+    "from": "implementation",
+    "to": "required part",
+    "label": "realizes it",
+    "state": "missing"
+   },
+   {
+    "from": "implementation",
+    "to": "acceptance",
+    "label": "presents partial coverage as the whole",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A requirement explicitly cut from this change and recorded as out of scope; a migration staged on purpose with the remaining call sites tracked and the old path still supported; a partial match whose remaining variants are unreachable by construction and asserted to be so.",
+  "rule_ids": [
+   "060",
+   "092",
+   "315",
+   "324"
+  ]
+ },
+ {
+  "id": "I-10",
+  "family": "I",
+  "name": "Confidence vocabulary in prose",
+  "rationale": "These rules select prose by its confidence markers: hedges such as assuming, presumably, should work, and certainty words such as obviously, clearly, trivially. The word list picks out text to look at; none of these rules establishes that the behavior described is in fact unverified or that completion is misrepresented.",
+  "invariant": "Prose about the code should express no more and no less certainty than the author has grounds for.",
+  "roles": [
+   "comment or claim",
+   "stated behavior",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "comment or claim",
+    "to": "stated behavior",
+    "label": "describes it with a hedge or a certainty marker",
+    "state": "normal"
+   },
+   {
+    "from": "reviewer",
+    "to": "comment or claim",
+    "label": "is pointed at it by the keyword match",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "A hedge that honestly records a limit ('may be null here, not yet verified') is the disclosure this family wants, not a defect; and 'simply' or 'obviously' in an explanation of something genuinely simple carries no claim about the software at all.",
+  "rule_ids": [
+   "035",
+   "036",
+   "200"
+  ]
+ },
+ {
+  "id": "I-11",
+  "family": "I",
+  "name": "Public surface hidden from the generated documentation",
+  "rationale": "This rule counts @doc false attributes on public functions and reports a module that hides much of what it exposes. The failure it names is real, that readers of the API cannot see a surface callers can reach, but the rule cannot tell whether those functions are part of the API the project presents as supported.",
+  "invariant": "The documentation generated for a module must cover the surface the project presents as that module's API.",
+  "roles": [
+   "public function",
+   "generated documentation",
+   "outside caller"
+  ],
+  "relations": [
+   {
+    "from": "outside caller",
+    "to": "public function",
+    "label": "can reach and call it",
+    "state": "normal"
+   },
+   {
+    "from": "generated documentation",
+    "to": "public function",
+    "label": "covers it",
+    "state": "missing"
+   },
+   {
+    "from": "public function",
+    "to": "outside caller",
+    "label": "is callable but undescribed",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The added condition is that the hidden functions belong to the surface the project presents as documented and supported. @doc false on functions that are public only for macro expansion or for use inside the application, which the project does not offer to callers, is the intended use of the attribute and claims nothing false.",
+  "rule_ids": [
+   "024"
+  ]
+ },
+ {
+  "id": "I-12",
+  "family": "I",
+  "name": "Pass obtained by neutralizing the check",
+  "rationale": "These rules watch for a change that produces a green signal by acting on the checker rather than on the code: weakening or deleting assertions, skipping tests, turning off compiler warnings and nullability, editing lint configuration, overriding a dependency constraint, and suppressing an error signal. The gate still reports success, so the property it existed to protect quietly stops being checked.",
+  "invariant": "A gate may only be passed by making the code satisfy the check; the check itself must not be weakened, disabled or reconfigured to produce the pass.",
+  "roles": [
+   "check",
+   "checked property",
+   "change under review",
+   "green signal"
+  ],
+  "relations": [
+   {
+    "from": "check",
+    "to": "checked property",
+    "label": "reports on it",
+    "state": "normal"
+   },
+   {
+    "from": "green signal",
+    "to": "checked property",
+    "label": "is read as evidence that it holds",
+    "state": "normal"
+   },
+   {
+    "from": "change under review",
+    "to": "check",
+    "label": "weakens, disables or reconfigures it",
+    "state": "problem"
+   },
+   {
+    "from": "change under review",
+    "to": "checked property",
+    "label": "makes it hold",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Retiring a check the project has decided no longer applies, with the decision recorded and reviewed; a suppression that carries its justification and is scoped to the one line it covers; and deleting a test whose behavior was deliberately removed from the product.",
+  "rule_ids": [
+   "207",
+   "208",
+   "210",
+   "211",
+   "332",
+   "542",
+   "566"
+  ]
+ },
+ {
+  "id": "I-13",
+  "family": "I",
+  "name": "Known gap or assumption kept out of the report",
+  "rationale": "These rules concern what the report leaves out rather than what it asserts: areas that were not verified, assumptions the implementation rests on, and material facts such as a known failing edge case. Everything stated may be true, and the reader still takes partial work for complete work.",
+  "invariant": "A report must disclose the gaps, assumptions and known defects of the work alongside its results.",
+  "roles": [
+   "report",
+   "known gap",
+   "delivered work",
+   "decision maker"
+  ],
+  "relations": [
+   {
+    "from": "report",
+    "to": "delivered work",
+    "label": "describes what was done",
+    "state": "normal"
+   },
+   {
+    "from": "decision maker",
+    "to": "report",
+    "label": "decides on the strength of it",
+    "state": "normal"
+   },
+   {
+    "from": "report",
+    "to": "known gap",
+    "label": "states it",
+    "state": "missing"
+   },
+   {
+    "from": "report",
+    "to": "decision maker",
+    "label": "lets partial work read as complete",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Gaps already recorded where the reader is pointed at them (an issue tracker, a risk register referenced in the report), and omissions of what the agreed scope plainly excludes, which no reader would read as covered.",
+  "rule_ids": [
+   "312",
+   "320",
+   "533"
+  ]
+ },
+ {
+  "id": "I-14",
+  "family": "I",
+  "name": "Integration point with only one end built",
+  "rationale": "Both rules find a connection where one side is fully written and the other side never exists: a parameter or field no caller ever passes, and an injected key no ancestor ever provides. Reading either file suggests a finished feature; the feature can never run, because nothing joins the two ends.",
+  "invariant": "A declared integration point must have both ends present in the delivered system: whatever one side requests, some other side must supply.",
+  "roles": [
+   "implemented side",
+   "integration point",
+   "counterpart side",
+   "live request path"
+  ],
+  "relations": [
+   {
+    "from": "implemented side",
+    "to": "integration point",
+    "label": "declares and implements its end",
+    "state": "normal"
+   },
+   {
+    "from": "counterpart side",
+    "to": "integration point",
+    "label": "supplies the other end",
+    "state": "missing"
+   },
+   {
+    "from": "live request path",
+    "to": "implemented side",
+    "label": "never reaches the new behavior",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "An extension point published for consumers outside this repository, a parameter kept for backwards compatibility, and a provider registered dynamically at runtime (a plugin, a test harness, a DI container) that static analysis of the tree cannot see.",
+  "rule_ids": [
+   "114",
+   "452"
+  ]
+ },
+ {
+  "id": "I-15",
+  "family": "I",
+  "name": "Safeguard present in the source and inert where it runs",
+  "rationale": "These rules each flag a mechanism that reads as a guarantee and provides none: an assert the interpreter discards under optimization, a hash or validator that offers no protection, a boundary directive the framework ignores because of where it sits. The mechanism is visible, which is why nobody looks for the guarantee again.",
+  "invariant": "A mechanism presented as enforcing a property must actually enforce it in the configuration the code runs in.",
+  "roles": [
+   "safeguard",
+   "protected property",
+   "shipped configuration",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "reviewer",
+    "to": "safeguard",
+    "label": "counts the property as guarded because it is there",
+    "state": "normal"
+   },
+   {
+    "from": "safeguard",
+    "to": "protected property",
+    "label": "appears to enforce it",
+    "state": "normal"
+   },
+   {
+    "from": "safeguard",
+    "to": "shipped configuration",
+    "label": "takes effect in it",
+    "state": "missing"
+   },
+   {
+    "from": "safeguard",
+    "to": "protected property",
+    "label": "leaves it unenforced",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "An assert used deliberately as a development-time sanity check where the real enforcement lives elsewhere; a fast non-cryptographic hash used for cache keys or checksums rather than for secrets; a directive in a file whose boundary the framework establishes by another route.",
+  "rule_ids": [
+   "155",
+   "248",
+   "451"
+  ]
+ },
+ {
+  "id": "I-16",
+  "family": "I",
+  "name": "Dependency used but never declared",
+  "rationale": "Both rules compare what the change consumes (an imported package, an invoked binary) against what the manifest declares, and report the use that is nowhere declared. The package may well exist; what is missing is the declaration that makes the change reproducible.",
+  "invariant": "Everything the change needs at build or run time must be declared in the project manifest, so the change works in an environment built from that manifest alone.",
+  "roles": [
+   "project manifest",
+   "used package",
+   "consuming code",
+   "clean environment"
+  ],
+  "relations": [
+   {
+    "from": "consuming code",
+    "to": "used package",
+    "label": "needs it to run",
+    "state": "normal"
+   },
+   {
+    "from": "project manifest",
+    "to": "used package",
+    "label": "declares it",
+    "state": "missing"
+   },
+   {
+    "from": "clean environment",
+    "to": "consuming code",
+    "label": "cannot run it",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Packages the runtime or standard library supplies, peer dependencies the consuming application is expected to declare, workspace packages resolved by a monorepo root manifest, and type-only imports that are erased before the code ships.",
+  "rule_ids": [
+   "011",
+   "013"
+  ]
+ },
+ {
+  "id": "I-17",
+  "family": "I",
+  "name": "Declared interface not honored by the code behind it",
+  "rationale": "These rules compare a machine-readable contract with what the implementation actually delivers across the boundary: a response type against the payload the producer sends, field names against the names each layer passes on, an overridden member against the contract the base type advertises. Consumers compile cleanly against a promise that is broken at runtime.",
+  "invariant": "The interface a consumer is given must be honored by the implementation on the other side of it.",
+  "roles": [
+   "declared contract",
+   "implementation behind it",
+   "consumer",
+   "runtime data"
+  ],
+  "relations": [
+   {
+    "from": "declared contract",
+    "to": "consumer",
+    "label": "promises a shape or a capability",
+    "state": "normal"
+   },
+   {
+    "from": "consumer",
+    "to": "declared contract",
+    "label": "is written and type-checked against it",
+    "state": "normal"
+   },
+   {
+    "from": "implementation behind it",
+    "to": "declared contract",
+    "label": "satisfies it",
+    "state": "missing"
+   },
+   {
+    "from": "runtime data",
+    "to": "consumer",
+    "label": "breaks it when the call is actually made",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A subtype documented as supporting part of the interface where callers test for support first; and a boundary where the declared type is deliberately wider than any single producer and the consumer validates the payload at runtime.",
+  "rule_ids": [
+   "284",
+   "314",
+   "316"
+  ]
+ }
+]
