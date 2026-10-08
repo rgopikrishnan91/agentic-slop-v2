@@ -1,0 +1,147 @@
+[
+ {
+  "entry_id": "T-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Four of the five rules name the failure outright: a test that calls no production function, one that mocks value or state objects or the unit's own methods, or an acceptance test whose GREEN comes from a fixture rather than production code. Only the mock-count rule 203 flags a surface signal without checking whether the mocks sit on internals.",
+  "rule_kinds": {
+   "203": "boundary register",
+   "262": "candidate pattern",
+   "290": "candidate pattern",
+   "427": "candidate pattern",
+   "556": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "203",
+    "kind": "boundary register",
+    "reason": "It counts @patch decorators (>=4) and performs no boundary resolution, so it does not check whether the mocks replace the unit under test or its internal collaborators rather than genuine external boundaries, the condition that makes a mock-heavy test slop."
+   }
+  ]
+ },
+ {
+  "entry_id": "T-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rules 289, 327 and 428 each state why a green assertion cannot fail on wrong behavior: it only exercises a framework or language guarantee, it binds to an incorrect or circularly recomputed expected value, or it asserts nothing (zero or tautological assertions). Rule 265 only matches numeric literals that lack an explanatory comment.",
+  "rule_kinds": {
+   "265": "proxy group",
+   "289": "candidate pattern",
+   "327": "candidate pattern",
+   "428": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "265",
+    "kind": "proxy group",
+    "reason": "It matches assertions containing numeric literals of two or more digits without a comment and selects them for review; an unexplained number can still be a correct expected value, so the rule names no failure."
+   }
+  ]
+ },
+ {
+  "entry_id": "T-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names an edit that leaves the suite green with less evidence behind it: a lowered or removed assertion that follows the implementation, a test disabled with a skip or ignore marker instead of being fixed, or a skip whose reason has expired. The weakening or disabling is itself the stated failure.",
+  "rule_kinds": {
+   "207": "candidate pattern",
+   "208": "candidate pattern",
+   "342": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "T-04",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "The two sleep rules name a fixed delay or spin standing in for waiting on an observable condition, which is itself the mechanism that decides the verdict by elapsed time. Rule 266 names an execution-order dependency but only detects that a test declares global or nonlocal state.",
+  "rule_kinds": {
+   "209": "candidate pattern",
+   "266": "boundary register",
+   "326": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "266",
+    "kind": "boundary register",
+    "reason": "A global or nonlocal declaration is Test Slop only if the state is written in one test and read in another (mutated and carried, not read-only or reset between tests), and the rule does not check that condition; a declaration alone does not prove an order dependency."
+   }
+  ]
+ },
+ {
+  "entry_id": "T-05",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules name the failure of binding a test to the shape of the implementation: asserting calls into non-boundary helpers, or mirroring production layout with per-method classes and reaching one outcome through several internal paths, so a behavior-preserving refactor breaks the test while a wrong observable result can stay green.",
+  "rule_kinds": {
+   "288": "candidate pattern",
+   "325": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "T-06",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 263 names the failure, test bodies with identical structure that re-verify one behavior and should be a single parameterized case; rule 429 only counts tests against a per-behavior budget. The two kinds tie one to one, so the entry takes the kind of the rule its invariant describes, the per-test duplication that rule 263 states.",
+  "rule_kinds": {
+   "263": "candidate pattern",
+   "429": "proxy group"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "429",
+    "kind": "proxy group",
+    "reason": "It compares the number of unit tests to a formula budget (two times the distinct behaviors) and reports bloat above the threshold without naming any redundant test, so it measures a count."
+   }
+  ]
+ },
+ {
+  "entry_id": "T-07",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Rule 430 enumerates the specific contract cases a suite must exercise (empty and minimum inputs, boundary values, illegal events, cardinality, idempotency, malformed input, the error contract) and reports which are absent; rule 264 only checks whether any test name mentions an edge case. The two kinds tie one to one, so the entry takes the kind of the rule its invariant describes, the coverage of specific named cases that rule 430 states.",
+  "rule_kinds": {
+   "264": "proxy group",
+   "430": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "264",
+    "kind": "proxy group",
+    "reason": "It flags test files with three or more tests none of whose names contain edge, boundary, error, empty or null; test names are not coverage evidence, so it selects files for a person to inspect."
+   }
+  ]
+ },
+ {
+  "entry_id": "T-08",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the passing test suite is presented as evidence that the untested code works, for example the change is reported as tested or done",
+  "reason": "All three rules establish only that production code is unreached by any test: a source file unreachable through the import graph, a changed implementation file with no test file, or an exported symbol unreachable in the module graph. Untested code is a coverage gap and becomes Test Slop only when the passing suite is offered as evidence for that code, a condition none of the rules check.",
+  "rule_kinds": {
+   "308": "boundary register",
+   "322": "boundary register",
+   "466": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "T-09",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule matches the word \"and\" in a test name as a sign the test covers more than one behavior. It inspects the name, not the body or its assertions, so it nominates candidates for review rather than naming a failure.",
+  "rule_kinds": {
+   "127": "proxy group"
+  },
+  "misfit_rules": []
+ }
+]
