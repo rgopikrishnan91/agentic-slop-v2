@@ -1,0 +1,94 @@
+[
+ {
+  "entry_id": "E-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Every rule here names the discard itself as the defect: a catch or rescue that is empty or only logs and continues, a broad or bare except with a silent body, a caught error that is neither narrowed nor rethrown, a Go error assigned to the blank identifier, a C# async void whose exceptions nobody can observe, a dropped Rust JoinHandle described as silent task failure, a Next.js redirect signal broken by catching it, and a change whose purpose is to suppress an error instead of fixing it. Each text states that the failure stops at the receiving site and execution continues.",
+  "rule_kinds": {
+   "038": "candidate pattern",
+   "039": "candidate pattern",
+   "041": "candidate pattern",
+   "046": "candidate pattern",
+   "049": "candidate pattern",
+   "214": "candidate pattern",
+   "261": "candidate pattern",
+   "367": "candidate pattern",
+   "542": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three of the four rules say outright that a failure or a genuinely missing value is replaced by a success-shaped one: a catch or .catch() handler that converts the failure into null, false, an empty array or object; a ?? 0 or ?? \"\" fallback described as masking genuinely missing data on required input; and a secret environment variable whose hardcoded fallback lets the program run as though it were configured. The fourth rule only matches the Python fallback syntax without saying what the defect is.",
+  "rule_kinds": {
+   "044": "candidate pattern",
+   "047": "candidate pattern",
+   "066": "proxy group",
+   "233": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "066",
+    "kind": "proxy group",
+    "reason": "Its whole text is the shape `.get({}).get()` fallback chains, a syntactic match that states no failure and leaves a reader to judge whether the missing key was required data, so it sits nearest question 2."
+   }
+  ]
+ },
+ {
+  "entry_id": "E-03",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Three rules state the loss explicitly: a Python re-raise without `from` losing the original traceback chain, a Rust `.to_string()` or `format!` discarding the structured error type, and a Go `fmt.Errorf` with `%v` breaking `errors.Is`/`errors.As` for callers. Only the JS/TS rule stops at describing a normalization shape, so the entry's kind comes from the three that name the broken cause chain.",
+  "rule_kinds": {
+   "045": "boundary register",
+   "254": "candidate pattern",
+   "366": "candidate pattern",
+   "470": "candidate pattern"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "045",
+    "kind": "boundary register",
+    "reason": "It matches the `instanceof Error ? err.message : String(err)` ternary and calls it a normalization pattern; the detector note confirms there is no dataflow behind it and the tool's own README calls some uses reasonable, so the error-handling failure holds only where the structured error is not still propagated or recorded (condition: the stringified text is the only form the error takes onward, and the site is not a display or serialization boundary)."
+   }
+  ]
+ },
+ {
+  "entry_id": "E-04",
+  "kind": "proxy group",
+  "question": 2,
+  "condition": "",
+  "reason": "The single rule counts try/except, try/catch, .catch, ErrorBoundary and None-check occurrences in a non-test file before and after a change and warns when the number goes down. The count is the entire predicate: it names no failure path and cannot tell the removal of a swallowing handler from the removal of a needed one, so it only selects a diff for a person to read.",
+  "rule_kinds": {
+   "385": "proxy group"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-05",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "some call path crosses from one error mechanism to the other without carrying the failure over, so a caller handling the mechanism it knows sees success",
+  "reason": "The single rule reports a module that signals failure through more than one mechanism at once (exceptions beside error codes, Result beside thrown errors, callbacks beside promises) and calls that an inconsistent error contract. It states a real hazard for callers but checks only the co-presence of the two mechanisms, never a crossing where the failure fails to carry over, and explicit translation or platform convention makes the mixture fine.",
+  "rule_kinds": {
+   "348": "boundary register"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "E-06",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the log call is the handler's whole disposition of the error, nothing being rethrown or returned, and stdout is not the stream the system collects as its error channel",
+  "reason": "The single rule is an AST match for console.log inside a catch clause, with the advice to use console.error or a real logger instead. Writing an error at info level does keep it off the error channel, but the match is positional only: it does not look at whether the error object is passed, whether the handler also rethrows or returns a failure, or whether the program routes everything to stdout by design.",
+  "rule_kinds": {
+   "560": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
