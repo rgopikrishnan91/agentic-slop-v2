@@ -1,0 +1,1083 @@
+[
+ {
+  "id": "S-01",
+  "family": "S",
+  "name": "Directory population counts",
+  "rationale": "These rules count files and child directories to pick directories out for review: a fanout above the sibling median, a majority of tiny files, more than twenty files or ten subdirectories. A count cannot show whether the grouping matches a concern.",
+  "invariant": "A directory should hold the files of one concern, at a granularity that helps navigation.",
+  "roles": [
+   "directory",
+   "file count",
+   "threshold",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "directory",
+    "to": "file count",
+    "label": "has",
+    "state": "normal"
+   },
+   {
+    "from": "file count",
+    "to": "threshold",
+    "label": "exceeds",
+    "state": "problem"
+   },
+   {
+    "from": "reviewer",
+    "to": "directory",
+    "label": "judges whether its files share a concern",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Flat directories are normal for route trees, migrations, fixtures, icons and generated clients, where the files are peers and further grouping only adds depth. Many small files are also right where each is one component with its own test.",
+  "rule_ids": [
+   "080",
+   "081",
+   "088"
+  ]
+ },
+ {
+  "id": "S-02",
+  "family": "S",
+  "name": "Change-history risk score",
+  "rationale": "These rules combine a complexity measure with recent growth or churn, and in one case with ownership signals, to rank files and functions; one of them reports any file that grew by a fifth since the baseline. History prioritizes attention and says nothing about which structure is unnecessary.",
+  "invariant": "Complexity should not accumulate in the code that is changed most often.",
+  "roles": [
+   "file or function",
+   "complexity measure",
+   "churn measure",
+   "risk score"
+  ],
+  "relations": [
+   {
+    "from": "complexity measure",
+    "to": "risk score",
+    "label": "feeds",
+    "state": "normal"
+   },
+   {
+    "from": "churn measure",
+    "to": "risk score",
+    "label": "feeds",
+    "state": "normal"
+   },
+   {
+    "from": "risk score",
+    "to": "file or function",
+    "label": "says what is wrong in",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "High churn over complex code is the expected signature of active feature work, and growth is the normal signature of an accepted large change. The measures also mislead on young repositories, bulk reformatting and vendored code.",
+  "rule_ids": [
+   "107",
+   "463",
+   "483"
+  ]
+ },
+ {
+  "id": "S-03",
+  "family": "S",
+  "name": "Reinvented infrastructure",
+  "rationale": "Each rule targets code that reimplements a facility the codebase or platform already provides: new utility scaffolding beside existing helpers, a GenServer used as a key-value store where Agent or ETS exists, and a custom implementation of established library functionality.",
+  "invariant": "New code must reuse an existing codebase or platform facility rather than build a parallel mechanism for the same job.",
+  "roles": [
+   "custom implementation",
+   "existing facility",
+   "codebase or platform"
+  ],
+  "relations": [
+   {
+    "from": "codebase or platform",
+    "to": "existing facility",
+    "label": "provides",
+    "state": "normal"
+   },
+   {
+    "from": "custom implementation",
+    "to": "existing facility",
+    "label": "duplicates instead of using",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The existing facility does not meet a specific requirement (performance, API shape, dependency constraints), or the custom code is so small that the dependency on the existing facility costs more than it saves.",
+  "rule_ids": [
+   "125",
+   "136",
+   "541"
+  ]
+ },
+ {
+  "id": "S-04",
+  "family": "S",
+  "name": "Effect cycle for derived state",
+  "rationale": "The rule targets a React useEffect whose body only calls setState. The derived value could be computed during render or memoized; instead an effect and a second render are interposed between the source state and the value.",
+  "invariant": "Derived state must be computed from its source during rendering, not synchronized into a second state through an effect.",
+  "roles": [
+   "source state",
+   "effect",
+   "derived state"
+  ],
+  "relations": [
+   {
+    "from": "source state",
+    "to": "derived state",
+    "label": "directly produces",
+    "state": "missing"
+   },
+   {
+    "from": "effect",
+    "to": "derived state",
+    "label": "copies into a second state after render",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The update must run after render because it depends on something only an effect can observe, such as a DOM measurement or focus, or the effect also performs a real external synchronization.",
+  "rule_ids": [
+   "091"
+  ]
+ },
+ {
+  "id": "S-05",
+  "family": "S",
+  "name": "Fallback wording in the agent's own text",
+  "rationale": "A single rule, a pre-write hook matching phrases that announce a fallback, a shim or an environment-specific patch. It fires on an intention before any code exists, so it observes wording and never a delivered structure.",
+  "invariant": "A change should repair the path it is tempted to work around rather than add a layer beside it.",
+  "roles": [
+   "agent text",
+   "matched phrase",
+   "planned structure",
+   "delivered code"
+  ],
+  "relations": [
+   {
+    "from": "matched phrase",
+    "to": "agent text",
+    "label": "occurs in",
+    "state": "normal"
+   },
+   {
+    "from": "matched phrase",
+    "to": "planned structure",
+    "label": "announces",
+    "state": "problem"
+   },
+   {
+    "from": "delivered code",
+    "to": "planned structure",
+    "label": "is inspected to confirm",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Fallbacks are often the right answer: a documented default when optional configuration is absent, a compatibility path during a dated migration, a degraded mode when an optional dependency is missing. The phrases also appear when the agent describes existing code or explains why it will not add a workaround.",
+  "rule_ids": [
+   "245"
+  ]
+ },
+ {
+  "id": "S-06",
+  "family": "S",
+  "name": "Variation point with no variation",
+  "rationale": "These rules flag structure whose purpose is to let something differ, where nothing differs: an interface with one implementation, a factory with one output, a class with no state or one method, a generic bound wider than any instantiation, abstraction built for a requirement that has not arrived, and compatibility structure whose migration is over.",
+  "invariant": "A boundary or variation point must be exercised by the system as it is delivered.",
+  "roles": [
+   "structure",
+   "variation it admits",
+   "delivered system",
+   "sole user"
+  ],
+  "relations": [
+   {
+    "from": "structure",
+    "to": "variation it admits",
+    "label": "declares",
+    "state": "normal"
+   },
+   {
+    "from": "sole user",
+    "to": "structure",
+    "label": "reaches the only implementation through",
+    "state": "normal"
+   },
+   {
+    "from": "delivered system",
+    "to": "variation it admits",
+    "label": "exercises",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A variation point is justified before anything varies when something outside the repository depends on it: a published plugin contract, an interface implemented by a test double or a second runtime, an abstract base for third-party implementors, or a shim an announced deprecation window still requires. Rule 092 belongs here only when the migration is finished; while callers still need the old API, the compatibility structure is not unused.",
+  "rule_ids": [
+   "059",
+   "083",
+   "085",
+   "092",
+   "093",
+   "094",
+   "113",
+   "563"
+  ]
+ },
+ {
+  "id": "S-07",
+  "family": "S",
+  "name": "Code outside the place the architecture assigns it",
+  "rationale": "These rules compare where code sits and what it depends on with the layers, boundaries and placement conventions the project declares or implies: imports that run upward or across a denied boundary, shared code reaching into tools, a contract defined beside its implementation instead of its consumer, a function whose purpose does not match its file, and a file in a directory its conventions forbid.",
+  "invariant": "Code must reside in, and depend only on, the locations that the project's declared or inferred layers, boundaries and placement rules permit for it.",
+  "roles": [
+   "artifact",
+   "location",
+   "architectural rule",
+   "dependency edge"
+  ],
+  "relations": [
+   {
+    "from": "architectural rule",
+    "to": "location",
+    "label": "assigns a purpose and an allowed direction to",
+    "state": "normal"
+   },
+   {
+    "from": "artifact",
+    "to": "location",
+    "label": "sits in a place whose purpose it does not share",
+    "state": "problem"
+   },
+   {
+    "from": "dependency edge",
+    "to": "architectural rule",
+    "label": "runs in a direction forbidden by",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A crossing or placement is acceptable when it is a recorded exception in the boundary configuration, when an inversion seam makes a seemingly upward edge legal, when the platform fixes the location of a file, or when the placement rule is out of date with a layout the project has since chosen.",
+  "rule_ids": [
+   "087",
+   "098",
+   "285",
+   "305",
+   "306",
+   "484",
+   "564"
+  ]
+ },
+ {
+  "id": "S-08",
+  "family": "S",
+  "name": "Responsibility not co-located with what changes with it",
+  "rationale": "These rules flag a split between a responsibility and the unit that should hold it: a method that works on another object's data, classes reaching into each other's internals, a class holding data whose behavior lives elsewhere, a class changed for unrelated reasons, a change that must touch many files, feature logic cut along technical layers, and a generically named module that collects unrelated functions.",
+  "invariant": "Each responsibility, with the data and behavior that change together, must live in one cohesive unit, and each unit must hold one responsibility.",
+  "roles": [
+   "responsibility",
+   "owning unit",
+   "data it operates on",
+   "other units"
+  ],
+  "relations": [
+   {
+    "from": "owning unit",
+    "to": "data it operates on",
+    "label": "owns",
+    "state": "normal"
+   },
+   {
+    "from": "responsibility",
+    "to": "other units",
+    "label": "is spread across or reaches into",
+    "state": "problem"
+   },
+   {
+    "from": "owning unit",
+    "to": "responsibility",
+    "label": "holds as its single",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Cross-object access is the unit's defined job (a serializer, mapper, visitor or report), the data holder is an inert transfer object by design, the spread is a cross-cutting concern handled by an agreed mechanism, or the shared edits are a mechanical rename. A module of genuinely cross-domain primitives whose name says what they are is not a grab-bag.",
+  "rule_ids": [
+   "432",
+   "433",
+   "434",
+   "436",
+   "437",
+   "547",
+   "555"
+  ]
+ },
+ {
+  "id": "S-09",
+  "family": "S",
+  "name": "Subtype breaks its supertype contract",
+  "rationale": "The rule flags a subclass that overrides a method to signal not-implemented or unsupported, or that strengthens preconditions or weakens postconditions, so it can no longer stand in for its parent.",
+  "invariant": "A subtype must honor its supertype's contract and remain substitutable wherever the supertype is expected.",
+  "roles": [
+   "supertype contract",
+   "subtype override",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "caller",
+    "to": "supertype contract",
+    "label": "relies on",
+    "state": "normal"
+   },
+   {
+    "from": "subtype override",
+    "to": "supertype contract",
+    "label": "narrows or refuses",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The base type explicitly declares the operation optional, or the hierarchy documents the narrowing as part of its contract.",
+  "rule_ids": [
+   "284"
+  ]
+ },
+ {
+  "id": "S-10",
+  "family": "S",
+  "name": "Size and complexity measure above a limit",
+  "rationale": "These rules select a function, class or file by counting its lines, parameters, members, nesting, paths, cyclomatic or cognitive complexity, Halstead measures, divider comments, complexity against coverage, or the concentration of complexity, and comparing the number with a threshold. None of them says which structure is unnecessary.",
+  "invariant": "A unit's size and decision load should follow from the one responsibility it carries.",
+  "roles": [
+   "unit",
+   "size or complexity measure",
+   "threshold",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "unit",
+    "to": "size or complexity measure",
+    "label": "has",
+    "state": "normal"
+   },
+   {
+    "from": "size or complexity measure",
+    "to": "threshold",
+    "label": "exceeds",
+    "state": "problem"
+   },
+   {
+    "from": "reviewer",
+    "to": "unit",
+    "label": "judges which structure it should not hold",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Essential complexity has to live somewhere: a parser, a state machine, a protocol decoder, generated code, data tables and a cohesive module with a wide single-purpose API exceed these limits in their clearest form. The scores also move with style, since guard clauses and early returns change the count without changing the design.",
+  "rule_ids": [
+   "073",
+   "074",
+   "075",
+   "076",
+   "082",
+   "084",
+   "090",
+   "100",
+   "101",
+   "102",
+   "103",
+   "110",
+   "111",
+   "112",
+   "302",
+   "356",
+   "459",
+   "482"
+  ]
+ },
+ {
+  "id": "S-11",
+  "family": "S",
+  "name": "Framework boundary directive that does not match the code",
+  "rationale": "These rules flag client/server boundary directives in React Server Components that do not describe the module: 'use client' on a file using no client APIs, a directive placed where it has no effect, and a barrel that mixes client and server modules under one import.",
+  "invariant": "A framework boundary directive must be placed where it takes effect and must match the runtime needs of the code it covers.",
+  "roles": [
+   "source file",
+   "boundary directive",
+   "framework runtime"
+  ],
+  "relations": [
+   {
+    "from": "source file",
+    "to": "boundary directive",
+    "label": "declares",
+    "state": "normal"
+   },
+   {
+    "from": "boundary directive",
+    "to": "framework runtime",
+    "label": "matches the actual needs reported to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The directive is required by a parent module or framework convention even though the file itself calls no client API.",
+  "rule_ids": [
+   "220",
+   "450",
+   "451"
+  ]
+ },
+ {
+  "id": "S-12",
+  "family": "S",
+  "name": "Route identity conflict",
+  "rationale": "Both rules target App Router structures where two route definitions collide: two handler files resolving to one URL, and sibling dynamic segments at one depth using different parameter names.",
+  "invariant": "Each URL path must resolve to exactly one handler, and sibling dynamic segments must share one parameter name.",
+  "roles": [
+   "route definition A",
+   "route definition B",
+   "URL path"
+  ],
+  "relations": [
+   {
+    "from": "route definition A",
+    "to": "URL path",
+    "label": "claims",
+    "state": "normal"
+   },
+   {
+    "from": "route definition B",
+    "to": "URL path",
+    "label": "also claims",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Route groups that intentionally share a path with different layouts, as the framework documents.",
+  "rule_ids": [
+   "457",
+   "458"
+  ]
+ },
+ {
+  "id": "S-13",
+  "family": "S",
+  "name": "Test structure mirrors production internals",
+  "rationale": "The rule flags test organization that mirrors production's class and method layout and asserts one behavior through several internal paths, so a behavior-preserving refactor breaks the suite.",
+  "invariant": "Test organization must follow observable behavior, not production's internal structure.",
+  "roles": [
+   "test suite",
+   "production internal structure",
+   "observable behavior"
+  ],
+  "relations": [
+   {
+    "from": "test suite",
+    "to": "observable behavior",
+    "label": "is organized around",
+    "state": "missing"
+   },
+   {
+    "from": "test suite",
+    "to": "production internal structure",
+    "label": "mirrors and couples to",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A per-class test file that matches production is fine when it still asserts behavior through the public interface.",
+  "rule_ids": [
+   "325"
+  ]
+ },
+ {
+  "id": "S-14",
+  "family": "S",
+  "name": "Orchestration chain without an aggregating unit",
+  "rationale": "The rule flags service-to-service call chains longer than three hops (A calls B calls C calls D), read as a sign that no unit composes the flow and each service hands the request on.",
+  "invariant": "A multi-service flow must be composed by one orchestrating unit rather than relayed along a chain of services.",
+  "roles": [
+   "origin service",
+   "intermediate services",
+   "final service",
+   "aggregating unit"
+  ],
+  "relations": [
+   {
+    "from": "origin service",
+    "to": "intermediate services",
+    "label": "calls",
+    "state": "normal"
+   },
+   {
+    "from": "intermediate services",
+    "to": "final service",
+    "label": "hand the request on to",
+    "state": "problem"
+   },
+   {
+    "from": "aggregating unit",
+    "to": "intermediate services",
+    "label": "composes",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A deep chain is correct when each hop is a separate bounded context that owns its step, or when the flow is a deliberate pipeline or saga with its own coordinator elsewhere.",
+  "rule_ids": [
+   "343"
+  ]
+ },
+ {
+  "id": "S-15",
+  "family": "S",
+  "name": "Library unit taking a decision that belongs to its host",
+  "rationale": "Each rule flags a unit meant to be imported reaching past its own scope: ending the process, changing the import path, initializing at import time, mutating module-global state, fetching collaborators from a global registry, or choosing its own logging mechanism.",
+  "invariant": "A library unit must take its state and collaborators from its caller and leave process-wide decisions to the entry point.",
+  "roles": [
+   "library unit",
+   "caller",
+   "entry point",
+   "process-wide state"
+  ],
+  "relations": [
+   {
+    "from": "entry point",
+    "to": "process-wide state",
+    "label": "owns and initializes",
+    "state": "normal"
+   },
+   {
+    "from": "library unit",
+    "to": "process-wide state",
+    "label": "mutates, terminates or reaches into",
+    "state": "problem"
+   },
+   {
+    "from": "caller",
+    "to": "library unit",
+    "label": "supplies state and collaborators to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "These actions belong in the entry point itself: a CLI main, a cmd/ program, a test harness, a one-file script. A process-wide singleton is fine when the entry point creates it and the library only receives it, and framework plugin autodiscovery can require registration at import time.",
+  "rule_ids": [
+   "096",
+   "154",
+   "158",
+   "159",
+   "473",
+   "480"
+  ]
+ },
+ {
+  "id": "S-16",
+  "family": "S",
+  "name": "Pattern not used elsewhere in the repository",
+  "rationale": "The rule compares a change with the repository's existing patterns, naming, error handling, logging and test style in one check. Only part of that is structural, and the rule does not separate which part it found.",
+  "invariant": "A new component must be integrated through the structure the repository already uses for components of its kind.",
+  "roles": [
+   "new component",
+   "repository pattern",
+   "integration structure",
+   "maintainer"
+  ],
+  "relations": [
+   {
+    "from": "repository pattern",
+    "to": "integration structure",
+    "label": "establishes",
+    "state": "normal"
+   },
+   {
+    "from": "new component",
+    "to": "repository pattern",
+    "label": "follows",
+    "state": "missing"
+   },
+   {
+    "from": "maintainer",
+    "to": "integration structure",
+    "label": "now has to maintain two of",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The added condition for this family is that the mismatch is structural, such as a hand-written client beside generated ones, rather than vocabulary or style. A departure is also right when the new pattern is the stated replacement in a migration, or when the established pattern cannot serve the case.",
+  "rule_ids": [
+   "115"
+  ]
+ },
+ {
+  "id": "S-17",
+  "family": "S",
+  "name": "Dependency-graph shape above a limit",
+  "rationale": "These rules measure the shape of a dependency, inheritance or render graph (fan-out, coupling between objects, inheritance depth and width, distance from the main sequence, modularity, unstable coupling, propagation cost, render fan-in) and gate on the number. The measurement selects an architecture for review instead of naming an edge that should not be there.",
+  "invariant": "The dependency graph should let each unit be changed and understood without reasoning about much of the rest.",
+  "roles": [
+   "graph",
+   "measured node",
+   "threshold",
+   "architect"
+  ],
+  "relations": [
+   {
+    "from": "measured node",
+    "to": "graph",
+    "label": "sits in",
+    "state": "normal"
+   },
+   {
+    "from": "measured node",
+    "to": "threshold",
+    "label": "scores beyond",
+    "state": "problem"
+   },
+   {
+    "from": "architect",
+    "to": "graph",
+    "label": "names the edge that should not exist",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A hub with high fan-in or fan-out is often correct by design: a shared domain type, a logging facade, a design-system component used on every screen, a framework base class. The scores are also sensitive to packaging, and a deep hierarchy can mirror a real domain taxonomy.",
+  "rule_ids": [
+   "104",
+   "105",
+   "106",
+   "108",
+   "300",
+   "301",
+   "304",
+   "307",
+   "462"
+  ]
+ },
+ {
+  "id": "S-18",
+  "family": "S",
+  "name": "Required dependency with no provider",
+  "rationale": "Both rules trace a declared need back through the callers or the ancestor tree and find nothing that satisfies it: a parameter or option field that no caller ever passes, and an inject or getContext key that no ancestor provides.",
+  "invariant": "A dependency point a unit declares must be supplied on every path that reaches that unit.",
+  "roles": [
+   "consumer",
+   "declared dependency",
+   "provider",
+   "entry path"
+  ],
+  "relations": [
+   {
+    "from": "consumer",
+    "to": "declared dependency",
+    "label": "requires",
+    "state": "normal"
+   },
+   {
+    "from": "entry path",
+    "to": "consumer",
+    "label": "reaches",
+    "state": "normal"
+   },
+   {
+    "from": "provider",
+    "to": "declared dependency",
+    "label": "supplies",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The provider arrives in the same change, or the dependency is genuinely optional and its default is the intended behavior. Static analysis also misses providers installed dynamically, through a plugin registry or a test harness.",
+  "rule_ids": [
+   "114",
+   "452"
+  ]
+ },
+ {
+  "id": "S-19",
+  "family": "S",
+  "name": "Computation and effects interleaved",
+  "rationale": "Both rules target functions or loops where pure computation is tangled with I/O, input interpretation or side effects: parsing mixed with execution inside a loop, and business calculation mixed with database calls, HTTP requests or logging.",
+  "invariant": "Pure computation must be separable from I/O and side effects, so that each phase can be called, tested and understood on its own.",
+  "roles": [
+   "function or loop body",
+   "computation logic",
+   "effectful operation"
+  ],
+  "relations": [
+   {
+    "from": "function or loop body",
+    "to": "computation logic",
+    "label": "contains",
+    "state": "normal"
+   },
+   {
+    "from": "function or loop body",
+    "to": "effectful operation",
+    "label": "interleaves with the computation",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The computation is a single expression feeding an I/O call, where separating the phases would add indirection without aiding comprehension or testing.",
+  "rule_ids": [
+   "116",
+   "554"
+  ]
+ },
+ {
+  "id": "S-20",
+  "family": "S",
+  "name": "Unmodeled data clump",
+  "rationale": "The rule targets the same group of parameters appearing in three or more method signatures, a domain concept that travels as loose values instead of a type.",
+  "invariant": "A parameter group that recurs across signatures must be modeled as one cohesive type.",
+  "roles": [
+   "parameter group",
+   "method signatures",
+   "missing domain type"
+  ],
+  "relations": [
+   {
+    "from": "parameter group",
+    "to": "method signatures",
+    "label": "is repeated across",
+    "state": "problem"
+   },
+   {
+    "from": "missing domain type",
+    "to": "parameter group",
+    "label": "models",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The parameters co-occur by coincidence and represent different concepts in different signatures.",
+  "rule_ids": [
+   "438"
+  ]
+ },
+ {
+  "id": "S-21",
+  "family": "S",
+  "name": "Caller navigating through a collaborator's internals",
+  "rationale": "Both rules flag call or attribute chains that walk several links through objects the caller never received (a.b().c().d()), with one implementation filtering fluent, builder, module-qualified and AST-traversal chains.",
+  "invariant": "A unit must use only the interface of its immediate collaborators and must not depend on the structure behind them.",
+  "roles": [
+   "caller",
+   "immediate collaborator",
+   "distant object",
+   "published interface"
+  ],
+  "relations": [
+   {
+    "from": "caller",
+    "to": "immediate collaborator",
+    "label": "holds",
+    "state": "normal"
+   },
+   {
+    "from": "immediate collaborator",
+    "to": "published interface",
+    "label": "offers",
+    "state": "normal"
+   },
+   {
+    "from": "caller",
+    "to": "distant object",
+    "label": "navigates to and operates on",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Long chains are the interface itself in fluent builders and query DSLs, and walking is the point for structures a caller is meant to traverse: an AST, a DOM, a parsed document, a configuration tree. Module-qualified access is a path through namespaces, not through objects.",
+  "rule_ids": [
+   "435",
+   "565"
+  ]
+ },
+ {
+  "id": "S-22",
+  "family": "S",
+  "name": "Expression step that cannot change the result",
+  "rationale": "Each rule flags a construct inside an expression or statement whose removal leaves the same value: an identity match or map, an if that rebuilds the boolean it tested, a variable read once on the next line, a two-call pipeline one library call replaces, an await on a promise returned anyway, and an immediately invoked wrapper around code that could run directly.",
+  "invariant": "Every step of an expression must affect the value the expression produces.",
+  "roles": [
+   "expression",
+   "intermediate step",
+   "result",
+   "direct form"
+  ],
+  "relations": [
+   {
+    "from": "expression",
+    "to": "result",
+    "label": "computes",
+    "state": "normal"
+   },
+   {
+    "from": "intermediate step",
+    "to": "result",
+    "label": "changes nothing in",
+    "state": "problem"
+   },
+   {
+    "from": "direct form",
+    "to": "result",
+    "label": "reaches the same value without the step",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "The step stays when it changes something: an await inside a try block that must catch the rejection, a binding that names an opaque sub-expression or is reused, an identity clause written for exhaustiveness, and an IIFE that creates a scope the module cannot give.",
+  "rule_ids": [
+   "015",
+   "016",
+   "020",
+   "140",
+   "143",
+   "146",
+   "152",
+   "371"
+  ]
+ },
+ {
+  "id": "S-23",
+  "family": "S",
+  "name": "Circular module dependency",
+  "rationale": "Each rule flags modules that depend on each other in a cycle, through value imports, re-exports, or function-level imports used to hide the cycle from analysis.",
+  "invariant": "Modules must form an acyclic dependency graph, and a cycle must not be hidden behind a deferred import.",
+  "roles": [
+   "module A",
+   "module B",
+   "import graph"
+  ],
+  "relations": [
+   {
+    "from": "module A",
+    "to": "module B",
+    "label": "imports",
+    "state": "normal"
+   },
+   {
+    "from": "module B",
+    "to": "module A",
+    "label": "imports back, closing a cycle",
+    "state": "problem"
+   },
+   {
+    "from": "module A",
+    "to": "import graph",
+    "label": "keeps acyclic",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Rule 089 belongs here only when the function-level import exists to hide a cycle; a deferred import is correct for an optional extra, a heavy SDK kept out of start-up, a platform-specific module, or an import under a type-checking guard.",
+  "rule_ids": [
+   "086",
+   "089",
+   "449"
+  ]
+ },
+ {
+  "id": "S-24",
+  "family": "S",
+  "name": "Published surface that is not a contract of its own",
+  "rationale": "Each rule looks at what a package or service publishes and finds a surface the boundary does not own: a file of re-exports only, a wildcard re-export that republishes whatever its target holds, a service handing back its persistence entity, and an exported signature naming a type the package keeps private.",
+  "invariant": "What a boundary publishes must be an enumerated set of names that the boundary owns and that consumers can reach.",
+  "roles": [
+   "boundary",
+   "consumer",
+   "published surface",
+   "internal model"
+  ],
+  "relations": [
+   {
+    "from": "consumer",
+    "to": "published surface",
+    "label": "depends on",
+    "state": "normal"
+   },
+   {
+    "from": "published surface",
+    "to": "internal model",
+    "label": "exposes or inherits its contents from",
+    "state": "problem"
+   },
+   {
+    "from": "boundary",
+    "to": "published surface",
+    "label": "enumerates and owns",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A facade package defined as the union of submodules released together can re-export them wholesale, an internal barrel used only inside the repository carries little of this cost, and a persistence type is fine where it is itself the published contract.",
+  "rule_ids": [
+   "079",
+   "095",
+   "344",
+   "448"
+  ]
+ },
+ {
+  "id": "S-25",
+  "family": "S",
+  "name": "Shared abstraction grown a branch per caller",
+  "rationale": "The rule flags a shared abstraction that has accumulated a branch for each caller's special case, so it now costs more than the duplication it removed.",
+  "invariant": "A shared abstraction must fit its callers without caller-specific branches; when the branching exceeds the duplication it removed, the abstraction must be re-inlined.",
+  "roles": [
+   "shared abstraction",
+   "caller special cases",
+   "duplication it replaced"
+  ],
+  "relations": [
+   {
+    "from": "shared abstraction",
+    "to": "caller special cases",
+    "label": "accumulates a branch per",
+    "state": "problem"
+   },
+   {
+    "from": "shared abstraction",
+    "to": "duplication it replaced",
+    "label": "costs less than",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A bounded, principled set of configuration options is not special-casing; the fault is an unbounded growth of caller-specific branches.",
+  "rule_ids": [
+   "286"
+  ]
+ },
+ {
+  "id": "S-26",
+  "family": "S",
+  "name": "Test count against a budget",
+  "rationale": "The rule selects a test suite for review when its count exceeds twice the number of distinct behaviors; quantity alone does not show which tests are redundant.",
+  "invariant": "A test suite should hold the tests its behaviors need and no more.",
+  "roles": [
+   "test-count budget",
+   "test suite",
+   "redundant test"
+  ],
+  "relations": [
+   {
+    "from": "test-count budget",
+    "to": "test suite",
+    "label": "selects when the count exceeds",
+    "state": "normal"
+   },
+   {
+    "from": "test suite",
+    "to": "redundant test",
+    "label": "is shown to contain",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Many distinct edge cases of one behavior, or legitimately broad behavior coverage, can exceed a raw count.",
+  "rule_ids": [
+   "429"
+  ]
+ },
+ {
+  "id": "S-27",
+  "family": "S",
+  "name": "Effects hidden from the call site",
+  "rationale": "Each rule flags a function whose mutation, I/O, dependency acquisition or control flow is invisible at its call boundary: a getter with side effects, hidden parameter mutation, a query that also commands, a service locator, validation that throws as control flow, and effects buried in opaque delegates.",
+  "invariant": "A function's name and signature must reveal its effects; a query must not mutate and a command must not masquerade as a query.",
+  "roles": [
+   "caller",
+   "function",
+   "hidden effect",
+   "declared interface"
+  ],
+  "relations": [
+   {
+    "from": "function",
+    "to": "declared interface",
+    "label": "presents itself through",
+    "state": "normal"
+   },
+   {
+    "from": "function",
+    "to": "hidden effect",
+    "label": "performs",
+    "state": "problem"
+   },
+   {
+    "from": "caller",
+    "to": "hidden effect",
+    "label": "can see at the call site",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The effect is the function's named, documented purpose, or it is transparent to the caller, such as caching that preserves semantics.",
+  "rule_ids": [
+   "099",
+   "109",
+   "281",
+   "552",
+   "553"
+  ]
+ },
+ {
+  "id": "S-28",
+  "family": "S",
+  "name": "Interposed unit that only forwards",
+  "rationale": "Across functions, modules, classes, components and layers, these rules flag a unit that sits between a consumer and a provider and passes its payload along unchanged: pass-through wrappers, async functions with nothing to await, field-copying adapters, classes that only delegate, generic success envelopes, props threaded through components that never read them, and hops between identically shaped DTOs.",
+  "invariant": "A unit placed between a consumer and a provider must change the data, the contract or the guarantees that pass through it.",
+  "roles": [
+   "consumer",
+   "interposed unit",
+   "provider",
+   "payload"
+  ],
+  "relations": [
+   {
+    "from": "consumer",
+    "to": "interposed unit",
+    "label": "depends on instead of the provider",
+    "state": "normal"
+   },
+   {
+    "from": "interposed unit",
+    "to": "provider",
+    "label": "forwards to",
+    "state": "normal"
+   },
+   {
+    "from": "interposed unit",
+    "to": "payload",
+    "label": "transforms, validates or constrains",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The hop earns its place when it pins a boundary the consumer must not cross: a stable public surface over a volatile internal one, a seam for a test double or second implementation, or a deprecation alias kept for one release.",
+  "rule_ids": [
+   "072",
+   "077",
+   "078",
+   "097",
+   "440",
+   "460",
+   "546"
+  ]
+ },
+ {
+  "id": "S-29",
+  "family": "S",
+  "name": "Variant handled by branching inside one body",
+  "rationale": "Each rule targets a function that selects among variants with branches inside a shared body: repeated isinstance or equality ladders, if/elif chains without exhaustiveness checking, a boolean flag choosing between two behaviors, and type-tag branches every new variant must extend.",
+  "invariant": "Variant selection must use a mechanism that states the variant set once and lets a new variant be added without editing existing bodies.",
+  "roles": [
+   "dispatch site",
+   "variant set",
+   "dispatch mechanism"
+  ],
+  "relations": [
+   {
+    "from": "dispatch site",
+    "to": "variant set",
+    "label": "selects among",
+    "state": "normal"
+   },
+   {
+    "from": "dispatch mechanism",
+    "to": "dispatch site",
+    "label": "forces repetition or modification at",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The variant set is small, closed and handled at one site, or the ladder is a data-driven mapping that polymorphism would not improve.",
+  "rule_ids": [
+   "071",
+   "160",
+   "282",
+   "283"
+  ]
+ }
+]
