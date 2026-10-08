@@ -1,0 +1,148 @@
+[
+ {
+  "id": "R-01",
+  "family": "R",
+  "name": "Runtime re-establishment of an already-assured value property",
+  "rationale": "The rules flag a coercion, a null or type check, a parameter validation, or a recomputation applied to a value whose type, nullability, validity or result is already settled at that point, either by the type system or by a trusted caller or upstream boundary. The source of the guarantee differs between the rules, but in each case the operation cannot change the outcome because the property already holds.",
+  "invariant": "A check, coercion or recomputation may only establish a property of a value that is not already assured at that point in the code, whether the assurance comes from the type system or from a trusted caller or boundary.",
+  "roles": [
+   "upstream guarantee (type system or validating caller)",
+   "guarded value",
+   "redundant check or coercion",
+   "unguaranteed caller path"
+  ],
+  "relations": [
+   {
+    "from": "upstream guarantee (type system or validating caller)",
+    "to": "guarded value",
+    "label": "already fixes its type, nullability, validity or computed result",
+    "state": "normal"
+   },
+   {
+    "from": "redundant check or coercion",
+    "to": "guarded value",
+    "label": "re-tests, re-coerces or re-derives the settled property",
+    "state": "problem"
+   },
+   {
+    "from": "unguaranteed caller path",
+    "to": "guarded value",
+    "label": "would deliver the value without the property and so justify the check",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The check is the real guarantee at a trust boundary where the static type or the caller's validation cannot be relied on: a public or exported API callable by untrusted or untyped code, an HTTP or CLI entry point, a deserializer, parsed JSON or values typed as any or unknown, data read from a file or database, or code reached after an unsafe cast. It is also right when the project deliberately asserts the invariant as a precondition contract, or when the compiler does not run in a mode that proves the property.",
+  "rule_ids": [
+   "053",
+   "068",
+   "070"
+  ]
+ },
+ {
+  "id": "R-02",
+  "family": "R",
+  "name": "Error handling that reproduces default propagation",
+  "rationale": "A catch that only rethrows the caught error unchanged, and a try/catch around code that cannot throw, both add a handling layer that changes nothing: the runtime already carries any failure to the caller, so removing the construct would leave observable behaviour unchanged.",
+  "invariant": "An error-handling construct must enclose code that can fail and must change what the caller observes when it fails, beyond what default error propagation already provides.",
+  "roles": [
+   "enclosed code",
+   "try/catch construct",
+   "default error propagation",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "default error propagation",
+    "to": "caller",
+    "label": "already delivers any failure of the enclosed code",
+    "state": "normal"
+   },
+   {
+    "from": "try/catch construct",
+    "to": "enclosed code",
+    "label": "intercepts failures without adding handling (bare rethrow, or nothing can throw)",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The catch does work when it logs with context, wraps or translates the error into a type the caller's contract names, recovers, or releases a resource on the way out. A try/catch around apparently safe code is justified when the called code can throw in ways the local source does not show, such as a dynamic import, an untyped dependency, a caller-supplied callback or resource exhaustion.",
+  "rule_ids": [
+   "040",
+   "069"
+  ]
+ },
+ {
+  "id": "R-03",
+  "family": "R",
+  "name": "Fallback access for an input shape that is already fixed",
+  "rationale": "A chain of dict gets that defaults to an empty container at each level, and a lookup that tries the atom key and then the string key, both keep a second access path for a form of the data that the input contract or a normalizing boundary has already excluded, so the accessor repeats a shape guarantee that already holds.",
+  "invariant": "A data accessor must read the shape that the producing boundary guarantees, and may carry a default or an alternative key only for a form that can really arrive.",
+  "roles": [
+   "shape contract or normalizing boundary",
+   "incoming data",
+   "accessor with default or alternative key",
+   "second shape"
+  ],
+  "relations": [
+   {
+    "from": "shape contract or normalizing boundary",
+    "to": "incoming data",
+    "label": "already fixes its key form and required fields",
+    "state": "normal"
+   },
+   {
+    "from": "accessor with default or alternative key",
+    "to": "incoming data",
+    "label": "handles a missing or alternative shape that cannot occur",
+    "state": "problem"
+   },
+   {
+    "from": "second shape",
+    "to": "accessor with default or alternative key",
+    "label": "would reach it and justify the fallback",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The fallback is real work in an adapter that genuinely receives both shapes (decoded JSON with string keys and internal structs with atom keys, or old and new payloads during a migration), for raw external data with no validated schema, or for a sparse structure in which the absent field is a meaningful state and the default is the intended value for absence.",
+  "rule_ids": [
+   "066",
+   "067"
+  ]
+ },
+ {
+  "id": "R-04",
+  "family": "R",
+  "name": "Look-before-you-leap test before an operation that reports the condition",
+  "rationale": "The rule matches eight Python shapes in which a condition (key present, attribute present, path exists, non-empty, not None, numeric string, non-zero divisor, isinstance) is tested just before the operation that would itself report it. This is redundant guarding only under the added condition that something already settles the tested state at that point, which the rule does not check.",
+  "invariant": "A precondition test before an operation must guard a condition that can actually fail at that point; where a reliable guarantee already settles the condition, the test duplicates it.",
+  "roles": [
+   "precondition test",
+   "guarded operation",
+   "tested state",
+   "existing guarantee"
+  ],
+  "relations": [
+   {
+    "from": "precondition test",
+    "to": "guarded operation",
+    "label": "runs immediately before it",
+    "state": "normal"
+   },
+   {
+    "from": "precondition test",
+    "to": "tested state",
+    "label": "re-tests it at runtime",
+    "state": "problem"
+   },
+   {
+    "from": "existing guarantee",
+    "to": "tested state",
+    "label": "already settles it, which the rule does not establish",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Added condition for this family: the tested state must already be fixed at that point by a type, a validating caller or a prior normalization. Without it the test is ordinary control flow (the key may be absent, the divisor may be zero) and the branch is intended behaviour. An EAFP style preference is not a duplicated guarantee, the exists-before-open form is a time-of-check to time-of-use race rather than excess, and an isinstance guard is required where a union type must be narrowed.",
+  "rule_ids": [
+   "571"
+  ]
+ }
+]
