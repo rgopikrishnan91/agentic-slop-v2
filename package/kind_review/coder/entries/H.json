@@ -1,0 +1,496 @@
+[
+ {
+  "id": "H-01",
+  "family": "H",
+  "name": "Declared artifact with no consumer",
+  "rationale": "These rules resolve references across a file, a module graph or a project and report something a change declares or keeps that nothing else asks for: an import, a top-level declaration, an export, a type, a whole file, a class or enum member, a component, a prop, a component event, a server action, or code that is both duplicated and unused. The kind of artifact differs; the question asked of it does not.",
+  "invariant": "Every declaration a change leaves in the delivered system must be referenced by at least one other part of that system.",
+  "roles": [
+   "declaring site",
+   "declared artifact",
+   "consumer site",
+   "delivered system"
+  ],
+  "relations": [
+   {
+    "from": "declaring site",
+    "to": "declared artifact",
+    "label": "declares and keeps",
+    "state": "normal"
+   },
+   {
+    "from": "delivered system",
+    "to": "declared artifact",
+    "label": "carries and maintains",
+    "state": "normal"
+   },
+   {
+    "from": "consumer site",
+    "to": "declared artifact",
+    "label": "references at least once",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The artifact is consumed from outside the analysed repository (a published library surface, a plugin contract, an SDK type), or it is an entry point the framework calls by convention (a route, a layout, a CLI command, a registered hook, a migration script). It is also legitimate when the only reference is one static analysis cannot see, such as a dynamic import, a string-keyed registry, reflection or a build step that generates the call site.",
+  "rule_ids": [
+   "001",
+   "006",
+   "007",
+   "008",
+   "009",
+   "010",
+   "444",
+   "453",
+   "454",
+   "455",
+   "456",
+   "465"
+  ]
+ },
+ {
+  "id": "H-02",
+  "family": "H",
+  "name": "Production dependency the shipped runtime never loads",
+  "rationale": "Both rules find a package that is genuinely imported, so the no-consumer check does not fire, but every import of it is absent from what ships: type-only imports are erased at compile time and test files are not delivered. The manifest therefore states a run-time requirement the running system does not have.",
+  "invariant": "A package declared as a production dependency must be required by code that ships and runs.",
+  "roles": [
+   "package manifest",
+   "production dependency entry",
+   "non-shipped import site",
+   "shipped runtime"
+  ],
+  "relations": [
+   {
+    "from": "package manifest",
+    "to": "production dependency entry",
+    "label": "declares as required at run time",
+    "state": "normal"
+   },
+   {
+    "from": "non-shipped import site",
+    "to": "production dependency entry",
+    "label": "is the only thing importing",
+    "state": "problem"
+   },
+   {
+    "from": "shipped runtime",
+    "to": "production dependency entry",
+    "label": "loads",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A library that re-exports the package's types in its own public API must keep it where its consumers will install it. The same holds when the package is loaded through a dynamic or plugin resolution the analyser cannot follow, and in a setup where one manifest deliberately serves shipped code and tests together, so the production and development split carries no meaning.",
+  "rule_ids": [
+   "446",
+   "447"
+  ]
+ },
+ {
+  "id": "H-03",
+  "family": "H",
+  "name": "Permanently unreachable code",
+  "rationale": "Statements placed after a return, throw, raise, break or continue, and a branch governed by a literal-constant condition, are executable code that no control path of the delivered system can reach. The question is reachability, not whether anything references the code.",
+  "invariant": "Every statement and branch left in delivered code must be reachable on some execution path.",
+  "roles": [
+   "enclosing unit",
+   "inert code region",
+   "execution path",
+   "maintainer"
+  ],
+  "relations": [
+   {
+    "from": "execution path",
+    "to": "enclosing unit",
+    "label": "runs",
+    "state": "normal"
+   },
+   {
+    "from": "execution path",
+    "to": "inert code region",
+    "label": "can reach",
+    "state": "missing"
+   },
+   {
+    "from": "inert code region",
+    "to": "maintainer",
+    "label": "presents itself as live behaviour to",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A constant condition can be a deliberate compile-time or build-time switch (a debug flag, a platform constant the bundler folds away), and some unreachable statements are required: an exhaustiveness default, a return after an exit call, or a raise the compiler or linter insists on.",
+  "rule_ids": [
+   "003",
+   "004"
+  ]
+ },
+ {
+  "id": "H-04",
+  "family": "H",
+  "name": "Commented-out code retained in source",
+  "rationale": "The rule flags blocks of real code that were disabled by turning them into comments and left in the file. The compiler never sees them and nothing depends on them; they keep an old version of the code in place of deleting it and leaving the history to version control.",
+  "invariant": "Code that has been disabled must be deleted from the source, not kept as commented-out text.",
+  "roles": [
+   "commented-out block",
+   "source file",
+   "version control",
+   "active code"
+  ],
+  "relations": [
+   {
+    "from": "version control",
+    "to": "commented-out block",
+    "label": "already preserves the history of",
+    "state": "normal"
+   },
+   {
+    "from": "commented-out block",
+    "to": "source file",
+    "label": "is retained in",
+    "state": "problem"
+   },
+   {
+    "from": "active code",
+    "to": "commented-out block",
+    "label": "depends on",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A short commented example that documents usage (an example call in a docstring), a disabled line in a configuration template that users are meant to switch on, or a brief snippet kept on purpose with a note on why an alternative was rejected.",
+  "rule_ids": [
+   "329"
+  ]
+ },
+ {
+  "id": "H-05",
+  "family": "H",
+  "name": "Operation declared with an empty body",
+  "rationale": "Both rules find a declared operation, a non-trivial function or a React useEffect hook, whose body performs no work. That is a real failure, but whether it is debris or omitted behaviour depends on whether anything expects an effect from the operation, which neither rule checks.",
+  "invariant": "An operation that performs no work and from which nothing expects an effect should not be declared or registered at all.",
+  "roles": [
+   "declared operation",
+   "empty body",
+   "invoking site",
+   "expected effect"
+  ],
+  "relations": [
+   {
+    "from": "invoking site",
+    "to": "declared operation",
+    "label": "invokes",
+    "state": "normal"
+   },
+   {
+    "from": "declared operation",
+    "to": "empty body",
+    "label": "consists of",
+    "state": "problem"
+   },
+   {
+    "from": "empty body",
+    "to": "expected effect",
+    "label": "performs",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The finding belongs to Hygiene Debris only on the added condition that nothing expects an effect from the operation, so it can be deleted; if a caller or a stated requirement expects the effect, the empty body is work omitted and presented as done (family I). An empty body is acceptable outright where the slot is mandatory: an abstract or protocol method, an interface conformance, a deliberate no-op default or handler, a pass in an exception subclass, or a useEffect whose purpose is the cleanup function it returns.",
+  "rule_ids": [
+   "017",
+   "018"
+  ]
+ },
+ {
+  "id": "H-06",
+  "family": "H",
+  "name": "Debug instrumentation shipped with the change",
+  "rationale": "A stray print or console call, a bare debugger statement and a console.log carrying an apologetic debug comment are instrumentation the author added to watch a run. None of them is product behaviour, and all are found by matching the statement and then deciding whether the file is production code.",
+  "invariant": "Output and breakpoints added to observe a run during development must be removed, or replaced by the project's own logging, before the change is delivered.",
+  "roles": [
+   "author's debugging session",
+   "diagnostic statement",
+   "production code path",
+   "project logging facility"
+  ],
+  "relations": [
+   {
+    "from": "author's debugging session",
+    "to": "diagnostic statement",
+    "label": "inserted",
+    "state": "normal"
+   },
+   {
+    "from": "diagnostic statement",
+    "to": "production code path",
+    "label": "is delivered inside",
+    "state": "problem"
+   },
+   {
+    "from": "project logging facility",
+    "to": "diagnostic statement",
+    "label": "accounts for",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Writing to standard output is the product in a CLI, a build script, a generator or a test reporter, and deliberate operator-facing output or structured telemetry through the project's logger is not debris. A debugger statement is legitimate only in code that never ships, such as a local development harness or a path gated to development builds.",
+  "rule_ids": [
+   "002",
+   "330",
+   "370"
+  ]
+ },
+ {
+  "id": "H-07",
+  "family": "H",
+  "name": "Traces of the authoring process delivered as product",
+  "rationale": "Session planning and scratch files committed to the repository, and markers that a generator left in delivered text (citation tokens, sandbox paths, tracking parameters, placeholder tokens), both come from the act of producing the change rather than from the change itself. Nothing in the delivered system reads them; they differ only in whether the trace is a whole file or a token inside delivered content.",
+  "invariant": "A change delivers the product only; scratch files and generator markers made while producing it must be removed or resolved before delivery.",
+  "roles": [
+   "authoring process",
+   "process trace",
+   "delivered change",
+   "stated requirement"
+  ],
+  "relations": [
+   {
+    "from": "authoring process",
+    "to": "process trace",
+    "label": "produced",
+    "state": "normal"
+   },
+   {
+    "from": "process trace",
+    "to": "delivered change",
+    "label": "is committed into",
+    "state": "problem"
+   },
+   {
+    "from": "stated requirement",
+    "to": "process trace",
+    "label": "asks for",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Design records kept on purpose are not residue: an ADR, a maintained ROADMAP or TODO the team works from, or documentation under docs/. Placeholder text is legitimate in a template or fixture whose job is to be filled in, and in prose that discusses the markers themselves. Where a placeholder stands in for content the document was required to carry, the failure is an incomplete delivery (family I) rather than debris.",
+  "rule_ids": [
+   "019",
+   "495"
+  ]
+ },
+ {
+  "id": "H-08",
+  "family": "H",
+  "name": "Edits of a failed fix attempt left in the change",
+  "rationale": "The rule requires that when an attempted fix fails, all of its edits be reverted at once, and forbids dead code accumulating from abandoned attempts. The leftover edits were written as product code, not as notes or markers, but they contribute nothing to the solution that is delivered.",
+  "invariant": "Edits made by a failed or abandoned fix attempt must be reverted rather than left in the delivered change.",
+  "roles": [
+   "failed fix attempt",
+   "edits",
+   "working tree",
+   "task solution"
+  ],
+  "relations": [
+   {
+    "from": "failed fix attempt",
+    "to": "edits",
+    "label": "produced",
+    "state": "normal"
+   },
+   {
+    "from": "edits",
+    "to": "working tree",
+    "label": "remain in",
+    "state": "problem"
+   },
+   {
+    "from": "edits",
+    "to": "task solution",
+    "label": "contribute to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Edits from an attempt that succeeded, edits kept because they are part of the accepted solution, and parts of a failed attempt that are improvements on their own merits (a refactoring, an added test) are not residue; edits are also fine while the attempt is still in progress.",
+  "rule_ids": [
+   "540"
+  ]
+ },
+ {
+  "id": "H-09",
+  "family": "H",
+  "name": "Half-wired event channel",
+  "rationale": "The publisher rule and the subscriber rule are mirror images of one check: match the channel names used at publish sites against those used at subscribe sites. Either way one end is registered and its counterpart is absent, so the wiring exists but carries nothing.",
+  "invariant": "Each end a change registers on an event channel must have its counterpart in the same system, so that what is published is received and what is listened for can arrive.",
+  "roles": [
+   "registered end",
+   "event channel",
+   "counterpart end",
+   "payload"
+  ],
+  "relations": [
+   {
+    "from": "registered end",
+    "to": "event channel",
+    "label": "is wired to",
+    "state": "normal"
+   },
+   {
+    "from": "counterpart end",
+    "to": "event channel",
+    "label": "is wired to",
+    "state": "missing"
+   },
+   {
+    "from": "payload",
+    "to": "counterpart end",
+    "label": "crosses the channel to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The counterpart lives outside the analysed code: another service, a separate repository, an external consumer of a documented event contract, a plugin or extension API, or an operator watching a channel by hand. It is also legitimate when the channel name is assembled at run time, so name matching cannot pair the two ends, and when an emit belongs to a public component API whose listeners are written by its users.",
+  "rule_ids": [
+   "345",
+   "346"
+  ]
+ },
+ {
+  "id": "H-10",
+  "family": "H",
+  "name": "Migration scaffolding outliving its migration",
+  "rationale": "The rule reports deprecated symbols, mixed old and new APIs, stale shims, completed migration wrappers and abandoned 'remove later' notes. Read as hygiene, the shim and the deprecated symbol are dead weight left after the move finished, but the rule reports the unfinished case in the same breath and never says which one it found.",
+  "invariant": "When a migration is finished, the shim, the deprecated symbol and the removal marker that carried the old path are removed with it.",
+  "roles": [
+   "finished migration",
+   "compatibility shim",
+   "remaining old-path caller",
+   "new API"
+  ],
+  "relations": [
+   {
+    "from": "finished migration",
+    "to": "new API",
+    "label": "moved every caller to",
+    "state": "normal"
+   },
+   {
+    "from": "remaining old-path caller",
+    "to": "compatibility shim",
+    "label": "still calls",
+    "state": "missing"
+   },
+   {
+    "from": "compatibility shim",
+    "to": "new API",
+    "label": "only forwards to",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The finding belongs to this family only on the added condition that the migration has completed and no caller, published API or still-supported release needs the old path; while old call sites remain, the shim is live compatibility structure and the mixed state is unfinished migration work (families S and I). A deprecation window the project promised to honour, or a shim kept for an external consumer on an older version, is legitimate even with no internal caller left.",
+  "rule_ids": [
+   "092"
+  ]
+ },
+ {
+  "id": "H-11",
+  "family": "H",
+  "name": "Surplus repeated declaration of one binding",
+  "rationale": "Importing the same module twice and exporting the same symbol twice break one rule of bookkeeping: the first declaration already established the binding, so the second adds nothing and only creates a second place to keep in step. Both are found by grouping a file's declarations by the name they bind.",
+  "invariant": "A module brought into a file, or a symbol sent out of it, is declared once.",
+  "roles": [
+   "source module",
+   "bound symbol",
+   "first declaration",
+   "repeated declaration"
+  ],
+  "relations": [
+   {
+    "from": "first declaration",
+    "to": "bound symbol",
+    "label": "establishes",
+    "state": "normal"
+   },
+   {
+    "from": "repeated declaration",
+    "to": "source module",
+    "label": "names the same",
+    "state": "normal"
+   },
+   {
+    "from": "repeated declaration",
+    "to": "bound symbol",
+    "label": "establishes a second time with no added effect",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A toolchain can require the split: a separate type-only import next to a value import, or a side-effect-only import kept alongside a named one. On the export side, publishing a symbol under a deliberate second alias, or re-exporting it from a barrel as well as from its own module, is a chosen public surface rather than a slip.",
+  "rule_ids": [
+   "005",
+   "014"
+  ]
+ },
+ {
+  "id": "H-12",
+  "family": "H",
+  "name": "Suppression annotation that outlived the condition it covered",
+  "rationale": "A suppression comment whose finding no longer exists and a header Suppressions entry whose directive was deleted are the same bookkeeping failure: the annotation was paired with something in the code, that something went away, and the annotation stayed. Both tools find it by pairing annotations against the body and reporting those with no partner.",
+  "invariant": "An annotation that exists only to cover a condition in the code must be removed when that condition is removed.",
+  "roles": [
+   "annotation",
+   "covered condition",
+   "code body",
+   "later reader"
+  ],
+  "relations": [
+   {
+    "from": "annotation",
+    "to": "covered condition",
+    "label": "refers to",
+    "state": "normal"
+   },
+   {
+    "from": "code body",
+    "to": "covered condition",
+    "label": "still contains",
+    "state": "missing"
+   },
+   {
+    "from": "annotation",
+    "to": "later reader",
+    "label": "asserts a still-needed workaround to",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "A suppression may be kept deliberately for a finding that comes and goes, for instance in conditionally compiled or generated code, after a dependency update, or with an analyser whose result depends on build order, and a header entry may be held through a staged cleanup with a note saying so. An unconsumed suppression is also harmless when it was written for a different tool or a stricter configuration than the one that ran.",
+  "rule_ids": [
+   "445",
+   "567"
+  ]
+ },
+ {
+  "id": "H-13",
+  "family": "H",
+  "name": "Redundancy ratio gate",
+  "rationale": "The rule scores dead functions plus duplicate functions as a fraction of all functions and fails when the fraction passes a configured threshold. It selects a codebase for attention by a ratio and does not name an artifact or the obligation any particular function breaks.",
+  "invariant": "The share of functions that are dead or duplicated should stay under the configured fraction of all functions.",
+  "roles": [
+   "function inventory",
+   "redundancy ratio",
+   "configured threshold"
+  ],
+  "relations": [
+   {
+    "from": "function inventory",
+    "to": "redundancy ratio",
+    "label": "is scored into",
+    "state": "normal"
+   },
+   {
+    "from": "redundancy ratio",
+    "to": "configured threshold",
+    "label": "exceeds",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The ratio runs high for sound reasons: generated or vendored code counted in both terms, a library whose wide public API looks uncalled from inside the repository, platform shims that are duplicates by necessity, a codebase in active migration, or a small codebase where a few functions swing the fraction. A ratio under the threshold also says nothing about whether real debris is present.",
+  "rule_ids": [
+   "303"
+  ]
+ }
+]

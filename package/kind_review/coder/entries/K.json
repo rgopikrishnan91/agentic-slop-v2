@@ -1,0 +1,155 @@
+[
+ {
+  "id": "K-01",
+  "family": "K",
+  "name": "Change beyond the requested scope",
+  "rationale": "These rules all describe one failure: the delivered change contains edits, additions or concerns that the task did not ask for. Whether the agent builds an unrequested feature or abstraction (083), answers a fix request with edits to unrelated files (206), smuggles a behaviour change into a change presented as a refactor (296), or tidies, reorganizes or edits comments outside the task (298), the broken obligation is the same: every modified region must trace back to the request.",
+  "invariant": "Every region the change modifies or adds traces to the task the user actually requested, and a change presented as behaviour-preserving carries no unrequested behavioural edit.",
+  "roles": [
+   "task request",
+   "delivered change",
+   "in-scope edit",
+   "out-of-scope edit"
+  ],
+  "relations": [
+   {
+    "from": "in-scope edit",
+    "to": "task request",
+    "label": "traces to",
+    "state": "normal"
+   },
+   {
+    "from": "out-of-scope edit",
+    "to": "task request",
+    "label": "traces to",
+    "state": "missing"
+   },
+   {
+    "from": "out-of-scope edit",
+    "to": "delivered change",
+    "label": "is included in",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "The extra edit is acceptable when the request itself authorizes it (the task asked for the cleanup, refactor, reorganization or migration), when it is a mechanically required consequence of the requested change (a rename that must propagate, callers of a changed interface, an import the new call needs, a restructuring that makes the fix possible), or when the project convention or the user explicitly accepts the broadened scope and the change description declares it.",
+  "rule_ids": [
+   "083",
+   "206",
+   "296",
+   "298"
+  ]
+ },
+ {
+  "id": "K-02",
+  "family": "K",
+  "name": "Measured growth as a stand-in for unrequested scope",
+  "rationale": "All three rules measure how much larger the code got and flag the number: a positive net non-test line delta over the diff (204), a file more than a fifth above its last daily baseline (483), net growth or churn multiplied by complexity over a time window (107). None of them reads the request, so growth the task demanded scores exactly like growth nobody asked for.",
+  "invariant": "Growth in the delivered code must be accounted for by the request, not merely kept small.",
+  "roles": [
+   "request",
+   "size measurement",
+   "flagged file or diff",
+   "justification"
+  ],
+  "relations": [
+   {
+    "from": "size measurement",
+    "to": "flagged file or diff",
+    "label": "selects it by growth",
+    "state": "normal"
+   },
+   {
+    "from": "request",
+    "to": "flagged file or diff",
+    "label": "would account for the growth",
+    "state": "missing"
+   },
+   {
+    "from": "justification",
+    "to": "size measurement",
+    "label": "is weighed against the number",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Any request that adds a feature, a test suite, a generated client or a vendored dependency makes the code bigger, and a file under active development grows every day it is worked on. The numbers are usable as a review queue or a trend to watch; they are not a finding by themselves.",
+  "rule_ids": [
+   "107",
+   "204",
+   "483"
+  ]
+ },
+ {
+  "id": "K-03",
+  "family": "K",
+  "name": "Conjunction in the commit subject as a stand-in for mixed concerns",
+  "rationale": "Rule 421 reads the commit subject and nothing else, matching the word 'and' on a word boundary. It is a keyword stand-in for the obligation that a commit carry one concern: the conjunction may join two concerns that should have been two commits, or it may just be ordinary prose about one. It inspects no diff and no request.",
+  "invariant": "A commit should contain one concern that traces to the request, and its subject should say which one.",
+  "roles": [
+   "commit subject",
+   "commit diff",
+   "concern",
+   "keyword match"
+  ],
+  "relations": [
+   {
+    "from": "keyword match",
+    "to": "commit subject",
+    "label": "finds the conjunction",
+    "state": "normal"
+   },
+   {
+    "from": "commit subject",
+    "to": "concern",
+    "label": "names one",
+    "state": "normal"
+   },
+   {
+    "from": "commit diff",
+    "to": "concern",
+    "label": "is read to confirm there is only one",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Plenty of single-purpose subjects carry the word: 'handle null and empty input', 'rename find-and-replace helper', 'document the retry and backoff settings'. The converse is just as common, a commit that really does two things and whose subject mentions only the first, so the keyword is neither necessary nor sufficient for the real failure.",
+  "rule_ids": [
+   "421"
+  ]
+ },
+ {
+  "id": "K-04",
+  "family": "K",
+  "name": "Abandoned attempt left in the delivered change",
+  "rationale": "Rule 540 is about the agent's own discarded work rather than about code it was never asked to touch. Lines written for a fix attempt that failed were never taken back out, so they travel with the attempt that did work and widen the delivered change beyond the accepted solution.",
+  "invariant": "When a fix attempt fails, its edits must be reverted before the change is delivered, so the change holds only the accepted solution.",
+  "roles": [
+   "failed attempt",
+   "working tree",
+   "accepted solution",
+   "delivered change"
+  ],
+  "relations": [
+   {
+    "from": "accepted solution",
+    "to": "delivered change",
+    "label": "accounts for its lines",
+    "state": "normal"
+   },
+   {
+    "from": "failed attempt",
+    "to": "working tree",
+    "label": "leaves its edits standing",
+    "state": "problem"
+   },
+   {
+    "from": "failed attempt",
+    "to": "working tree",
+    "label": "is reverted once it fails",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "An abandoned attempt sometimes leaves something the task wants in its own right: a test that reproduces the bug, code the final fix turned out to need, a comment recording why the obvious route does not work. Keeping those deliberately and documenting it is not this failure; nor does it apply while the attempt is still live and nothing has been delivered.",
+  "rule_ids": [
+   "540"
+  ]
+ }
+]

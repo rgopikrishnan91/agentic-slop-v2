@@ -1,0 +1,236 @@
+[
+ {
+  "id": "E-01",
+  "family": "E",
+  "name": "Failure signal dropped before it reaches its owner",
+  "rationale": "These rules detect a failure signal (a thrown exception, a thrown control-flow signal, a returned error value, or the outcome of an asynchronous task) that is caught, received or spawned and then discarded: empty catches, log-and-continue, bare or broad except, a bound error never narrowed or rethrown, a Next.js redirect caught by try/catch, a Go error assigned to `_`, C# `async void`, a dropped Rust `JoinHandle`, and a change made only to suppress an error. In each case the party that owns the failure never sees it, and execution continues as though the operation succeeded.",
+  "invariant": "A failure signal raised, returned or spawned by an operation must either be genuinely handled where it is received, so that the caller's promised postcondition holds, or reach the party that owns it; it must not be caught, ignored or detached and then dropped.",
+  "roles": [
+   "operation",
+   "failure signal",
+   "receiving handler or call site",
+   "owner of the failure"
+  ],
+  "relations": [
+   {
+    "from": "operation",
+    "to": "failure signal",
+    "label": "emits, returns or spawns",
+    "state": "normal"
+   },
+   {
+    "from": "receiving handler or call site",
+    "to": "failure signal",
+    "label": "catches, receives or detaches",
+    "state": "normal"
+   },
+   {
+    "from": "receiving handler or call site",
+    "to": "failure signal",
+    "label": "discards without handling or re-signalling",
+    "state": "problem"
+   },
+   {
+    "from": "receiving handler or call site",
+    "to": "owner of the failure",
+    "label": "passes the failure on to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The handler genuinely recovers so the promised postcondition holds; the operation is optional by contract (best-effort cache warm-up, telemetry flush, cleanup on a path already shutting down); a boundary whose job is to stop every failure (request handler, supervisor loop) reports it on the monitored channel; a catch narrows to the failures it names and lets the rest (such as a framework redirect signal) continue; or a spawned task's failure is observed by another declared owner.",
+  "rule_ids": [
+   "038",
+   "039",
+   "041",
+   "046",
+   "049",
+   "214",
+   "261",
+   "367",
+   "542"
+  ]
+ },
+ {
+  "id": "E-02",
+  "family": "E",
+  "name": "Failure disguised as a valid value",
+  "rationale": "When an operation fails or required data is missing, these rules detect a plausible, success-shaped value put in its place: a `.catch()` returning `null`, `[]` or `{}`, `?? 0` or `?? \"\"` on required data, chained `.get({}).get()` defaults, and a secret environment variable with a hardcoded fallback. The failure does not vanish from the code path; it becomes data the consumer cannot tell apart from a real result.",
+  "invariant": "A failure or genuinely missing value must surface to the consumer; it must not be replaced by a default or sentinel that a successful operation could also have produced.",
+  "roles": [
+   "operation",
+   "failure",
+   "substitute value",
+   "consumer"
+  ],
+  "relations": [
+   {
+    "from": "operation",
+    "to": "failure",
+    "label": "signals on error or missing data",
+    "state": "normal"
+   },
+   {
+    "from": "substitute value",
+    "to": "failure",
+    "label": "masks as a valid default",
+    "state": "problem"
+   },
+   {
+    "from": "consumer",
+    "to": "failure",
+    "label": "can distinguish from real data",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The default is the documented, domain-correct value for a genuinely optional input whose absence is an expected case rather than a failure, and the consumer is designed to treat it so (an optional display label defaulting to an empty string, a pagination offset defaulting to zero).",
+  "rule_ids": [
+   "044",
+   "047",
+   "066",
+   "233"
+  ]
+ },
+ {
+  "id": "E-03",
+  "family": "E",
+  "name": "Error identity or cause chain destroyed in propagation",
+  "rationale": "These rules keep a failure visible but strip its structured type or cause chain while converting, wrapping or re-raising it: early stringification of an unknown error, Python `raise` without `from`, Rust `.to_string()` or `format!` applied too early, and Go `fmt.Errorf` with `%v` instead of `%w`. Downstream code sees that something failed but can no longer match or trace which failure it was.",
+  "invariant": "When an error is converted, wrapped or re-raised, its structured identity and cause chain must stay available to the handlers above it.",
+  "roles": [
+   "original error",
+   "conversion site",
+   "downstream handler"
+  ],
+  "relations": [
+   {
+    "from": "conversion site",
+    "to": "original error",
+    "label": "wraps, converts or re-raises",
+    "state": "normal"
+   },
+   {
+    "from": "conversion site",
+    "to": "original error",
+    "label": "flattens to a string or drops the cause of",
+    "state": "problem"
+   },
+   {
+    "from": "downstream handler",
+    "to": "original error",
+    "label": "can identify, match or trace",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A human-readable string is derived at a display or serialization boundary (UI message, HTTP response body, operator log line) while the structured error is still propagated or recorded internally.",
+  "rule_ids": [
+   "045",
+   "254",
+   "366",
+   "470"
+  ]
+ },
+ {
+  "id": "E-04",
+  "family": "E",
+  "name": "Drop in the count of error-handling constructs in a diff",
+  "rationale": "This rule compares how many try/except, try/catch, `.catch`, ErrorBoundary and None-check occurrences a non-test file has before and after a change and warns on a decrease. The count is the whole predicate: it names no failure path, and deleting a swallowing catch scores the same as deleting a necessary one.",
+  "invariant": "A change must not remove the handling that kept a still-fallible operation's failure observable.",
+  "roles": [
+   "previous version of the file",
+   "new version of the file",
+   "reviewer"
+  ],
+  "relations": [
+   {
+    "from": "new version of the file",
+    "to": "previous version of the file",
+    "label": "holds fewer counted error-handling constructs than",
+    "state": "normal"
+   },
+   {
+    "from": "new version of the file",
+    "to": "reviewer",
+    "label": "shows which failure path lost its propagation to",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The count falls legitimately when handling is consolidated upward, a swallowing handler is removed so the error propagates, the guarded operation can no longer fail, a None check is replaced by a type that cannot be None, or dead code is deleted.",
+  "rule_ids": [
+   "385"
+  ]
+ },
+ {
+  "id": "E-05",
+  "family": "E",
+  "name": "Mixed error mechanisms in one module",
+  "rationale": "The rule reports a module that signals failure in more than one way at once: exceptions beside error codes, `Result` beside thrown errors, callbacks beside promises. That is a real hazard because a caller usually handles one mechanism, but the rule stops at the inventory and never shows that a failure is in fact lost.",
+  "invariant": "Where two failure mechanisms meet, the crossing must translate the signal, so that a caller handling one mechanism cannot miss a failure raised through the other.",
+  "roles": [
+   "module",
+   "first failure mechanism",
+   "second failure mechanism",
+   "caller"
+  ],
+  "relations": [
+   {
+    "from": "module",
+    "to": "first failure mechanism",
+    "label": "signals some failures through",
+    "state": "normal"
+   },
+   {
+    "from": "module",
+    "to": "second failure mechanism",
+    "label": "signals other failures through",
+    "state": "normal"
+   },
+   {
+    "from": "caller",
+    "to": "second failure mechanism",
+    "label": "observes or translates failures of",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The added condition the rule does not check: the mixture belongs in this family only when some call path crosses from one mechanism to the other without carrying the failure over, so a caller watching one mechanism sees success. Mixing is legitimate when each crossing translates explicitly (a Result-returning wrapper around a throwing library, a promisified callback API) or follows the platform convention (throw for programmer errors, return Result for expected ones).",
+  "rule_ids": [
+   "348"
+  ]
+ },
+ {
+  "id": "E-06",
+  "family": "E",
+  "name": "Error reported on the non-error log channel",
+  "rationale": "The rule flags `console.log` inside a catch clause. The failure is real, since an error written at info level to stdout is not collected as an error by log processing and alerting, but the match is purely positional: it does not check whether the error object is passed or whether the handler also rethrows or returns a failure.",
+  "invariant": "A handler that reports a failure by logging must log the error itself on the channel the system treats as its error channel.",
+  "roles": [
+   "catch clause",
+   "log call",
+   "caught error",
+   "error monitoring channel"
+  ],
+  "relations": [
+   {
+    "from": "catch clause",
+    "to": "log call",
+    "label": "reports the failure through",
+    "state": "normal"
+   },
+   {
+    "from": "caught error",
+    "to": "log call",
+    "label": "is passed with message and stack to",
+    "state": "missing"
+   },
+   {
+    "from": "log call",
+    "to": "error monitoring channel",
+    "label": "reaches",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The added condition the rule does not check: this belongs in this family only when the log line is the handler's whole disposition of the error, so nothing is rethrown or returned. Where the handler rethrows or returns an error value, where the log is only supplementary context, or where the program deliberately routes all output to stdout (a CLI, a container whose stdout is the collected stream, a test harness), the channel choice swallows nothing.",
+  "rule_ids": [
+   "560"
+  ]
+ }
+]
