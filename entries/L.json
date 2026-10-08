@@ -1,0 +1,288 @@
+[
+ {
+  "id": "L-01",
+  "family": "L",
+  "name": "Placeholder name in place of the domain term",
+  "rationale": "The four rules catch a name that fills the naming slot without naming anything: a role word with a counter (helper_1, data2), a blocklisted filler verb phrase (process_data, handle_response), a grab-bag module name (utils, helpers), or a function body made mostly of one- and two-character identifiers. The artifact differs (variable, parameter, function, module) but in each case the reader cannot recover from the name which domain concept the thing stands for.",
+  "invariant": "Every named artifact must denote the specific domain concept it holds, so that the concept can be read off the name without reading the implementation.",
+  "roles": [
+   "identifier",
+   "domain concept",
+   "repository vocabulary",
+   "later reader"
+  ],
+  "relations": [
+   {
+    "from": "identifier",
+    "to": "domain concept",
+    "label": "is bound to",
+    "state": "normal"
+   },
+   {
+    "from": "repository vocabulary",
+    "to": "domain concept",
+    "label": "already has a term for",
+    "state": "normal"
+   },
+   {
+    "from": "identifier",
+    "to": "domain concept",
+    "label": "denotes",
+    "state": "missing"
+   },
+   {
+    "from": "later reader",
+    "to": "identifier",
+    "label": "recovers the concept from",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A contentless or very short name is right when the code is genuinely generic over the concept or the scope makes it unambiguous: a type parameter, loop indices and coordinates (i, j, k, x, y), a lambda argument in a one-line pipeline, established abbreviations the project uses (id, db, err), or a utility module that the project's own convention names utils and keeps to one documented purpose.",
+  "rule_ids": [
+   "126",
+   "133",
+   "414",
+   "555"
+  ]
+ },
+ {
+  "id": "L-02",
+  "family": "L",
+  "name": "Name restates the context it already sits in",
+  "rationale": "Both rules concern names that are long because they repeat what the enclosing module, class, function or type already states, not because they make a finer distinction. Rule 129 catches redundant context prefixes and type suffixes (getUserDataFromDatabase, currentUserAuthenticationStatusBoolean); rule 132 catches tokens repeated from the enclosing scope (user_update_user_profile in UserService).",
+  "invariant": "A name must add the distinction its enclosing scope does not already make, and must not repeat what the scope or type already supplies.",
+  "roles": [
+   "identifier",
+   "enclosing scope",
+   "distinction to be made",
+   "reader"
+  ],
+  "relations": [
+   {
+    "from": "enclosing scope",
+    "to": "distinction to be made",
+    "label": "already supplies part of",
+    "state": "normal"
+   },
+   {
+    "from": "identifier",
+    "to": "enclosing scope",
+    "label": "repeats the tokens of",
+    "state": "problem"
+   },
+   {
+    "from": "identifier",
+    "to": "distinction to be made",
+    "label": "adds",
+    "state": "missing"
+   },
+   {
+    "from": "reader",
+    "to": "identifier",
+    "label": "finds the specific part in",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "Repetition is right when the scope is not visible at the use site: an exported symbol read unqualified in another module, a flat C-style or global namespace, a name the project's public API spells in full, a multi-word domain term the project already uses, or two names in one scope that only the longer form tells apart.",
+  "rule_ids": [
+   "129",
+   "132"
+  ]
+ },
+ {
+  "id": "L-03",
+  "family": "L",
+  "name": "Departure from the naming convention in force",
+  "rationale": "These rules take the project itself, at some scope, as the standard: the rest of the same file (131), the other names in the directory (128), the whole codebase (115), a per-language file-name casing rule (384), or a declared per-directory placement rule (564). In each the added artifact's surface form or location is not the one the project uses for artifacts of its kind, so the form of a name stops predicting anything. Identifier, file name and file location are artifact types of one obligation.",
+  "invariant": "An added identifier, file name or file location must take the form the project already uses for that kind of artifact.",
+  "roles": [
+   "added artifact",
+   "project convention",
+   "surrounding code",
+   "maintainer"
+  ],
+  "relations": [
+   {
+    "from": "surrounding code",
+    "to": "project convention",
+    "label": "follows",
+    "state": "normal"
+   },
+   {
+    "from": "project convention",
+    "to": "added artifact",
+    "label": "governs",
+    "state": "normal"
+   },
+   {
+    "from": "added artifact",
+    "to": "project convention",
+    "label": "conforms to",
+    "state": "missing"
+   },
+   {
+    "from": "maintainer",
+    "to": "added artifact",
+    "label": "predicts the form of",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A different form is correct when another convention governs the artifact: generated code, vendored third-party sources, a name a framework or wire format fixes (HTTP headers, environment variables, serialised keys), migration or fixture directories, files such as __init__.py, Makefile or Dockerfile, and a documented project-wide migration in which new code takes the target convention.",
+  "rule_ids": [
+   "115",
+   "128",
+   "131",
+   "384",
+   "564"
+  ]
+ },
+ {
+  "id": "L-04",
+  "family": "L",
+  "name": "One field under diverging names across layers",
+  "rationale": "The rule is about the correspondence between the ends of a data path, not about a local convention: the storage layer, the API response and the client types each name the same field their own way, and the mapping between the forms is applied at some boundaries and not at others, which shows as field-access errors. There is no single surrounding standard to match; what fails is that one concept no longer has one term, or one reliable translation, along its path.",
+  "invariant": "A field must keep one term, or one consistently applied mapping between terms, at every architectural boundary it crosses.",
+  "roles": [
+   "producing layer",
+   "consuming layer",
+   "field",
+   "name transformation"
+  ],
+  "relations": [
+   {
+    "from": "producing layer",
+    "to": "field",
+    "label": "emits under its own convention",
+    "state": "normal"
+   },
+   {
+    "from": "name transformation",
+    "to": "field",
+    "label": "maps the name at every boundary",
+    "state": "missing"
+   },
+   {
+    "from": "consuming layer",
+    "to": "field",
+    "label": "reads under a form the producer never emits",
+    "state": "problem"
+   }
+  ],
+  "legitimate": "Per-layer conventions are expected (snake_case columns, camelCase JSON, PascalCase types); the divergence is acceptable whenever the translation is declared once and applied everywhere, by a serialiser configuration, generated client types or a schema the layers share, so that no consumer spells a key by hand.",
+  "rule_ids": [
+   "316"
+  ]
+ },
+ {
+  "id": "L-05",
+  "family": "L",
+  "name": "Domain term misspelled at its declaration",
+  "rationale": "The rule flags identifiers whose spelling is wrong at the declaration site, confirmed by comparing comparable identifiers in the repository. The name can pick the right concept and follow the right convention and still spell the term wrongly, so the concept exists under two spellings, stops being one searchable word, and the typo propagates to every reference.",
+  "invariant": "An identifier must spell its domain term as the term is spelled by comparable identifiers in the repository.",
+  "roles": [
+   "declared identifier",
+   "domain term",
+   "comparable identifiers",
+   "search over the repository"
+  ],
+  "relations": [
+   {
+    "from": "comparable identifiers",
+    "to": "domain term",
+    "label": "spell",
+    "state": "normal"
+   },
+   {
+    "from": "declared identifier",
+    "to": "domain term",
+    "label": "spells as the repository does",
+    "state": "missing"
+   },
+   {
+    "from": "search over the repository",
+    "to": "declared identifier",
+    "label": "reaches from the domain term",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "The apparent misspelling is right when it is the project's or the domain's own spelling: an established abbreviation or acronym, a British or American variant the repository has settled on, correct jargon that looks like a typo, a field name fixed by an external schema or API, or a historical typo kept for compatibility in a public API or stored data.",
+  "rule_ids": [
+   "351"
+  ]
+ },
+ {
+  "id": "L-06",
+  "family": "L",
+  "name": "Raw literal selected by size or format",
+  "rationale": "Both rules select inline literals for review by their surface form: numeric literals by digit count (over 1000 or four or more digits) or by more than three distinct non-trivial literals per function (198), and CSS values by pixel size, hex, rgba() or hsl() format (372). Neither checks that the value has a domain meaning or that the project has a named constant or design token for it, so they select code rather than state that the obligation to name the value is broken.",
+  "invariant": "A value with domain meaning should be referred to through the named constant or design token the project gives it, not inlined as an anonymous literal.",
+  "roles": [
+   "inline literal",
+   "named constant or token",
+   "use site"
+  ],
+  "relations": [
+   {
+    "from": "named constant or token",
+    "to": "inline literal",
+    "label": "would carry the meaning of",
+    "state": "normal"
+   },
+   {
+    "from": "use site",
+    "to": "inline literal",
+    "label": "contains a literal selected by size or format",
+    "state": "problem"
+   },
+   {
+    "from": "use site",
+    "to": "named constant or token",
+    "label": "refers through",
+    "state": "missing"
+   }
+  ],
+  "legitimate": "A literal is the right text when the value has no name to carry: 0, 1 and -1 as structural values, a mathematical constant in a formula, the definition of the named constant itself, a value used once where its meaning is evident, a one-off value in a test or fixture, a value in a declarative configuration file whose key names it, and a style value in a prototype or a file outside the design system.",
+  "rule_ids": [
+   "198",
+   "372"
+  ]
+ },
+ {
+  "id": "L-07",
+  "family": "L",
+  "name": "Decorative glyphs in source text",
+  "rationale": "Emoji in code and comments (130) and decorative typographic characters such as em dashes, smart quotes, ellipses and arrows (321) are one finding under two character sets: prose ornament carried into a source file. Neither rule compares the characters with what the project's own sources contain, so neither establishes the mismatch with repository vocabulary that family L requires.",
+  "invariant": "Source files and comments should keep to the character register the project's own sources use, without decorative or typographic glyphs.",
+  "roles": [
+   "decorative glyph",
+   "source file",
+   "project character register",
+   "diff and tooling"
+  ],
+  "relations": [
+   {
+    "from": "decorative glyph",
+    "to": "source file",
+    "label": "is introduced into",
+    "state": "problem"
+   },
+   {
+    "from": "source file",
+    "to": "project character register",
+    "label": "stays inside",
+    "state": "missing"
+   },
+   {
+    "from": "project character register",
+    "to": "diff and tooling",
+    "label": "keeps the file legible to",
+    "state": "normal"
+   }
+  ],
+  "legitimate": "The added condition the rules do not check: the finding belongs to this family only if the project's existing sources avoid these characters for this purpose. Where they do not, the glyph is correct: emoji and typographic punctuation in user-facing strings, localisation data, documentation and Markdown, CLI output the project deliberately decorates, identifiers in a non-ASCII natural language, documented Unicode operators in scientific code, and test data that exercises Unicode handling.",
+  "rule_ids": [
+   "130",
+   "321"
+  ]
+ }
+]

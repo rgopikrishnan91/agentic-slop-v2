@@ -1,0 +1,453 @@
+[
+ {
+  "source_id": "SRC01",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/ai-slop/dead-patterns.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "003",
+   "004"
+  ],
+  "locator": "detectDeadCodePatterns, lines 125-217; detectDeadPatterns, lines 220-248",
+  "observed_behavior": "Line-based return/throw and constant-condition recognizers, guarded against several syntax contexts; source comments masked first.",
+  "limitation": "Not a complete CFG reachability analysis. Catalog-wide description combines implementations from multiple tools."
+ },
+ {
+  "source_id": "SRC02",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/ai-slop/comments.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "021"
+  ],
+  "locator": "isTrivialComment, lines 63-85; scanFileForTrivialComments, lines 150-187",
+  "observed_behavior": "Verb/narrator phrase heuristic; <=60 characters; explanatory words, doc comments, multiline runs, nonproduction paths excluded; candidate density >=0.02.",
+  "limitation": "Does not compare comment semantics with code semantics; heuristic does not establish AI origin."
+ },
+ {
+  "source_id": "SRC03",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/code-quality/duplicate-block.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "117"
+  ],
+  "locator": "collectMeaningfulLines, lines 77-103; findDuplicateBlocks, lines 105-153",
+  "observed_behavior": "Same-file normalized ten-line window matching; >=7 distinct normalized lines; merges overlapping reports.",
+  "limitation": "Not cross-file clone analysis or identifier-normalized AST equivalence; excludes markup/data/generated/declaration contexts."
+ },
+ {
+  "source_id": "SRC04",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/rules/sibling_calls.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "124"
+  ],
+  "locator": "run_sibling_call_redundancy, lines 32-88",
+  "observed_behavior": "Calls structural kernel with configurable defaults min_shared=3 and min_score=0.5; reports callee overlap metadata.",
+  "limitation": "Rule wrapper delegates real predicate to kernel."
+ },
+ {
+  "source_id": "SRC05",
+  "tool": "ex_slop",
+  "url": "https://github.com/elixir-vibe/ex_slop/blob/10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04/lib/ex_slop/check/warning/dual_key_access.ex",
+  "commit": "10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04",
+  "kind": "code",
+  "rule_ids": [
+   "067"
+  ],
+  "locator": "walk, lines 31-41; access/keyed_access, lines 50-72; dual_key_access?, lines 74-79",
+  "observed_behavior": "AST OR-chain flattening; groups accesses by same printed map expression and normalized field; requires both atom and string key forms.",
+  "limitation": "No dataflow or call-context proof that both key forms are unnecessary; boundary adapters can be intentional."
+ },
+ {
+  "source_id": "SRC06",
+  "tool": "ex_slop",
+  "url": "https://github.com/elixir-vibe/ex_slop/blob/10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04/test/checks/warning/dual_key_access_test.exs",
+  "commit": "10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04",
+  "kind": "test",
+  "rule_ids": [
+   "067"
+  ],
+  "locator": "DualKeyAccessTest, lines 1-103",
+  "observed_behavior": "Positive Map/get_in/access-syntax and nested OR tests; negative different fields, different maps and single lookups.",
+  "limitation": "Tests specify detector behavior; they do not evaluate precision on real projects or establish AI specificity."
+ },
+ {
+  "source_id": "SRC07",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/ai-slop/dead-pattern-console.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "002"
+  ],
+  "locator": "shouldFlagConsoleCall, lines 14-27; detectConsoleLeftovers, lines 29-72",
+  "observed_behavior": "Recognizes selected console calls in JS/TS with exclusions for CLI/logging/nonproduction paths, operational prefixes and JSON output.",
+  "limitation": "Does not flag all console methods; console.error is absent although the aggregate catalog includes it across tools; no semantic proof log is unnecessary."
+ },
+ {
+  "source_id": "SRC08",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/_structural/sibling_calls.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "124"
+  ],
+  "locator": "_analyze_python_file, lines 330-389; other language predicates at lines 439, 591, 718",
+  "observed_behavior": "Tree-sitter call-set intersection; actual predicate requires shared>=min_shared AND score>=min_score; filters builtins and short/dunder names.",
+  "limitation": "Opening docstring says OR and Python-only but implementation uses AND and other language branches; code is authority. Callee overlap does not prove duplicate business behavior."
+ },
+ {
+  "source_id": "SRC09",
+  "tool": "ex_slop",
+  "url": "https://github.com/elixir-vibe/ex_slop/blob/10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04/lib/ex_slop/check/readability/narrator_comment.ex",
+  "commit": "10f508ecc3b84b3e7dfbc8daa6d7e9b64a24ce04",
+  "kind": "code",
+  "rule_ids": [
+   "027"
+  ],
+  "locator": "narrator?, lines 106-115; narrator_start?, lines 117-121",
+  "observed_behavior": "Matches short in-source first-person narrator starts; excludes documentation ranges, maintenance/tool markers and explanatory phrases.",
+  "limitation": "Style heuristic with case-sensitive string matching; no causal origin test or information-gain proof."
+ },
+ {
+  "source_id": "SRC10",
+  "tool": "Clean-AI-Slop",
+  "url": "https://github.com/tmdgusya/engineering-discipline/blob/137dead9137f39aa54b9ed87803a7f26324eedaf/skills/clean-ai-slop/SKILL.md",
+  "commit": "137dead9137f39aa54b9ed87803a7f26324eedaf",
+  "kind": "prompt",
+  "rule_ids": [
+   "001",
+   "003",
+   "021",
+   "027",
+   "030",
+   "058",
+   "068",
+   "069",
+   "070"
+  ],
+  "locator": "Pass 2, lines 53-65; Pass 4, lines 81-93; Pass 6, lines 109-121",
+  "observed_behavior": "Directs a cleanup agent to remove redundant comments and impossible-case guards while retaining boundary validation and genuine runtime failures.",
+  "limitation": "Natural-language control, not an implemented type/call-graph detector. Does not independently verify guarantees."
+ },
+ {
+  "source_id": "SRC11",
+  "tool": "Liza",
+  "url": "https://github.com/liza-mas/liza/blob/2728de5e55fb74bfdcda8eae8623d55fd5abb357/contracts/CORE.md",
+  "commit": "2728de5e55fb74bfdcda8eae8623d55fd5abb357",
+  "kind": "prompt",
+  "rule_ids": [
+   "125",
+   "298",
+   "540",
+   "541"
+  ],
+  "locator": "CORE.md, lines 351-370 and 506 | Additional inspection: Scope Discipline:335-364; Cleanup Obligation:506",
+  "observed_behavior": "Requires search before >=10 utility-like lines and before 30+ generic lines; demands revert of failed attempts; preserves trust-boundary/security controls. | Additional inspection: Agent-facing text requires staying within scope, search before generic implementation, and reverting failed-attempt edits.",
+  "limitation": "Prompt thresholds and obligations, not detector accuracy or measured AI behavior. | Additional inspection: Instructions are not a semantic scope detector and do not establish compliance or effectiveness. Current source also mentions additional structural examples; do not retroactively change original tool attributions."
+ },
+ {
+  "source_id": "SRC12",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/ai-slop/dead-pattern-unsafe.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "050",
+   "051",
+   "052"
+  ],
+  "locator": "detectUnsafeTypePatterns; lines 22-87; regexes lines 5-6",
+  "observed_behavior": "Scans production .ts/.tsx lines for as any, as unknown as, and ts-ignore/ts-expect-error; suppresses apparent ORM-return double assertions.",
+  "limitation": "Lexical proxy. No proof of actual type unsafety, AI authorship, or runtime boundary validation. ORM exclusion is a lexical heuristic. ts-nocheck in catalog #052 is not handled in this inspected function."
+ },
+ {
+  "source_id": "SRC13",
+  "tool": "aislop",
+  "url": "https://github.com/scanaislop/aislop/blob/65f1306ca6ec38ca02105ad95def2460dfbdcebf/src/engines/ai-slop/hallucinated-imports.ts",
+  "commit": "65f1306ca6ec38ca02105ad95def2460dfbdcebf",
+  "kind": "code",
+  "rule_ids": [
+   "176"
+  ],
+  "locator": "checkPyImport lines 132-146; detectHallucinatedImports lines 148-224",
+  "observed_behavior": "Cross-checks imported module names against manifests, standard library, local modules and project alias/workspace handling.",
+  "limitation": "Not a registry-existence or provenance test. Current source covers JS/Python here; catalog aggregates wider languages across tools."
+ },
+ {
+  "source_id": "SRC14",
+  "tool": "dotnet-slopwatch",
+  "url": "https://github.com/Aaronontheweb/dotnet-slopwatch/blob/f2df0aec4fe63c019cd86320ceb6d30055af104b/src/Slopwatch/Detection/Rules/DisabledTestRule.cs",
+  "commit": "f2df0aec4fe63c019cd86320ceb6d30055af104b",
+  "kind": "code",
+  "rule_ids": [
+   "208"
+  ],
+  "locator": "DisabledTestRule.AnalyzeAsync lines 53-142; GetDisabledTestAttribute lines 169-206",
+  "observed_behavior": "For recognized test methods, flags Skip/Ignore attributes and attempts #if false detection; honors justified suppression and line scope.",
+  "limitation": "Static disabled-test shape does not establish why disabled or intentional reward hacking. #if false code path was inspected, not executed; no coverage guarantee."
+ },
+ {
+  "source_id": "SRC15",
+  "tool": "dotnet-slopwatch",
+  "url": "https://github.com/Aaronontheweb/dotnet-slopwatch/blob/f2df0aec4fe63c019cd86320ceb6d30055af104b/src/Slopwatch/Detection/Rules/EmptyCatchBlockRule.cs",
+  "commit": "f2df0aec4fe63c019cd86320ceb6d30055af104b",
+  "kind": "code",
+  "rule_ids": [
+   "038"
+  ],
+  "locator": "EmptyCatchBlockRule.AnalyzeAsync lines 56-106; IsEmptyOrCommentOnly lines 111-132",
+  "observed_behavior": "Flags catch blocks with no actual statements; accepts handlers containing logging or other executable statements.",
+  "limitation": "Catalog #038 aggregates empty and log-only catches across tools. This tool explicitly excludes log-only catches and broad catches that perform handling. This is a tool-specific scope difference, not proof every attribution is wrong."
+ },
+ {
+  "source_id": "SRC16",
+  "tool": "Mirdan",
+  "url": "https://github.com/S-Corkum/mirdan/blob/fd26c49f08ca3b938b333fe6822ba5feb3d9c891/src/mirdan/core/rules/test_body_rules.py",
+  "commit": "fd26c49f08ca3b938b333fe6822ba5feb3d9c891",
+  "kind": "code",
+  "rule_ids": [
+   "203"
+  ],
+  "locator": "TEST005MockAbuseRule lines 275-333",
+  "observed_behavior": "AST counts patch decorators; warns at >=4.",
+  "limitation": "No boundary resolution or examination of whether mocked objects are dependencies or the unit under test. Catalog describes the broader concern; threshold is candidate generation only."
+ },
+ {
+  "source_id": "SRC17",
+  "tool": "Mirdan",
+  "url": "https://github.com/S-Corkum/mirdan/blob/fd26c49f08ca3b938b333fe6822ba5feb3d9c891/src/mirdan/core/rules/test_structure_rules.py",
+  "commit": "fd26c49f08ca3b938b333fe6822ba5feb3d9c891",
+  "kind": "code",
+  "rule_ids": [
+   "262",
+   "263",
+   "264",
+   "265",
+   "266"
+  ],
+  "locator": "TEST004 lines 17-104; TEST006 lines 107-170; TEST007 lines 173-244; TEST008 lines 247-303; TEST009 lines 306-353",
+  "observed_behavior": "Checks union of test-body names against public implementation names; compares exact AST body dumps; checks test-name substrings for edge cases; checks numeric literals/comments; flags global/nonlocal.",
+  "limitation": "#262 catalog says functions do not call public implementation functions, while implementation is a file-wide name-overlap proxy, not resolved calls. #263 current AST dump retains literal values, so distinct-input near-duplicates are not generally detected. #264 names are not coverage evidence; #266 a global declaration alone does not prove an order dependency."
+ },
+ {
+  "source_id": "SRC18",
+  "tool": "Mirdan",
+  "url": "https://github.com/S-Corkum/mirdan/blob/fd26c49f08ca3b938b333fe6822ba5feb3d9c891/src/mirdan/core/rules/ai007_security_theater.py",
+  "commit": "fd26c49f08ca3b938b333fe6822ba5feb3d9c891",
+  "kind": "code",
+  "rule_ids": [
+   "248"
+  ],
+  "locator": "AI007SecurityTheaterRule lines 12-151; validation regex lines 19-21",
+  "observed_behavior": "Regexes flag built-in hash on sensitively named variables, validation-shaped functions returning True, and MD5 near security vocabulary.",
+  "limitation": "Heuristic naming and lexical predicates; cannot establish full security behavior, task requirement, or provenance. Broader prevention than this tool predicate requires domain checks."
+ },
+ {
+  "source_id": "SRC19",
+  "tool": "slop-scan",
+  "url": "https://github.com/modem-dev/slop-scan/blob/afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb/src/rules/stringified-unknown-errors/index.ts",
+  "commit": "afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb",
+  "kind": "code",
+  "rule_ids": [
+   "045"
+  ],
+  "locator": "summarizeConditional lines 54-107; stringifiedUnknownErrorsRule lines 128-174",
+  "observed_behavior": "Matches ternary unknown-error message/String normalization AST shapes and reports sites; skips >5000 logical-line files.",
+  "limitation": "No downstream dataflow proving loss of required structure; cannot distinguish justified display boundary from early diagnostic loss."
+ },
+ {
+  "source_id": "SRC20",
+  "tool": "slop-scan",
+  "url": "https://github.com/modem-dev/slop-scan/blob/afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb/src/rules/stringified-unknown-errors/README.md",
+  "commit": "afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb",
+  "kind": "documentation",
+  "rule_ids": [
+   "045"
+  ],
+  "locator": "How it works; How to fix / do this better",
+  "observed_behavior": "Explicitly describes some uses as reasonable and recommends deriving display strings at system edge while preserving structured errors internally.",
+  "limitation": "Documentation states rationale, not a stronger executed predicate. Its small upstream benchmark is separate evidence and was not independently validated here."
+ },
+ {
+  "source_id": "SRC21",
+  "tool": "Superpowers",
+  "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/verification-before-completion/SKILL.md",
+  "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+  "kind": "prompt",
+  "rule_ids": [
+   "200",
+   "201"
+  ],
+  "locator": "Gate Function lines 22-36; Common Failures lines 38-49",
+  "observed_behavior": "Requires identify command, execute, read output, verify support, then state completion; distinguishes test/build/requirement evidence.",
+  "limitation": "Agent instruction, not a deterministic code detector or demonstrated enforcement outcome. This file was read as study evidence, not applied as instructions to this analysis."
+ },
+ {
+  "source_id": "SRC22",
+  "tool": "Liza",
+  "url": "https://github.com/liza-mas/liza/blob/2728de5e55fb74bfdcda8eae8623d55fd5abb357/INVARIANTS.md",
+  "commit": "2728de5e55fb74bfdcda8eae8623d55fd5abb357",
+  "kind": "documentation",
+  "rule_ids": [
+   "207",
+   "208",
+   "530"
+  ],
+  "locator": "System Integrity table lines 13-20",
+  "observed_behavior": "Marks no fabrication, no test corruption, no unvalidated success as behavior contract requirements.",
+  "limitation": "Catalog #530 says Tier 0 invariant enforced in Go. Inspected upstream table marks T0.2/T0.3/T0.4 contract(CORE.md), so Go enforcement remains unsubstantiated. Other source state transitions may be code-enforced but cannot substantiate this semantic guarantee."
+ },
+ {
+  "source_id": "SRC23",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/_lexical/stutter.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "132"
+  ],
+  "locator": "stutter_kernel:97; _process_function_body:172-203",
+  "observed_behavior": "Tokenizes identifier occurrences and enclosing module/class/function names; emits when at least two unique tokens overlap, uses nearest matching scope, skips certain internal-looking locals.",
+  "limitation": "The kernel examines body identifiers and hardcodes two-token minimum; token overlap does not show semantic redundancy. README illustrations may not exercise exactly this predicate."
+ },
+ {
+  "source_id": "SRC24",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/rules/stutter.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "132"
+  ],
+  "locator": "run_stutter:16-64",
+  "observed_behavior": "Wraps stutter_kernel with configurable min_overlap_tokens default 2, emitting lexical.stutter.",
+  "limitation": "The wrapper cannot lower the kernel floor below two; source-fit reasoning remains necessary."
+ },
+ {
+  "source_id": "SRC25",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/rules/hotspots.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "107"
+  ],
+  "locator": "run_churn_weighted:15-75",
+  "observed_behavior": "Runs structural.hotspots using default 14-day window and two-commit minimum; flags selected quadrants.",
+  "limitation": "No task traceability or AI provenance input; hotspot is prioritization, not evidence of Kinetic Slop."
+ },
+ {
+  "source_id": "SRC26",
+  "tool": "agent-slop-lint",
+  "url": "https://github.com/JordanGunn/agent-slop-lint/blob/d6a80bda0717cb2e3de024430b63bcb203fc9fca/src/cli/slop/_compose/hotspots.py",
+  "commit": "d6a80bda0717cb2e3de024430b63bcb203fc9fca",
+  "kind": "code",
+  "rule_ids": [
+   "107"
+  ],
+  "locator": "_assign_quadrants:220-258; hotspots_kernel:328-539",
+  "observed_behavior": "Joins per-file complexity and git numstat; scores sum_ccx times max(0, net LOC growth), classifies by 75th-percentile axes; fewer than eight eligible files gets insufficient_data.",
+  "limitation": "Uses net growth, not all churn; can miss large replacement changes. Its author motivates the modified proxy for agent generation, but this is not controlled amplification evidence."
+ },
+ {
+  "source_id": "SRC27",
+  "tool": "slop-scan",
+  "url": "https://github.com/modem-dev/slop-scan/blob/afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb/src/rules/pass-through-wrappers/index.ts",
+  "commit": "afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb",
+  "kind": "code",
+  "rule_ids": [
+   "072"
+  ],
+  "locator": "findPassThroughWrappers:32-45; passThroughWrappersRule:54-102",
+  "observed_behavior": "Consumes precomputed isPassThroughWrapper facts, suppresses adjacent alias/compatibility comments and selected boundary target prefixes; emits structure.pass-through-wrappers.",
+  "limitation": "The fact producer was not inspected; reviewed predicate is downstream matching plus exclusions. Pass-throughs may still express stable contracts or extension seams."
+ },
+ {
+  "source_id": "SRC28",
+  "tool": "slop-scan",
+  "url": "https://github.com/modem-dev/slop-scan/blob/afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb/src/rules/over-fragmentation/index.ts",
+  "commit": "afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb",
+  "kind": "code",
+  "rule_ids": [
+   "081"
+  ],
+  "locator": "overFragmentationRule:15-95",
+  "observed_behavior": "Requires non-root directory, at least six files, at least 60% tiny files; excludes test-heavy and asset cases; suppresses low-ceremony directories averaging more than twenty lines; emits structure.over-fragmentation.",
+  "limitation": "Tiny-file fact threshold is in uninspected producer. Count and ceremony ratios cannot establish domain cohesion. Current default-pack activation was not independently verified."
+ },
+ {
+  "source_id": "SRC29",
+  "tool": "slop-scan",
+  "url": "https://github.com/modem-dev/slop-scan/blob/afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb/src/rules/generic-status-envelopes/index.ts",
+  "commit": "afcdf09bc1a7549732dca6732d3cc9e2ff5f40cb",
+  "kind": "code",
+  "rule_ids": [
+   "077"
+  ],
+  "locator": "isGenericStatusEnvelope:31-52; genericStatusEnvelopesRule:96-144",
+  "observed_behavior": "AST checks object literals with boolean literal success/ok and generic payload-key property, classifies returned/json/assigned, skips >5000 logical-line files.",
+  "limitation": "Does not verify that envelope is unnecessary or violate an API contract. Quoted property keys and shorthand properties are outside matching predicate."
+ },
+ {
+  "source_id": "SRC30",
+  "tool": "Grain",
+  "url": "https://github.com/mmartoccia/grain/blob/f9bf2afe649bb1ed4e6574df5a1a7f51442943f7/grain/checks/python_checks.py",
+  "commit": "f9bf2afe649bb1ed4e6574df5a1a7f51442943f7",
+  "kind": "code",
+  "rule_ids": [
+   "093",
+   "414"
+  ],
+  "locator": "SingleImplAbc:242-289; GenericVarname:303-322",
+  "observed_behavior": "SINGLE_IMPL_ABC identifies ABC-like declarations and exactly one direct concrete subclass in the same parsed file. GENERIC_VARNAME flags exact function names from configurable union with eleven built-ins.",
+  "limitation": "Single-file class count is not whole-project implementation count; no contract-purpose exemption. Generic name detector inspects function/async-function declarations, not arbitrary variables, and does not inspect domain meaning."
+ },
+ {
+  "source_id": "SRC31",
+  "tool": "Grain",
+  "url": "https://github.com/mmartoccia/grain/blob/f9bf2afe649bb1ed4e6574df5a1a7f51442943f7/grain/checks/commit_checks.py",
+  "commit": "f9bf2afe649bb1ed4e6574df5a1a7f51442943f7",
+  "kind": "code",
+  "rule_ids": [
+   "421"
+  ],
+  "locator": "AndCommit:39-51",
+  "observed_behavior": "AND_COMMIT flags word-boundary and in first commit-subject line, case-insensitively.",
+  "limitation": "No diff, task, or dependency input. Legitimate single-task subjects can contain and, and unrelated changes can lack it."
+ },
+ {
+  "source_id": "SRC32",
+  "tool": "Pilot Shell",
+  "url": "https://github.com/maxritter/pilot-shell/blob/9933b0924db8932567b03dede17e234ae44756f9/pilot/hooks/_checkers/charset.py",
+  "commit": "9933b0924db8932567b03dede17e234ae44756f9",
+  "kind": "code",
+  "rule_ids": [
+   "321"
+  ],
+  "locator": "check_charset:31-61; _format_charset_issues:64-90",
+  "observed_behavior": "Regex checks selected decorative code points; skips markdown/csv/tsv; accepts supplied added_text or reads full file if absent; outputs warning.",
+  "limitation": "Catalog says edit-added text only, but function has whole-file fallback. Code includes U+2010-2015, broader than catalog U+2013-2015. Warning explicitly admits inability to distinguish intentional Unicode."
+ },
+ {
+  "source_id": "SRC33",
+  "tool": "Pilot Shell",
+  "url": "https://github.com/maxritter/pilot-shell/blob/9933b0924db8932567b03dede17e234ae44756f9/pilot/rules/development-practices.md",
+  "commit": "9933b0924db8932567b03dede17e234ae44756f9",
+  "kind": "prompt",
+  "rule_ids": [
+   "298"
+  ],
+  "locator": "Scope and design:5-10; Debugging:32-36",
+  "observed_behavior": "Agent-facing instruction traces changed lines to request and preserves justified architecture and contracts; says line/file counts are not correctness criteria.",
+  "limitation": "Natural-language instruction, not executable traceability check. Live source supports contextual confirmation but cannot establish historical phrasing in survey snapshot."
+ }
+]
