@@ -1,0 +1,18 @@
+{
+ "role": "coder 3",
+ "family": "T",
+ "model_reported": {
+  "session_context.model": "claude-opus-5",
+  "external_metadata.last_served_model": "claude-opus-5"
+ },
+ "model_matches_roster": true,
+ "effort": "auto (permission mode auto; no explicit reasoning-effort override set for this session)",
+ "date": "2026-10-08",
+ "tools_used": [
+  "Bash (cat, python3 -I for reading and joining the JSON files in this folder)",
+  "Write (kinds/T.json, run_info/T.json)",
+  "mcp__claude-code-remote__get_session (model identifier)",
+  "git (commit and push to orch/kr-c3-T)"
+ ],
+ "notes": "No web access used; no subagents, workflows or other models used. All judgements made from INSTRUCTIONS.md, families.json, entries/T.json, rules.json and detector_source_inspections.json in this folder."
+}
