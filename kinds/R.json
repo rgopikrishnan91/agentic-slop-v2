@@ -1,0 +1,56 @@
+[
+ {
+  "entry_id": "R-01",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Each rule names a specific redundancy: re-coercing a value whose primitive type is already established (053), null-checking a value the type system guarantees non-null (068), or re-validating parameters already validated by a trusted upstream boundary (070). All three state what is wrong rather than just matching a pattern or counting.",
+  "rule_kinds": {
+   "053": "candidate pattern",
+   "068": "candidate pattern",
+   "070": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-02",
+  "kind": "candidate pattern",
+  "question": 1,
+  "condition": "",
+  "reason": "Both rules state what the failure is: a catch block that only rethrows the same error unchanged (040), and a try-catch wrapping code that cannot throw or that rethrows unchanged (069). Each rule text says the error-handling construct is redundant because default propagation or non-throwing code makes it a no-op.",
+  "rule_kinds": {
+   "040": "candidate pattern",
+   "069": "candidate pattern"
+  },
+  "misfit_rules": []
+ },
+ {
+  "entry_id": "R-03",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the input data shape is already fixed by an upstream contract or normalizing boundary, so only one key form or nesting depth can arrive",
+  "reason": "The two rules are split: 066 matches a code pattern (.get({}).get() chains) without stating what is wrong, and 067 states a defensive dual-key lookup for an unknown data shape, which is redundant guarding only if the shape is already fixed. Because the entry's invariant describes a shape guarantee that the rules do not check, the tie goes to boundary register.",
+  "rule_kinds": {
+   "066": "proxy group",
+   "067": "boundary register"
+  },
+  "misfit_rules": [
+   {
+    "rule_id": "066",
+    "kind": "proxy group",
+    "reason": "The rule text '.get({}).get() fallback chains' matches a code pattern without stating what the failure is or what condition would make the fallback redundant."
+   }
+  ]
+ },
+ {
+  "entry_id": "R-04",
+  "kind": "boundary register",
+  "question": 3,
+  "condition": "the tested state is already settled at that point by a type, a validating caller, or a prior normalization, so the precondition check duplicates an existing guarantee",
+  "reason": "Rule 571 identifies eight LBYL patterns where a condition is tested before an operation that would itself report the condition. The rule text frames this as a style preference (use EAFP), but it is a redundant guarding failure only under the added condition that something already settles the tested state, which the rule does not check.",
+  "rule_kinds": {
+   "571": "boundary register"
+  },
+  "misfit_rules": []
+ }
+]
